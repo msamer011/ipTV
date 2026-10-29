@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1280, initial-scale=1.0">
+<title>Smart IPTV | TORNADO TV</title>
+<style>
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  html, body {
+    width: 100%;
+    height: 100%;
+    background-color: #0d1117;
+    color: #ffffff;
+    font-family: 'Tahoma', 'Arial', sans-serif;
+    overflow: hidden;
+  }
+
+  body {
+    zoom: 1.35;
+  }
+
+  .app-container {
+    width: 100%;
+    height: 100%;
+    display: table;
+    table-layout: fixed;
+  }
+
+  /* شاشة تسجيل الدخول للسيرفر */
+  .login-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(10, 14, 20, 0.95);
+    z-index: 999;
+    display: table;
+  }
+
+  .login-box {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+    padding: 20px;
+  }
+
+  .login-card {
+    width: 650px;
+    margin: 0 auto;
+    background-color: #161b22;
+    border: 3px solid #30363d;
+    border-radius: 20px;
+    padding: 35px;
+    text-align: right;
+  }
+
+  .login-title {
+    font-size: 32px;
+    font-weight: bold;
+    color: #58a6ff;
+    text-align: center;
+    margin-bottom: 25px;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  .form-label {
+    font-size: 18px;
+    color: #8b949e;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .form-input {
+    width: 100%;
+    background-color: #0d1117;
+    border: 2px solid #30363d;
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-size: 20px;
+    color: #ffffff;
+    direction: ltr;
+    text-align: left;
+  }
+
+  .form-input.tv-focused, .login-btn.tv-focused {
+    border-color: #58a6ff !important;
+    background-color: #1f2937 !important;
+    box-shadow: 0 0 15px rgba(88, 166, 255, 0.6);
+    outline: none;
+  }
+
+  .login-btn {
+    width: 100%;
+    background-color: #238636;
+    color: #ffffff;
+    border: none;
+    border-radius: 12px;
+    padding: 16px;
+    font-size: 22px;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  /* واجهة التطبيق الرئيسية (بعد تسجيل الدخول) */
+  .main-layout {
+    display: none;
+    width: 100%;
+    height: 100%;
+  }
+
+  .sidebar {
+    width: 25%;
+    height: 100%;
+    background-color: #161b22;
+    border-left: 2px solid #30363d;
+    display: table-cell;
+    vertical-align: top;
+    padding: 30px 20px;
+  }
+
+  .app-logo {
+    font-size: 28px;
+    font-weight: bold;
+    color: #58a6ff;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+
+  .menu-item {
+    background-color: #21262d;
+    border: 2px solid #30363d;
+    border-radius: 12px;
+    padding: 18px;
+    font-size: 22px;
+    font-weight: bold;
+    color: #c9d1d9;
+    margin-bottom: 15px;
+    cursor: pointer;
+    text-align: center;
+  }
+
+  .menu-item.active, .menu-item.tv-focused {
+    background-color: #1f6feb;
+    border-color: #58a6ff;
+    color: #ffffff;
+  }
+
+  .content-area {
+    width: 75%;
+    height: 100%;
+    background-color: #0d1117;
+    display: table-cell;
+    vertical-align: top;
+    padding: 30px;
+  }
+
+  .section-header {
+    font-size: 28px;
+    font-weight: bold;
+    color: #f0f6fc;
+    margin-bottom: 20px;
+  }
+
+  .channels-grid {
+    display: table;
+    width: 100%;
+  }
+
+  .channel-card {
+    display: inline-block;
+    width: 30%;
+    background-color: #161b22;
+    border: 2px solid #30363d;
+    border-radius: 14px;
+    padding: 20px;
+    margin: 1.5%;
+    text-align: center;
+    cursor: pointer;
+    vertical-align: top;
+  }
+
+  .channel-card.tv-focused {
+    border-color: #58a6ff;
+    background-color: #1f2937;
+    box-shadow: 0 0 20px rgba(88, 166, 255, 0.5);
+  }
+
+  .channel-icon {
+    font-size: 40px;
+    margin-bottom: 10px;
+  }
+
+  .channel-name {
+    font-size: 20px;
+    font-weight: bold;
+    color: #ffffff;
+  }
+
+  /* مشغل الفيديو المنبثق */
+  .player-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000000;
+    z-index: 9999;
+  }
+
+  video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .back-hint {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: rgba(0,0,0,0.7);
+    border: 1px solid #30363d;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    color: #8b949e;
+    z-index: 10000;
+  }
+</style>
+</head>
+<body>
+
+<!-- شاشة تسجيل الدخول -->
+<div class="login-overlay" id="loginScreen">
+  <div class="login-box">
+    <div class="login-card">
+      <div class="login-title">📺 إعدادات اشتراك الـ IPTV</div>
+      <div class="form-group">
+        <label class="form-label">رابط السيرفر (Server URL)</label>
+        <input type="text" id="serverUrl" class="form-input login-focusable" placeholder="http://server-url.com:8080">
+      </div>
+      <div class="form-group">
+        <label class="form-label">اسم المستخدم (Username)</label>
+        <input type="text" id="serverUser" class="form-input login-focusable" placeholder="username">
+      </div>
+      <div class="form-group">
+        <label class="form-label">كلمة المرور (Password)</label>
+        <input type="password" id="serverPass" class="form-input login-focusable" placeholder="password">
+      </div>
+      <button class="login-btn login-focusable" onclick="saveLoginAndStart()">دخول للقنوات (Login)</button>
+    </div>
+  </div>
+</div>
+
+<!-- الواجهة الرئيسية -->
+<div class="main-layout" id="mainScreen">
+  <div class="sidebar">
+    <div class="app-logo">⚡ Smart IPTV</div>
+    <div class="menu-item menu-focusable active" onclick="switchCategory('live')">📺 البث الحي (Live)</div>
+    <div class="menu-item menu-focusable" onclick="switchCategory('movies')">🎬 الأفلام (Movies)</div>
+    <div class="menu-item menu-focusable" onclick="switchCategory('series')">🍿 المسلسلات (Series)</div>
+    <div class="menu-item menu-focusable" onclick="logout()">⚙️ إعدادات الحساب</div>
+  </div>
+  <div class="content-area">
+    <div class="section-header" id="sectionTitle">قنوات البث الحي المتاحة</div>
+    <div class="channels-grid" id="channelsContainer">
+      <!-- يتم تعبئة القنوات برمجياً -->
+    </div>
+  </div>
+</div>
+
+<!-- مشغل الفيديو -->
+<div class="player-overlay" id="playerScreen">
+  <div class="back-hint">اضغط زر Return أو Back في الريموت للعودة</div>
+  <video id="videoPlayer" controls autoplay></video>
+</div>
+
+<script>
+  var currentFocusList = [];
+  var currentFocusIdx = 0;
+  var activeScreen = 'login'; // login, main, player
+
+  // بيانات تجريبية افتراضية للتأكد من عمل التطبيق، ويمكن ربطها بـ Xtream API لاحقاً
+  var sampleChannels = {
+    live: [
+      { name: 'beIN Sports 1 HD', icon: '⚽', url: 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8' },
+      { name: 'beIN Sports 2 HD', icon: '🏆', url: 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8' },
+      { name: 'OSN Movies HD', icon: '🎬', url: 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8' },
+      { name: 'Al Jazeera News', icon: '🌍', url: 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8' },
+      { name: 'MBC مصر HD', icon: '📺', url: 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8' },
+      { name: 'National Geographic', icon: '🦁', url: 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8' }
+    ],
+    movies: [
+      { name: 'أفلام عربية حديثة', icon: '🎭', url: 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8' },
+      { name: 'أفلام أجنبية أكشن', icon: '🔥', url: 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8' }
+    ],
+    series: [
+      { name: 'مسلسلات رمضان', icon: '🌙', url: 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8' }
+    ]
+  };
+
+  var currentCat = 'live';
+
+  function initApp() {
+    var savedUser = localStorage.getItem('iptv_user');
+    if (savedUser) {
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('mainScreen').style.display = 'table';
+      activeScreen = 'main';
+      loadChannels(currentCat);
+    } else {
+      refreshFocusList();
+    }
+  }
+
+  function saveLoginAndStart() {
+    var u = document.getElementById('serverUser').value;
+    localStorage.setItem('iptv_user', u || 'user');
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('mainScreen').style.display = 'table';
+    activeScreen = 'main';
+    loadChannels('live');
+  }
+
+  function logout() {
+    localStorage.removeItem('iptv_user');
+    location.reload();
+  }
+
+  function switchCategory(cat) {
+    currentCat = cat;
+    var items = document.querySelectorAll('.sidebar .menu-item');
+    for(var i=0; i<items.length; i++) items[i].className = items[i].className.replace(' active', '');
+    loadChannels(cat);
+    refreshFocusList();
+  }
+
+  function loadChannels(cat) {
+    var list = sampleChannels[cat] || [];
+    var html = '';
+    for(var i=0; i<list.length; i++) {
+      html += '<div class="channel-card menu-focusable" onclick="playStream(\'' + list[i].url + '\')">' +
+              '<div class="channel-icon">' + list[i].icon + '</div>' +
+              '<div class="channel-name">' + list[i].name + '</div>' +
+              '</div>';
+    }
+    document.getElementById('channelsContainer').innerHTML = html;
+    refreshFocusList();
+  }
+
+  function playStream(url) {
+    activeScreen = 'player';
+    var playerScreen = document.getElementById('playerScreen');
+    var video = document.getElementById('videoPlayer');
+    playerScreen.style.display = 'block';
+    video.src = url;
+    video.play();
+  }
+
+  function stopStream() {
+    activeScreen = 'main';
+    var playerScreen = document.getElementById('playerScreen');
+    var video = document.getElementById('videoPlayer');
+    video.pause();
+    video.src = '';
+    playerScreen.style.display = 'none';
+    refreshFocusList();
+  }
+
+  function refreshFocusList() {
+    var selector = '.login-focusable';
+    if (activeScreen === 'main') {
+      selector = '.menu-focusable, .channel-card';
+    }
+    var nodes = document.querySelectorAll(selector);
+    currentFocusList = [];
+    for(var i=0; i<nodes.length; i++) currentFocusList.push(nodes[i]);
+    currentFocusIdx = 0;
+    applyFocus();
+  }
+
+  function applyFocus() {
+    var all = document.querySelectorAll('.login-focusable, .menu-focusable, .channel-card');
+    for(var i=0; i<all.length; i++) all[i].className = all[i].className.replace(' tv-focused', '');
+    if(currentFocusList[currentFocusIdx]) {
+      currentFocusList[currentFocusIdx].className += ' tv-focused';
+    }
+  }
+
+  document.addEventListener('keydown', function(e) {
+    var code = e.keyCode || e.which;
+
+    // زر الرجوع (Back / Return)
+    if(code === 27 || code === 8 || code === 461 || code === 10009) {
+      if(activeScreen === 'player') {
+        e.preventDefault();
+        stopStream();
+      }
+      return;
+    }
+
+    // زر OK / Enter
+    if(code === 13) {
+      e.preventDefault();
+      var el = currentFocusList[currentFocusIdx];
+      if(el) {
+        if(el.onclick) el.onclick();
+        else if(el.getAttribute('onclick')) {
+          eval(el.getAttribute('onclick'));
+        }
+      }
+      return;
+    }
+
+    // الأسهم للتنقل
+    if(code === 37 || code === 40) { // أسفل أو يمين
+      e.preventDefault();
+      currentFocusIdx = (currentFocusIdx + 1) % currentFocusList.length;
+      applyFocus();
+    } else if(code === 39 || code === 38) { // أعلى أو يسار
+      e.preventDefault();
+      currentFocusIdx = (currentFocusIdx - 1 + currentFocusList.length) % currentFocusList.length;
+      applyFocus();
+    }
+  });
+
+  window.onload = function() {
+    initApp();
+  };
+</script>
+</body>
+</html>
