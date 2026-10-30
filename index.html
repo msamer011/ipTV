@@ -1,164 +1,571 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IPTV Player</title>
-    <style>
-        body {
-            background-color: #121212;
-            color: #ffffff;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            display: flex;
-            height: 100vh;
-            overflow: hidden;
-        }
-        #sidebar {
-            width: 250px;
-            background-color: #1f1f1f;
-            display: flex;
-            flex-direction: column;
-            padding: 20px;
-        }
-        .menu-item {
-            padding: 15px;
-            cursor: pointer;
-            border-bottom: 1px solid #333;
-        }
-        .menu-item.active, .menu-item:focus {
-            background-color: #333;
-            outline: none;
-        }
-        #content {
-            flex-grow: 1;
-            padding: 20px;
-            overflow-y: auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 20px;
-        }
-        .item-card {
-            background-color: #2c2c2c;
-            border-radius: 8px;
-            overflow: hidden;
-            cursor: pointer;
-            text-align: center;
-        }
-        .item-card img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
-        .item-card h3 {
-            margin: 10px 0;
-            font-size: 16px;
-        }
-        #settings-form {
-            display: flex;
-            flex-direction: column;
-            max-width: 400px;
-        }
-        input {
-            padding: 10px;
-            margin-bottom: 10px;
-            background-color: #333;
-            border: 1px solid #444;
-            color: #fff;
-        }
-        button {
-            padding: 10px;
-            background-color: #007bff;
-            border: none;
-            color: #fff;
-            cursor: pointer;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My IPTV</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;background:#101317;color:#f4f5f6;font-family:Arial,sans-serif;overflow:hidden}
+:root{--accent:#f5a623;--panel:#20252c;--muted:#aeb5bf}
+button,input{font:inherit}
+button{cursor:pointer}
+#app{height:100%;display:flex;flex-direction:column}
+header{height:72px;flex-shrink:0;background:#191e24;border-bottom:2px solid #333b45;display:flex;align-items:center;padding:0 28px;gap:28px}
+.logo{font-size:25px;font-weight:bold;color:var(--accent);letter-spacing:1px}
+#topStatus{margin-left:auto;color:var(--muted);font-size:14px}
+#login{margin:auto;width:min(560px,90vw);background:#20252c;border:1px solid #3b434d;border-radius:12px;padding:30px}
+h1{margin:0 0 8px;font-size:28px}
+.sub{color:var(--muted);margin:0 0 24px;line-height:1.5}
+.field{margin:15px 0}
+.field label{display:block;color:#cbd0d7;font-size:14px;margin-bottom:7px}
+.field input{width:100%;height:48px;border-radius:6px;border:1px solid #4b5562;background:#11161c;color:white;padding:0 13px;outline:none}
+.field input:focus,button:focus,.item:focus{outline:3px solid var(--accent);outline-offset:2px}
+.primary{background:var(--accent);color:#171717;border:0;border-radius:6px;padding:13px 22px;font-weight:bold}
+#loginBtn{width:100%;margin-top:12px;height:48px}
+#error{color:#ff8c82;min-height:22px;margin-top:12px;font-size:14px}
+#main{display:none;flex:1;min-height:0}
+nav{width:220px;flex-shrink:0;background:#191e24;padding:20px 12px;display:flex;flex-direction:column;gap:9px}
+.navbtn{height:58px;border:0;border-radius:7px;background:transparent;color:#e8ebef;text-align:left;padding:0 18px;font-size:18px}
+.navbtn.active,.navbtn:focus{background:#343b44;color:var(--accent)}
+.navbtn span{display:inline-block;width:32px}
+#content{flex:1;min-width:0;display:flex;flex-direction:column;padding:22px 25px}
+#toolbar{display:flex;align-items:center;gap:12px;margin-bottom:18px;min-height:42px}
+#sectionTitle{font-size:25px;font-weight:bold}
+#search{margin-left:auto;width:240px;background:#20252c;color:white;border:1px solid #48515c;border-radius:6px;padding:10px 12px}
+#body{display:flex;flex:1;min-height:0;gap:18px}
+#categories{width:230px;overflow:auto;background:#1b2026;border-radius:8px;padding:8px;flex-shrink:0}
+#items{flex:1;overflow:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:13px;align-content:start;padding:4px}
+.cat,.item{border:0;color:#e9edf2;background:#252b33;border-radius:6px;text-align:left;padding:13px}
+.cat{display:block;width:100%;margin-bottom:6px}
+.cat.active,.cat:focus{background:#4a3b24;color:#ffd17c}
+.item{min-height:76px;display:flex;flex-direction:column;justify-content:center;gap:8px;overflow:hidden}
+.item:focus{background:#333b45}
+.item .name{font-weight:bold;line-height:1.3}
+.item .meta{font-size:12px;color:var(--muted)}
+#empty{color:var(--muted);padding:30px}
+#player{display:none;position:fixed;inset:0;background:#000;z-index:5;align-items:center;justify-content:center;flex-direction:column}
+#video{width:100%;height:100%;object-fit:contain;background:#000}
+#playerBar{position:absolute;bottom:0;left:0;right:0;padding:18px 24px;background:linear-gradient(transparent,rgba(0,0,0,.85));display:flex;align-items:center;gap:18px}
+#nowPlaying{font-size:18px;font-weight:bold;flex:1}
+.playerBtn{background:#252b33;color:white;border:1px solid #69717b;border-radius:5px;padding:10px 15px}
+#message{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#252b33;border:1px solid #59616b;padding:12px 18px;border-radius:7px;display:none;z-index:9}
+#settingsPanel{display:none;position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:7;align-items:center;justify-content:center}
+#settingsBox{width:min(500px,90vw);background:#20252c;padding:25px;border-radius:10px}
+.small{color:var(--muted);font-size:13px;line-height:1.5}
+@media(max-width:700px){nav{width:150px}.navbtn{font-size:15px;padding:0 9px}#categories{width:150px}#content{padding:12px}#items{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}}
+</style>
 </head>
 <body>
+<div id="app">
+<header><div class="logo">MY IPTV</div><div id="topStatus">Not connected</div></header>
 
-    <div id="sidebar" role="navigation">
-        <div class="menu-item active" tabindex="0" onclick="showSection('live')">Live Channels</div>
-        <div class="menu-item" tabindex="0" onclick="showSection('movies')">Movies</div>
-        <div class="menu-item" tabindex="0" onclick="showSection('series')">Series</div>
-        <div class="menu-item" tabindex="0" onclick="showSection('settings')">Settings</div>
-    </div>
+<section id="login">
+<h1>Connect your account</h1>
+<p class="sub">Enter your Xtream Codes connection details. Your credentials stay on this device.</p>
 
-    <div id="content">
-        <!-- Dynamic content will load here -->
-    </div>
+<div class="field">
+<label for="server">Server URL</label>
+<input id="server" type="text" placeholder="http://example.com:8080" autocomplete="off">
+</div>
 
-    <script>
-        function showSection(section) {
-            const content = document.getElementById('content');
-            const menuItems = document.querySelectorAll('.menu-item');
-            
-            menuItems.forEach(item => item.classList.remove('active'));
-            event.target.classList.add('active');
+<div class="field">
+<label for="username">Username</label>
+<input id="username" type="text" autocomplete="off">
+</div>
 
-            content.innerHTML = '';
+<div class="field">
+<label for="password">Password</label>
+<input id="password" type="password" autocomplete="off">
+</div>
 
-            if (section === 'live') {
-                loadCategories('live');
-            } else if (section === 'movies') {
-                loadCategories('movies');
-            } else if (section === 'series') {
-                loadCategories('series');
-            } else if (section === 'settings') {
-                loadSettings();
-            }
-        }
+<button class="primary" id="loginBtn">CONNECT</button>
+<div id="error"></div>
+<p class="small">Use the server address supplied by your IPTV provider. Do not include player_api.php in the address.</p>
+</section>
 
-        function loadCategories(type) {
-            const content = document.getElementById('content');
-            const categories = ['Favorites', 'Continue Watching', 'All Categories'];
-            
-            categories.forEach(cat => {
-                let div = document.createElement('div');
-                div.className = 'menu-item';
-                div.innerText = cat;
-                div.tabIndex = 0;
-                div.onclick = () => loadItems(type, cat);
-                content.appendChild(div);
-            });
-        }
+<section id="main">
+<nav>
+<button class="navbtn active" data-section="live"><span>▣</span> Channels</button>
+<button class="navbtn" data-section="movies"><span>▶</span> Movies</button>
+<button class="navbtn" data-section="series"><span>▤</span> Series</button>
+<button class="navbtn" id="settingsBtn"><span>⚙</span> Settings</button>
+<button class="navbtn" id="logoutBtn" style="margin-top:auto"><span>↩</span> Disconnect</button>
+</nav>
 
-        function loadItems(type, category) {
-            const content = document.getElementById('content');
-            content.innerHTML = '';
-            
-            // Mock data for items
-            for (let i = 1; i <= 10; i++) {
-                let card = document.createElement('div');
-                card.className = 'item-card';
-                card.tabIndex = 0;
-                card.innerHTML = `
-                    <img src="via.placeholder.com/150x200" alt="Poster">
-                    <h3>${type.toUpperCase()} ${i}</h3>
-                `;
-                content.appendChild(card);
-            }
-        }
+<div id="content">
+<div id="toolbar">
+<div id="sectionTitle">Channels</div>
+<input id="search" placeholder="Search..." type="text">
+</div>
+<div id="body">
+<div id="categories"></div>
+<div id="items"><div id="empty">Choose a category</div></div>
+</div>
+</div>
+</section>
+</div>
 
-        function loadSettings() {
-            const content = document.getElementById('content');
-            content.innerHTML = `
-                <div id="settings-form">
-                    <h2>Xtream Codes Login</h2>
-                    <input type="text" placeholder="Server URL" id="url">
-                    <input type="text" placeholder="Username" id="username">
-                    <input type="password" placeholder="Password" id="password">
-                    <button onclick="saveSettings()">Save</button>
-                </div>
-            `;
-        }
+<div id="player">
+<video id="video" controls autoplay></video>
+<div id="playerBar">
+<div id="nowPlaying"></div>
+<button class="playerBtn" id="closePlayer">BACK / CLOSE</button>
+</div>
+</div>
 
-        function saveSettings() {
-            alert('Settings Saved');
-        }
+<div id="settingsPanel">
+<div id="settingsBox">
+<h2>Settings</h2>
+<p class="small">My IPTV · Xtream Codes player</p>
+<p class="small">Use the remote arrows to navigate, OK/Enter to select, and Back/Escape to return. Playback depends on the TV browser's supported video formats.</p>
+<button class="primary" id="closeSettings">CLOSE</button>
+</div>
+</div>
 
-        // Initialize
-        showSection('live');
-    </script>
+<div id="message"></div>
+
+<script>
+(function(){
+
+var $=function(id){
+ return document.getElementById(id);
+};
+
+var state={
+ server:"",
+ username:"",
+ password:"",
+ section:"live",
+ categories:[],
+ items:[],
+ activeCategory:null
+};
+
+var titles={
+ live:"Channels",
+ movies:"Movies",
+ series:"Series"
+};
+
+var apiBase="";
+
+function cleanServer(s){
+ return s.replace(/\/+$/,"");
+}
+
+function showMessage(t){
+ var m=$("message");
+ m.innerHTML=t;
+ m.style.display="block";
+ setTimeout(function(){
+  m.style.display="none";
+ },3500);
+}
+
+function request(url,done){
+
+ var x=new XMLHttpRequest();
+
+ x.open("GET",url,true);
+ x.timeout=20000;
+
+ x.onreadystatechange=function(){
+
+  if(x.readyState===4){
+
+   if(x.status>=200&&x.status<300){
+
+    try{
+     done(null,JSON.parse(x.responseText));
+    }catch(e){
+     done("Invalid server response");
+    }
+
+   }else{
+    done("Server request failed ("+x.status+")");
+   }
+
+  }
+
+ };
+
+ x.ontimeout=function(){
+  done("Connection timed out");
+ };
+
+ x.onerror=function(){
+  done("Network or browser security error. The TV may be blocking this server request.");
+ };
+
+ x.send();
+}
+
+function api(action,extra,done){
+
+ var u=apiBase+"/player_api.php?username="+
+ encodeURIComponent(state.username)+
+ "&password="+encodeURIComponent(state.password)+
+ "&action="+encodeURIComponent(action);
+
+ if(extra){
+  for(var k in extra){
+   u+="&"+encodeURIComponent(k)+"="+
+   encodeURIComponent(extra[k]);
+  }
+ }
+
+ request(u,done);
+}
+
+function connect(){
+
+ var server=cleanServer($("server").value.trim());
+ var user=$("username").value.trim();
+ var pass=$("password").value;
+
+ $("error").innerHTML="";
+
+ if(!server||!user||!pass){
+  $("error").innerHTML="Please fill in all three fields.";
+  return;
+ }
+
+ state.server=server;
+ state.username=user;
+ state.password=pass;
+ apiBase=server;
+
+ $("loginBtn").innerHTML="CONNECTING...";
+
+ request(
+  apiBase+"/player_api.php?username="+
+  encodeURIComponent(user)+
+  "&password="+encodeURIComponent(pass),
+
+  function(err,data){
+
+   $("loginBtn").innerHTML="CONNECT";
+
+   if(err){
+    $("error").innerHTML=err;
+    return;
+   }
+
+   if(!data||!data.user_info||data.user_info.auth!==1){
+    $("error").innerHTML="Login failed. Check the server URL and account details.";
+    return;
+   }
+
+   $("login").style.display="none";
+   $("main").style.display="flex";
+
+   $("topStatus").innerHTML="Connected · "+
+   (data.user_info.status||"Active");
+
+   loadSection("live");
+
+  }
+ );
+}
+
+function loadSection(section){
+
+ state.section=section;
+ state.activeCategory=null;
+ state.categories=[];
+ state.items=[];
+
+ $("sectionTitle").innerHTML=titles[section];
+ $("search").value="";
+ $("categories").innerHTML="";
+ $("items").innerHTML='<div id="empty">Loading categories...</div>';
+
+ var action=
+ section==="live"?"get_live_categories":
+ section==="movies"?"get_vod_categories":
+ "get_series_categories";
+
+ api(action,null,function(err,data){
+
+  if(err){
+   $("items").innerHTML='<div id="empty">'+err+'</div>';
+   return;
+  }
+
+  state.categories=data||[];
+
+  renderCategories();
+
+  if(state.categories.length){
+   selectCategory(state.categories[0].category_id);
+  }else{
+   $("items").innerHTML='<div id="empty">No categories found.</div>';
+  }
+
+ });
+}
+
+function renderCategories(){
+
+ var c=$("categories");
+ c.innerHTML="";
+
+ for(var i=0;i<state.categories.length;i++){
+
+  var a=state.categories[i];
+  var b=document.createElement("button");
+
+  b.className="cat";
+  b.innerHTML=a.category_name||"Category";
+  b.setAttribute("data-id",a.category_id);
+
+  b.onclick=(function(id){
+   return function(){
+    selectCategory(id);
+   };
+  })(a.category_id);
+
+  c.appendChild(b);
+ }
+}
+
+function selectCategory(id){
+
+ state.activeCategory=id;
+
+ var bs=$("categories").getElementsByTagName("button");
+
+ for(var j=0;j<bs.length;j++){
+
+  bs[j].className="cat"+
+  (String(bs[j].getAttribute("data-id"))===String(id)?" active":"");
+
+ }
+
+ $("items").innerHTML='<div id="empty">Loading...</div>';
+
+ var action=
+ state.section==="live"?"get_live_streams":
+ state.section==="movies"?"get_vod_streams":
+ "get_series";
+
+ api(action,{category_id:id},function(err,data){
+
+  if(err){
+   $("items").innerHTML='<div id="empty">'+err+'</div>';
+   return;
+  }
+
+  state.items=data||[];
+  renderItems();
+
+ });
+}
+
+function renderItems(){
+
+ var root=$("items");
+ root.innerHTML="";
+
+ var q=$("search").value.toLowerCase();
+ var count=0;
+
+ for(var i=0;i<state.items.length;i++){
+
+  var it=state.items[i];
+  var name=it.name||it.title||"Untitled";
+
+  if(q&&name.toLowerCase().indexOf(q)<0){
+   continue;
+  }
+
+  var b=document.createElement("button");
+  b.className="item";
+
+  var n=document.createElement("div");
+  n.className="name";
+  n.innerHTML=escapeHtml(name);
+
+  var meta=document.createElement("div");
+  meta.className="meta";
+
+  meta.innerHTML=
+  state.section==="live"?"CHANNEL":
+  state.section==="movies"?"MOVIE":
+  "SERIES";
+
+  b.appendChild(n);
+  b.appendChild(meta);
+
+  b.onclick=(function(item){
+   return function(){
+    playItem(item);
+   };
+  })(it);
+
+  root.appendChild(b);
+  count++;
+ }
+
+ if(!count){
+  root.innerHTML='<div id="empty">No results.</div>';
+ }
+}
+
+function escapeHtml(s){
+
+ return String(s).replace(/[&<>"']/g,function(c){
+
+  return {
+   "&":"&amp;",
+   "<":"&lt;",
+   ">":"&gt;",
+   '"':"&quot;",
+   "'":"&#39;"
+  }[c];
+
+ });
+}
+
+function playItem(item){
+
+ var id=item.stream_id||item.series_id;
+ var ext=item.container_extension||"mp4";
+ var url="";
+
+ if(state.section==="live"){
+
+  url=apiBase+"/live/"+
+  encodeURIComponent(state.username)+"/"+
+  encodeURIComponent(state.password)+"/"+
+  id+".m3u8";
+
+ }else if(state.section==="movies"){
+
+  url=apiBase+"/movie/"+
+  encodeURIComponent(state.username)+"/"+
+  encodeURIComponent(state.password)+"/"+
+  id+"."+ext;
+
+ }else{
+
+  showMessage("Series selected. Episode selection will be added in the next build.");
+  return;
+
+ }
+
+ $("player").style.display="flex";
+
+ $("nowPlaying").innerHTML=
+ escapeHtml(item.name||item.title||"Now playing");
+
+ var v=$("video");
+
+ v.pause();
+ v.src=url;
+ v.load();
+
+ var p=v.play();
+
+ if(p&&p.catch){
+  p.catch(function(){
+   showMessage("The TV could not start this stream format. Check format support or try another channel.");
+  });
+ }
+
+}
+
+function closePlayer(){
+
+ var v=$("video");
+
+ v.pause();
+ v.removeAttribute("src");
+ v.load();
+
+ $("player").style.display="none";
+}
+
+$("loginBtn").onclick=connect;
+
+$("server").onkeydown=
+$("username").onkeydown=
+$("password").onkeydown=function(e){
+
+ if(e.key==="Enter"){
+  connect();
+ }
+
+};
+
+var nav=document.getElementsByClassName("navbtn");
+
+for(var i=0;i<nav.length;i++){
+
+ if(nav[i].getAttribute("data-section")){
+
+  nav[i].onclick=(function(s,el){
+
+   return function(){
+
+    for(var j=0;j<nav.length;j++){
+     nav[j].className="navbtn";
+    }
+
+    el.className="navbtn active";
+
+    loadSection(s);
+
+   };
+
+  })(nav[i].getAttribute("data-section"),nav[i]);
+
+ }
+
+}
+
+$("search").oninput=renderItems;
+
+$("closePlayer").onclick=closePlayer;
+
+$("settingsBtn").onclick=function(){
+ $("settingsPanel").style.display="flex";
+};
+
+$("closeSettings").onclick=function(){
+ $("settingsPanel").style.display="none";
+};
+
+$("logoutBtn").onclick=function(){
+
+ $("main").style.display="none";
+ $("login").style.display="block";
+ $("topStatus").innerHTML="Not connected";
+ state.password="";
+
+};
+
+document.addEventListener("keydown",function(e){
+
+ if(e.key==="Escape"||e.key==="Backspace"){
+
+  if($("player").style.display==="flex"){
+   closePlayer();
+   e.preventDefault();
+  }
+
+  else if($("settingsPanel").style.display==="flex"){
+   $("settingsPanel").style.display="none";
+   e.preventDefault();
+  }
+
+ }
+
+});
+
+})();
+</script>
 </body>
 </html>
