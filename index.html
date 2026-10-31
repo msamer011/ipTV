@@ -24,10 +24,48 @@ button:focus,.item:focus,.category:focus,.episode:focus{outline:3px solid #e7b85
 .primary{background:#d9a94e;color:#111;border:0;padding:12px 20px;border-radius:5px;font-weight:bold}
 .secondary{background:#252c39;color:#fff;border:1px solid #394354;padding:10px 16px;border-radius:5px}
 .section-title{font-size:21px;margin:20px 0}
-.grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px}
-.item{background:#141923;border:1px solid #252d3a;border-radius:7px;overflow:hidden;cursor:pointer;min-width:0}
-.item:focus,.item:hover{border-color:#e7b85c}
-.poster{width:100%;aspect-ratio:2/3;object-fit:cover;background:#222b39;display:block}
+.grid{
+ display:flex;
+ flex-wrap:wrap;
+ margin:-7px;
+}
+
+.item{
+ display:block;
+ width:calc((100% - 84px) / 6);
+ margin:7px;
+ padding:0;
+ background:#141923;
+ border:1px solid #252d3a;
+ border-radius:7px;
+ overflow:hidden;
+ cursor:pointer;
+ min-width:0;
+ color:#fff;
+ text-align:right;
+}
+
+.item:focus,.item:hover{
+ border-color:#e7b85c;
+}
+
+.poster{
+ width:100%;
+ height:250px;
+ object-fit:cover;
+ background:#222b39;
+ display:block;
+}
+
+@media(max-width:1000px){
+ .item{width:calc((100% - 56px) / 4)}
+ .poster{height:230px}
+}
+
+@media(max-width:700px){
+ .item{width:calc((100% - 42px) / 3)}
+ .poster{height:200px}
+}
 .item-info{padding:8px}
 .item-name{font-size:13px;line-height:1.4;height:36px;overflow:hidden}
 .item-type{font-size:11px;color:#929bad;margin-top:5px}
@@ -251,19 +289,29 @@ function render(){
 }
 
 function drawItems(list,type,limit){
- if(!list||!list.length)return '<div class="empty">لا يوجد محتوى للعرض</div>';
+ if(!list||!list.length)
+  return '<div class="empty">لا يوجد محتوى للعرض</div>';
+
  var count=Math.min(list.length,limit||12);
  var h='<div class="grid">';
+
  for(var i=0;i<count;i++){
   var x=list[i];
   var id=itemId(x);
   var name=x.name||x.title||"بدون اسم";
   var img=x.stream_icon||x.cover||x.movie_image||x.backdrop_path||"";
-  h+='<div class="item" tabindex="0" onclick="openItem(\''+type+'\',\''+esc(id)+'\')">'+
-  '<img class="poster" loading="lazy" src="'+esc(img)+'" onerror="this.style.visibility=\'hidden\'">'+
-  '<div class="item-info"><div class="item-name">'+esc(name)+'</div>'+
-  '<div class="item-type">'+(type==="live"?"قناة":type==="series"?"مسلسل":"")+'</div></div></div>';
+
+  h+='<button type="button" class="item" '+
+  'onclick="openItem(\''+type+'\',\''+esc(id)+'\')">'+
+  '<img class="poster" loading="lazy" src="'+esc(img)+'" '+
+  'onerror="this.style.display=\'none\'">'+
+  '<div class="item-info">'+
+  '<div class="item-name">'+esc(name)+'</div>'+
+  '<div class="item-type">'+
+  (type==="live"?"قناة":type==="series"?"مسلسل":"فيلم")+
+  '</div></div></button>';
  }
+
  h+='</div>';
  return h;
 }
