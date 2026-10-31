@@ -655,6 +655,25 @@ window.logout=logout;
 window.openRenderedItem=openRenderedItem;
 
 document.addEventListener("keydown",function(e){
+
+ var key=e.keyCode||e.which;
+
+ if(key===13||key===23){
+  var active=document.activeElement;
+
+  if(active && active.className &&
+     String(active.className).indexOf("item")!==-1){
+
+   var itemKey=active.getAttribute("data-item-key");
+
+   if(itemKey){
+    e.preventDefault();
+    openRenderedItem(itemKey);
+    return false;
+   }
+  }
+ }
+ 
  if($("playerLayer").style.display==="flex"){
   if(e.keyCode===27||e.keyCode===BackKey){
    closePlayer();e.preventDefault();return;
