@@ -1,4 +1,4 @@
-
+  
 <!DOCTYPE html>
 <html lang="ar">
 <head>
@@ -549,4 +549,216 @@ function loadEpisodes(seriesId){
   for(var season in data.episodes){
    html+="<h4>الموسم "+esc(season)+"</h4>";
    var eps=data.episodes[season];
-   for(va
+   for(var i=0;i<eps.length;i++){
+    var ep=eps[i];
+    var etitle=ep.title||ep.name||("الحلقة "+(i+1));
+    EPISODES.push({id:ep.id,ext:ep.container_extension||"mp4",title:etitle});
+    html+='<div class="episode" tabindex="0" onclick="playEpisodeIndex('+(EPISODES.length-1)+')">'+esc(etitle)+'</div>';
+   }
+  }
+  var target=$("episodes");
+  if(target)target.innerHTML=html;
+  setTimeout(function(){
+   var first=modal.querySelector(".episode");
+   if(first&&modalBg.style.display==="flex")try{first.focus()}catch(e){}
+  },400);
+ });
+}
+
+function playEpisodeById(id,ext,title){
+ var url=SERVER+"/series/"+encodeURIComponent(USER)+"/"+encodeURIComponent(PASS)+"/"+encodeURIComponent(id)+"."+ext;
+ startPlayer(url,title);
+}
+function playEpisodeIndex(i){
+ var ep=EPISODES[i];
+ if(ep)playEpisodeById(ep.id,ep.ext,ep.title);
+}
+function playCurrent(){
+ if(!CURRENT)return;
+ var item=CURRENT.item,type=CURRENT.type;
+ if(type==="series"){
+  request(apiUrl("get_series_info","&series_id="+encodeURIComponent(item.series_id)),function(err,data){
+   if(err||!data||!data.episodes){alert("تعذر تحميل الحلقات");return}
+   for(var season in data.episodes){
+    if(data.episodes[season].length){
+     var ep=data.episodes[season][0];
+     playEpisodeById(ep.id,ep.container_extension||"mp4",ep.title||ep.name||"حلقة");
+     return;
+    }
+   }
+   alert("لا توجد حلقات");
+  });
+  return;
+ }
+ var ext=item.container_extension||(type==="live"?"ts":"mp4");
+ var folder=type==="live"?"live":"movie";
+ var url=SERVER+"/"+folder+"/"+encodeURIComponent(USER)+"/"+encodeURIComponent(PASS)+"/"+encodeURIComponent(item.stream_id)+"."+ext;
+ addHistory(item,type);
+ closeModal();
+ startPlayer(url,item.name||item.title||"MORA IPTV");
+}
+function addHistory(item,type){
+ var id=itemId(item);
+ for(var i=HISTORY.length-1;i>=0;i--){
+  if(itemId(HISTORY[i].data||HISTORY[i])===id)HISTORY.splice(i,1);
+ }
+ HISTORY.unshift({id:id,data:item,type:type});
+ if(HISTORY.length>40)HISTORY.length=40;
+ saveLists();
+}
+
+function startPlayer(url,title){
+ if($("playerLayer").style.display==="flex"&&video.getAttribute("src")===url)return;
+ LAST_FOCUS=document.activeElement;
+ $("playingTitle").innerHTML=esc(title);
+ $("playerLayer").style.display="flex";
+ video.src=url;
+ try{video.play()}catch(e){}
+ holdUntil=0;
+ updateTime();
+}
+function closePlayer(){
+ try{video.pause();video.removeAttribute("src");video.load()}catch(e){}
+ $("playerLayer").style.display="none";
+ if(LAST_FOCUS&&LAST_FOCUS.focus&&document.body.contains(LAST_FOCUS))try{LAST_FOCUS.focus()}catch(e){}
+}
+function flashInfo(text){
+ holdUntil=Date.now()+1500;
+ $("timeText").innerHTML=text;
+}
+function seekVideo(seconds){
+ if(!video.duration||!isFinite(video.duration)){flashInfo("التقديم غير متاح");return}
+ try{video.currentTime=Math.max(0,Math.min(video.duration,video.currentTime+seconds))}catch(e){}
+ flashInfo((seconds>0?"+ ":"- ")+Math.abs(seconds)+" ث");
+}
+function changeSeek(direction){
+ seekIndex+=direction;
+ if(seekIndex<0)seekIndex=0;
+ if(seekIndex>=seekSteps.length)seekIndex=seekSteps.length-1;
+ seekStep=seekSteps[seekIndex];
+ flashInfo("قفزة "+seekStep+" ثانية");
+}
+function formatTime(s){
+ if(!isFinite(s)||s<0)return "00:00";
+ var h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=Math.floor(s%60);
+ function p(n){return n<10?"0"+n:n}
+ return h>0?p(h)+":"+p(m)+":"+p(x):p(m)+":"+p(x);
+}
+function updateTime(){
+ if(Date.now()<holdUntil)return;
+ if($("playerLayer").style.display==="flex")
+ $("timeText").innerHTML=formatTime(video.currentTime)+" / "+formatTime(video.duration);
+}
+video.addEventListener("timeupdate",updateTime);
+video.addEventListener("ended",closePlayer);
+
+function logout(){
+ try{
+  localStorage.removeItem("mora_server");
+  localStorage.removeItem("mora_user");
+  localStorage.removeItem("mora_pass");
+ }catch(e){}
+ SERVER="";USER="";PASS="";connected=false;showLogin();
+}
+
+window.connect=connect;
+window.goPage=goPage;
+window.chooseCategory=chooseCategory;
+window.previousPage=previousPage;
+window.nextPage=nextPage;
+window.doSearch=doSearch;
+window.loadCategoryContent=loadCategoryContent;
+window.backCategories=backCategories;
+window.openItem=openItem;
+window.closeModal=closeModal;
+window.toggleFavoriteCurrent=toggleFavoriteCurrent;
+window.playCurrent=playCurrent;
+window.playEpisodeById=playEpisodeById;
+window.closePlayer=closePlayer;
+window.seekVideo=seekVideo;
+window.changeSeek=changeSeek;
+window.logout=logout;
+window.openRenderedItem=openRenderedItem;
+window.loadCategories=loadCategories;
+window.playEpisodeIndex=playEpisodeIndex;
+
+function keyIs(e,codes,names){
+ var k=e.keyCode||e.which,i;
+ for(i=0;i<codes.length;i++)if(k===codes[i])return true;
+ for(i=0;i<names.length;i++)if(e.key===names[i])return true;
+ return false;
+}
+function isBack(e){
+ var k=e.keyCode||e.which;
+ var tag=document.activeElement&&document.activeElement.tagName;
+ if(k===8)return tag!=="INPUT"&&tag!=="TEXTAREA";
+ return k===27||k===BackKey||k===10009||e.key==="GoBack"||e.key==="BrowserBack";
+}
+
+document.addEventListener("keydown",function(e){
+
+ var key=e.keyCode||e.which;
+ var playerOpen=$("playerLayer").style.display==="flex";
+ var modalOpen=modalBg.style.display==="flex";
+
+ if(playerOpen){
+  if(isBack(e)||keyIs(e,[413,178],["MediaStop"])){closePlayer();e.preventDefault();return}
+  if(key===37||keyIs(e,[412,227,89],["MediaRewind"])){seekVideo(-seekStep);e.preventDefault();return}
+  if(key===39||keyIs(e,[417,228,90],["MediaFastForward"])){seekVideo(seekStep);e.preventDefault();return}
+  if(key===38){changeSeek(1);e.preventDefault();return}
+  if(key===40){changeSeek(-1);e.preventDefault();return}
+  if(key===13||key===23||keyIs(e,[179],["MediaPlayPause"])){
+   if(video.paused)video.play();
+   else video.pause();
+   e.preventDefault();
+   return;
+  }
+  if(keyIs(e,[415],["MediaPlay"])){video.play();e.preventDefault();return}
+  if(keyIs(e,[19],["MediaPause"])){video.pause();e.preventDefault();return}
+  flashInfo("KEY "+key+(e.key?" ("+e.key+")":""));
+  return;
+ }
+
+ var active=document.activeElement;
+ var cls=active&&active.className?String(active.className):"";
+
+ if(key===13||key===23){
+  if(modalOpen&&cls.indexOf("episode")!==-1){
+   e.preventDefault();
+   active.click();
+   return;
+  }
+  if(!modalOpen&&cls.indexOf("item")!==-1){
+   var itemKey=active.getAttribute("data-item-key");
+   if(itemKey){
+    e.preventDefault();
+    openRenderedItem(itemKey);
+    return;
+   }
+  }
+ }
+
+ if(modalOpen){
+  if(isBack(e)){closeModal();e.preventDefault()}
+  return;
+ }
+
+ if(isBack(e)){
+  if(PAGE==="content"){backCategories();e.preventDefault();return}
+  if(PAGE==="categories"){goPage("home");e.preventDefault();return}
+  if(PAGE!=="home"){goPage("home");e.preventDefault()}
+ }
+},true);
+
+loadSaved();
+credentialsSaved();
+if(SERVER&&USER&&PASS)connect();
+else showLogin();
+
+ 
+
+ 
+})();
+</script>
+</body>
+</html>
