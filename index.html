@@ -492,12 +492,12 @@ function openItem(type,id){
 }
 
  function openRenderedItem(key){
- alert("تم استقبال الضغط على البوستر: " + key);
+ 
 
  var entry=RENDERED_ITEMS[key];
 
  if(!entry || !entry.item){
-  alert("لم يتم العثور على بيانات الفيلم");
+
   return;
  }
 
@@ -659,77 +659,40 @@ window.logout=logout;
 window.openRenderedItem=openRenderedItem;
 
 document.addEventListener("keydown",function(e){
-
- var key=e.keyCode || e.which;
-
- if(key===13 || key===23){
-
-  var el=document.activeElement;
-
-  if(el && el.className &&
-     String(el.className).indexOf("item")!==-1){
-
-   e.preventDefault();
-   e.stopPropagation();
-
-   alert("OK RECEIVED");
-
-   return false;
-  }
- }
-
  if($("playerLayer").style.display==="flex"){
-  if(key===27||key===461){
-   closePlayer();
-   e.preventDefault();
-   return;
+  if(e.keyCode===27||e.keyCode===BackKey){
+   closePlayer();e.preventDefault();return;
   }
-
-  if(key===37){seekVideo(-seekStep);e.preventDefault()}
-  if(key===39){seekVideo(seekStep);e.preventDefault()}
+  if(e.keyCode===37){seekVideo(-seekStep);e.preventDefault()}
+  if(e.keyCode===39){seekVideo(seekStep);e.preventDefault()}
+  if(e.keyCode===13){
+   if(video.paused)video.play();
+   else video.pause();
+   e.preventDefault();
+  }
   return;
  }
 
  if(modalBg.style.display==="flex"){
-  if(key===27||key===461){
-   closeModal();
-   e.preventDefault();
+  if(e.keyCode===27||e.keyCode===BackKey){
+   closeModal();e.preventDefault();
   }
   return;
  }
 
- if(key===27||key===461){
+ if(e.keyCode===27||e.keyCode===BackKey){
   if(PAGE==="content"){backCategories();e.preventDefault();return}
   if(PAGE==="categories"){goPage("home");e.preventDefault();return}
   if(PAGE!=="home"){goPage("home");e.preventDefault()}
  }
-
-},true);
+});
 
 loadSaved();
 credentialsSaved();
 if(SERVER&&USER&&PASS)connect();
 else showLogin();
 
- var debugBox=document.createElement("div");
-
-debugBox.style.cssText=
-"position:fixed;top:5px;left:5px;z-index:99999;"+
-"background:#fff;color:#000;padding:15px;"+
-"font-size:20px;border:3px solid red;";
-
-debugBox.innerHTML="REMOTE TEST: WAITING";
-document.body.appendChild(debugBox);
-
-document.addEventListener("keydown",function(e){
- var k=e.keyCode||e.which;
- debugBox.innerHTML=
- "KEY RECEIVED: "+k+
- "<br>ACTIVE: "+
- (document.activeElement?
- document.activeElement.tagName+
- " / "+document.activeElement.className:"NONE");
-},true);
+ 
 
  
 })();
