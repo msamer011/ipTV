@@ -490,23 +490,19 @@ function openItem(type,id){
  if(!item)return;
  showDetails(item,type);
 }
-function openRenderedItem(key){
+
+ function openRenderedItem(key){
+ alert("تم استقبال الضغط على البوستر: " + key);
+
  var entry=RENDERED_ITEMS[key];
- if(!entry||!entry.item)return;
 
- var item=entry.item;
- var type=entry.type;
-
- if(type==="favorite"||type==="history"){
-  item=item.data||item;
-  type=item.stream_type==="series"?"series":
-       item.stream_type==="live"?"live":
-       entry.type==="history"?
-       (entry.item.type||"movie"):"movie";
+ if(!entry || !entry.item){
+  alert("لم يتم العثور على بيانات الفيلم");
+  return;
  }
 
- showDetails(item,type);
-            }
+ showDetails(entry.item,entry.type);
+ }
  
 function isFavorite(item){
  var id=itemId(item);
