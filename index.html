@@ -659,23 +659,52 @@ window.logout=logout;
 window.openRenderedItem=openRenderedItem;
 
 document.addEventListener("keydown",function(e){
+
+ var key=e.keyCode || e.which;
+
+ if(key===13 || key===23){
+
+  var el=document.activeElement;
+
+  if(el && el.className &&
+     String(el.className).indexOf("item")!==-1){
+
+   e.preventDefault();
+   e.stopPropagation();
+
+   alert("OK RECEIVED");
+
+   return false;
+  }
+ }
+
  if($("playerLayer").style.display==="flex"){
-  if(e.keyCode===27||e.keyCode===BackKey){closePlayer();e.preventDefault();return}
-  if(e.keyCode===37){seekVideo(-seekStep);e.preventDefault()}
-  if(e.keyCode===39){seekVideo(seekStep);e.preventDefault()}
-  if(e.keyCode===13){if(video.paused)video.play();else video.pause();e.preventDefault()}
+  if(key===27||key===461){
+   closePlayer();
+   e.preventDefault();
+   return;
+  }
+
+  if(key===37){seekVideo(-seekStep);e.preventDefault()}
+  if(key===39){seekVideo(seekStep);e.preventDefault()}
   return;
  }
+
  if(modalBg.style.display==="flex"){
-  if(e.keyCode===27||e.keyCode===BackKey){closeModal();e.preventDefault()}
+  if(key===27||key===461){
+   closeModal();
+   e.preventDefault();
+  }
   return;
  }
- if(e.keyCode===27||e.keyCode===BackKey){
+
+ if(key===27||key===461){
   if(PAGE==="content"){backCategories();e.preventDefault();return}
   if(PAGE==="categories"){goPage("home");e.preventDefault();return}
   if(PAGE!=="home"){goPage("home");e.preventDefault()}
  }
-});
+
+},true);
 
 loadSaved();
 credentialsSaved();
