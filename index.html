@@ -331,16 +331,17 @@ function drawItems(list,type,limit){
   var key="mora_item_"+RENDERED_COUNTER;
   RENDERED_ITEMS[key]={item:x,type:type};
 
-  h+='<button type="button" class="item" '+
-  'onclick="openRenderedItem(\''+key+'\')" '+
-  'onkeydown="if(event.keyCode===13||event.keyCode===23){openRenderedItem(\''+key+'\');return false}">'+
+  h+='<div class="item" tabindex="0" '+
+  'data-item-key="'+key+'" '+
+  'onkeydown="if(event.keyCode===13||event.keyCode===23){event.preventDefault();openRenderedItem(this.getAttribute(\'data-item-key\'));return false}" '+
+  'onkeypress="if(event.keyCode===13){openRenderedItem(this.getAttribute(\'data-item-key\'));return false}">'+
   '<img class="poster" src="'+esc(img)+'" '+
   'onerror="this.style.display=\'none\'">'+
   '<div class="item-info">'+
   '<div class="item-name">'+esc(name)+'</div>'+
   '<div class="item-type">'+
   (type==="live"?"قناة":type==="series"?"مسلسل":type==="movie"?"فيلم":"")+
-  '</div></div></button>';
+'</div></div></div>';
  }
 
  h+='</div>';
