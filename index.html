@@ -25,12 +25,6 @@ button:focus,.item:focus,.category:focus,.episode:focus{outline:3px solid #e7b85
 .secondary{background:#252c39;color:#fff;border:1px solid #394354;padding:10px 16px;border-radius:5px}
 .section-title{font-size:21px;margin:20px 0}
 .grid{
- display:flex;
- flex-wrap:wrap;
- margin:-7px;
-}
-
-.grid{
  width:100%;
  font-size:0;
  text-align:right;
@@ -112,26 +106,24 @@ button:focus,.item:focus,.category:focus,.episode:focus{outline:3px solid #e7b85
 .field input{width:100%;padding:13px;background:#090d15;color:white;border:1px solid #343d4c;border-radius:5px;font-size:15px}
 .login button{width:100%;margin-top:15px}
 #message{color:#ff8585;font-size:13px;margin-top:15px;text-align:center}
-.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:30;display:none;align-items:center;justify-content:center;padding:20px}
+.modal-bg{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.88);z-index:30;display:none;align-items:center;justify-content:center;padding:20px}
 .modal{width:100%;max-width:720px;max-height:85vh;overflow:auto;background:#171d29;border:1px solid #394354;border-radius:10px;padding:25px}
 .modal-content{display:flex;gap:22px}
 .modal-poster{width:180px;height:260px;object-fit:cover;background:#222}
 .modal p{color:#aab1c0;line-height:1.6}
 .modal-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
 .episode{padding:13px;background:#242c3a;border-radius:5px;margin:8px 0;cursor:pointer}
-#playerLayer{display:none;position:fixed;inset:0;background:#000;z-index:50;align-items:center;justify-content:center}
+#playerLayer{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:#000;z-index:50;align-items:center;justify-content:center}
 #video{width:100%;height:100%;position:absolute;object-fit:contain;background:#000}
 .player-top{position:absolute;top:0;left:0;right:0;padding:20px;background:linear-gradient(#000b,transparent);z-index:2}
 .player-controls{position:absolute;bottom:0;left:0;right:0;padding:20px;background:linear-gradient(transparent,#000e);z-index:2;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap}
 .player-controls button{background:#252c39;color:#fff;border:1px solid #596274;border-radius:5px;padding:12px;font-size:14px}
 #timeText{font-size:13px;color:#ddd;min-width:110px;text-align:center}
 .notice{background:#1a2631;border:1px solid #34485b;color:#b8c9d9;padding:12px;border-radius:6px;margin-bottom:20px;font-size:13px}
-@media(max-width:1000px){.grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
 @media(max-width:700px){
  .header{height:auto;min-height:70px;flex-wrap:wrap;padding:12px}
  .nav{order:3;width:100%;margin:10px 0 0;overflow-x:auto}
  .hero{padding:25px}.hero h1{font-size:25px}
- .grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
  .modal-content{flex-direction:column}
  .modal-poster{width:130px;height:190px}
 }
@@ -287,6 +279,7 @@ function headerHTML(){
 }
 
 function render(){
+ RENDERED_ITEMS={};RENDERED_COUNTER=0;
  if(!connected){showLogin();return}
  var html="";
  if(PAGE==="home"){
@@ -324,23 +317,24 @@ function drawItems(list,type,limit){
 
  for(var i=0;i<count;i++){
   var x=list[i];
+  var t=type;
+  if(x.data){t=x.type||type;x=x.data}
   var name=x.name||x.title||"بدون اسم";
   var img=x.stream_icon||x.cover||x.movie_image||x.backdrop_path||"";
 
   RENDERED_COUNTER++;
   var key="mora_item_"+RENDERED_COUNTER;
-  RENDERED_ITEMS[key]={item:x,type:type};
+  RENDERED_ITEMS[key]={item:x,type:t};
 
   h+='<div class="item" tabindex="0" '+
   'data-item-key="'+key+'" '+
-  'onkeydown="if(event.keyCode===13||event.keyCode===23){event.preventDefault();openRenderedItem(this.getAttribute(\'data-item-key\'));return false}" '+
-  'onkeypress="if(event.keyCode===13){openRenderedItem(this.getAttribute(\'data-item-key\'));return false}">'+
+  'onclick="openRenderedItem(this.getAttribute(\'data-item-key\'))">'+
   '<img class="poster" src="'+esc(img)+'" '+
   'onerror="this.style.display=\'none\'">'+
   '<div class="item-info">'+
   '<div class="item-name">'+esc(name)+'</div>'+
   '<div class="item-type">'+
-  (type==="live"?"قناة":type==="series"?"مسلسل":type==="movie"?"فيلم":"")+
+  (t==="live"?"قناة":t==="series"?"مسلسل":t==="movie"?"فيلم":"")+
 '</div></div></div>';
  }
 
@@ -513,7 +507,7 @@ function toggleFavorite(item){
   if(itemId(FAVORITES[i].data||FAVORITES[i])===id){found=i;break}
  }
  if(found>=0)FAVORITES.splice(found,1);
- else FAVORITES.push({id:id,name:item.name||item.title,image:item.stream_icon||item.cover||"",data:item});
+ else FAVORITES.push({id:id,name:item.name||item.title,image:item.stream_icon||item.cover||"",data:item,type:CURRENT?CURRENT.type:"movie"});
  saveLists();
  closeModal();
  render();
@@ -531,6 +525,8 @@ function showDetails(item,type){
  '<button class="secondary" onclick="closeModal()">إغلاق</button></div></div></div>'+
  '<div id="episodes"></div>';
  modalBg.style.display="flex";
+ var playBtn=modal.querySelector(".primary");
+ if(playBtn)try{playBtn.focus()}catch(e){}
  if(type==="series")loadEpisodes(item.series_id);
 }
 function closeModal(){modalBg.style.display="none"}
@@ -653,12 +649,15 @@ window.seekVideo=seekVideo;
 window.changeSeek=changeSeek;
 window.logout=logout;
 window.openRenderedItem=openRenderedItem;
+window.loadCategories=loadCategories;
 
 document.addEventListener("keydown",function(e){
 
  var key=e.keyCode||e.which;
 
- if(key===13||key===23){
+ var overlayOpen=$("playerLayer").style.display==="flex"||modalBg.style.display==="flex";
+
+ if(!overlayOpen&&(key===13||key===23)){
   var active=document.activeElement;
 
   if(active && active.className &&
