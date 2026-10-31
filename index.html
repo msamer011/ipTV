@@ -30,42 +30,67 @@ button:focus,.item:focus,.category:focus,.episode:focus{outline:3px solid #e7b85
  margin:-7px;
 }
 
+.grid{
+ width:100%;
+ font-size:0;
+ text-align:right;
+}
+
 .item{
- display:block;
- width:calc((100% - 84px) / 6);
- margin:7px;
+ display:inline-block;
+ vertical-align:top;
+ width:15.5%;
+ margin:0.4%;
  padding:0;
+ font-size:14px;
  background:#141923;
  border:1px solid #252d3a;
  border-radius:7px;
  overflow:hidden;
  cursor:pointer;
- min-width:0;
  color:#fff;
  text-align:right;
 }
 
 .item:focus,.item:hover{
- border-color:#e7b85c;
+ border:2px solid #e7b85c;
 }
 
 .poster{
+ display:block;
  width:100%;
- height:250px;
+ height:230px;
  object-fit:cover;
  background:#222b39;
- display:block;
+}
+
+.item-info{
+ padding:8px;
+}
+
+.item-name{
+ font-size:13px;
+ line-height:1.4;
+ height:36px;
+ overflow:hidden;
+}
+
+.item-type{
+ font-size:11px;
+ color:#929bad;
+ margin-top:5px;
 }
 
 @media(max-width:1000px){
- .item{width:calc((100% - 56px) / 4)}
- .poster{height:230px}
+ .item{width:24%}
+ .poster{height:220px}
 }
 
 @media(max-width:700px){
- .item{width:calc((100% - 42px) / 3)}
- .poster{height:200px}
+ .item{width:32%}
+ .poster{height:190px}
 }
+ 
 .item-info{padding:8px}
 .item-name{font-size:13px;line-height:1.4;height:36px;overflow:hidden}
 .item-type{font-size:11px;color:#929bad;margin-top:5px}
@@ -159,6 +184,8 @@ var SEARCH="";
 var seekSteps=[2,4,8,16,32,64,128,200,300];
 var seekIndex=0,seekStep=2;
 var requestToken=0;
+ var RENDERED_ITEMS={};
+var RENDERED_COUNTER=0;
 var connected=false;
 var BackKey=461;
 
@@ -297,25 +324,29 @@ function drawItems(list,type,limit){
 
  for(var i=0;i<count;i++){
   var x=list[i];
-  var id=itemId(x);
   var name=x.name||x.title||"بدون اسم";
   var img=x.stream_icon||x.cover||x.movie_image||x.backdrop_path||"";
 
+  RENDERED_COUNTER++;
+  var key="mora_item_"+RENDERED_COUNTER;
+  RENDERED_ITEMS[key]={item:x,type:type};
+
   h+='<button type="button" class="item" '+
-  'onclick="openItem(\''+type+'\',\''+esc(id)+'\')">'+
-  '<img class="poster" loading="lazy" src="'+esc(img)+'" '+
+  'onclick="openRenderedItem(\''+key+'\')" '+
+  'onkeydown="if(event.keyCode===13||event.keyCode===23){openRenderedItem(\''+key+'\');return false}">'+
+  '<img class="poster" src="'+esc(img)+'" '+
   'onerror="this.style.display=\'none\'">'+
   '<div class="item-info">'+
   '<div class="item-name">'+esc(name)+'</div>'+
   '<div class="item-type">'+
-  (type==="live"?"قناة":type==="series"?"مسلسل":"فيلم")+
+  (type==="live"?"قناة":type==="series"?"مسلسل":type==="movie"?"فيلم":"")+
   '</div></div></button>';
  }
 
  h+='</div>';
  return h;
 }
-
+ 
 function itemId(item){
  return String(item.stream_id||item.series_id||item.id||"");
 }
@@ -459,7 +490,24 @@ function openItem(type,id){
  if(!item)return;
  showDetails(item,type);
 }
+function openRenderedItem(key){
+ var entry=RENDERED_ITEMS[key];
+ if(!entry||!entry.item)return;
 
+ var item=entry.item;
+ var type=entry.type;
+
+ if(type==="favorite"||type==="history"){
+  item=item.data||item;
+  type=item.stream_type==="series"?"series":
+       item.stream_type==="live"?"live":
+       entry.type==="history"?
+       (entry.item.type||"movie"):"movie";
+ }
+
+ showDetails(item,type);
+            }
+ 
 function isFavorite(item){
  var id=itemId(item);
  for(var i=0;i<FAVORITES.length;i++){
@@ -612,6 +660,7 @@ window.closePlayer=closePlayer;
 window.seekVideo=seekVideo;
 window.changeSeek=changeSeek;
 window.logout=logout;
+window.openRenderedItem=openRenderedItem;
 
 document.addEventListener("keydown",function(e){
  if($("playerLayer").style.display==="flex"){
