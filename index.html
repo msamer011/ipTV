@@ -711,6 +711,27 @@ credentialsSaved();
 if(SERVER&&USER&&PASS)connect();
 else showLogin();
 
+ var debugBox=document.createElement("div");
+
+debugBox.style.cssText=
+"position:fixed;top:5px;left:5px;z-index:99999;"+
+"background:#fff;color:#000;padding:15px;"+
+"font-size:20px;border:3px solid red;";
+
+debugBox.innerHTML="REMOTE TEST: WAITING";
+document.body.appendChild(debugBox);
+
+document.addEventListener("keydown",function(e){
+ var k=e.keyCode||e.which;
+ debugBox.innerHTML=
+ "KEY RECEIVED: "+k+
+ "<br>ACTIVE: "+
+ (document.activeElement?
+ document.activeElement.tagName+
+ " / "+document.activeElement.className:"NONE");
+},true);
+
+ 
 })();
 </script>
 </body>
