@@ -493,14 +493,9 @@ function openItem(type,id){
 }
 
  function openRenderedItem(key){
- 
-
  var entry=RENDERED_ITEMS[key];
 
- if(!entry || !entry.item){
-
-  return;
- }
+ if(!entry || !entry.item)return;
 
  showDetails(entry.item,entry.type);
  }
