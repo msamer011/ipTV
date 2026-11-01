@@ -308,8 +308,7 @@ function connect(){
 function headerHTML(){
  var nav=[
   ["home","الرئيسية"],["live","القنوات"],["movies","الأفلام"],
-  ["series","المسلسلات"],["favorites","المفضلة"],
-  ["history","تابع المشاهدة"],["settings","الإعدادات"]
+  ["series","المسلسلات"],["settings","الإعدادات"]
  ];
  var h='<div class="header"><div class="logo">MORA IPTV<small>YOUR ENTERTAINMENT WORLD</small></div><div class="nav">';
  for(var i=0;i<nav.length;i++){
@@ -336,6 +335,9 @@ function render(){
  else if(PAGE==="content"){
   html=renderContent();
  }
+  else if(PAGE==="sectionList"){
+  html=renderSectionList();
+  }
  else if(PAGE==="favorites"){
   html='<h2 class="section-title">المفضلة</h2>'+drawItems(FAVORITES,"favorite",FAVORITES.length);
  }
@@ -483,9 +485,53 @@ function renderContent(){
  '<button class="secondary" onclick="doSearch()">بحث</button>'+
  '<button class="secondary" onclick="goPage(\'home\')">الرئيسية</button>'+
  '<button class="secondary" onclick="loadCategoryContent()">تحديث</button>'+
- '<button class="secondary" onclick="backCategories()">التصنيفات</button></div></div>';
+ '<button class="secondary" onclick="backCategories()">التصنيفات</button>'+
+'<button class="secondary" onclick="openSectionList(\'favorites\')">مفضلة '+(SECTION==="movies"?"الأفلام":"المسلسلات")+'</button>'+
+'<button class="secondary" onclick="openSectionList(\'history\')">تابع المشاهدة</button>'+
+'</div></div>';
  h+='<h2 class="section-title">'+esc(CATEGORY_NAME)+'</h2>';
  h+=pageItems.length?drawItems(pageItems,type,12):'<div class="empty">لا توجد نتائج في هذا التصنيف</div>';
+ return h;
+}
+
+ function openSectionList(kind){
+ PAGE="sectionList";
+ SECTION_LIST_KIND=kind;
+ render();
+}
+
+var SECTION_LIST_KIND="favorites";
+
+function backToContent(){
+ PAGE="content";
+ render();
+}
+
+function renderSectionList(){
+ var type=SECTION==="movies"?"movie":"series";
+ var source=SECTION_LIST_KIND==="favorites"?FAVORITES:HISTORY;
+ var list=[];
+
+ for(var i=0;i<source.length;i++){
+  var saved=source[i];
+  var savedType=saved.type||"";
+  if(savedType===type){
+   list.push(saved);
+  }
+ }
+
+ var title=SECTION_LIST_KIND==="favorites"?
+  "مفضلة "+(type==="movie"?"الأفلام":"المسلسلات"):
+  "متابعة "+(type==="movie"?"الأفلام":"المسلسلات");
+
+ var h='<div class="toolbar">'+
+ '<button class="secondary" onclick="backToContent()">العودة للمحتوى</button>'+
+ '<span class="page-count">'+title+'</span>'+
+ '</div>';
+
+ h+='<h2 class="section-title">'+title+'</h2>';
+ h+=drawItems(list,SECTION_LIST_KIND==="favorites"?"favorite":"history",list.length);
+
  return h;
 }
 
@@ -956,6 +1002,8 @@ window.cycleSubs=cycleSubs;
 window.barClick=barClick;
 window.logout=logout;
 window.openRenderedItem=openRenderedItem;
+ window.openSectionList=openSectionList;
+window.backToContent=backToContent;
 window.loadCategories=loadCategories;
 window.playEpisodeIndex=playEpisodeIndex;
 
