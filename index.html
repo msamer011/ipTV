@@ -1,4 +1,4 @@
-  
+
 <!DOCTYPE html>
 <html lang="ar">
 <head>
@@ -115,10 +115,31 @@ button:focus,.item:focus,.category:focus,.episode:focus{outline:3px solid #e7b85
 .episode{padding:13px;background:#242c3a;border-radius:5px;margin:8px 0;cursor:pointer}
 #playerLayer{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:#000;z-index:50;align-items:center;justify-content:center}
 #video{position:fixed;top:0;left:0;width:100vw;height:100vh;margin:0;padding:0;object-fit:contain;background:#000}
-.player-top{position:absolute;top:0;left:0;right:0;padding:20px;background:linear-gradient(#000b,transparent);z-index:2}
-.player-controls{position:absolute;bottom:0;left:0;right:0;padding:20px;background:linear-gradient(transparent,#000e);z-index:2;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap}
-.player-controls button{background:#252c39;color:#fff;border:1px solid #596274;border-radius:5px;padding:12px;font-size:14px}
-#timeText{font-size:13px;color:#ddd;min-width:110px;text-align:center}
+.osd{position:absolute;left:0;right:0;z-index:3;transition:opacity .3s}
+#playerLayer.hide .osd{opacity:0}
+#playerLayer.hide{cursor:none}
+.osd-top{top:0;padding:22px 3% 40px;background:linear-gradient(#000c,transparent);display:flex;align-items:center;justify-content:space-between;gap:15px}
+.osd-title{display:flex;align-items:center;gap:12px;min-width:0}
+#playingTitle{font-size:24px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#liveBadge{display:none;background:#d33;color:#fff;font-size:12px;font-weight:bold;padding:3px 9px;border-radius:4px}
+.osd-right{display:flex;align-items:center;gap:14px;font-size:18px;color:#ddd}
+.osd-bottom{bottom:0;padding:40px 3% 22px;background:linear-gradient(transparent,#000d)}
+.osd-bar-row{display:flex;align-items:center;direction:ltr;gap:14px}
+#stateIcon{font-size:22px;width:28px;text-align:center}
+.bar{position:relative;flex:1;height:10px;background:#ffffff33;border-radius:5px;overflow:hidden;cursor:pointer}
+.bar div{position:absolute;left:0;top:0;bottom:0;width:0}
+#barBuf{background:#ffffff55}
+#barPos{background:#e7b85c}
+.bar.seeking #barPos{background:#fff}
+#timeText{font-size:16px;color:#eee;min-width:150px;text-align:right;white-space:nowrap}
+.osd-btns{display:flex;justify-content:center;gap:10px;margin-top:14px;flex-wrap:wrap}
+.osd-btns button{background:#252c39;color:#fff;border:1px solid #596274;border-radius:5px;padding:10px 14px;font-size:14px}
+.osd-hint{text-align:center;color:#9aa3b5;font-size:12px;margin-top:10px;line-height:1.7}
+#buffering{display:none;position:absolute;top:50%;left:50%;margin:-30px 0 0 -30px;z-index:4}
+.spinner{width:60px;height:60px;border:6px solid #ffffff33;border-top-color:#e7b85c;border-radius:50%;-webkit-animation:spin 1s linear infinite;animation:spin 1s linear infinite}
+@-webkit-keyframes spin{to{-webkit-transform:rotate(360deg)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+#seekPop{display:none;position:absolute;top:50%;left:50%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%);z-index:5;background:rgba(0,0,0,.65);color:#fff;font-size:40px;padding:14px 30px;border-radius:12px;white-space:nowrap}
 .notice{background:#1a2631;border:1px solid #34485b;color:#b8c9d9;padding:12px;border-radius:6px;margin-bottom:20px;font-size:13px}
 @media(max-width:700px){
  .header{height:auto;min-height:70px;flex-wrap:wrap;padding:12px}
@@ -137,17 +158,30 @@ button:focus,.item:focus,.category:focus,.episode:focus{outline:3px solid #e7b85
 </div>
 
 <div id="playerLayer">
- <video id="video" controls autoplay></video>
- <div class="player-top">
-  <strong id="playingTitle">MORA IPTV</strong>
-  <button class="secondary" style="float:right" onclick="closePlayer()">إغلاق</button>
+ <video id="video" autoplay></video>
+ <div id="buffering"><div class="spinner"></div></div>
+ <div id="seekPop"></div>
+ <div class="osd osd-top">
+  <div class="osd-title"><strong id="playingTitle">MORA IPTV</strong><span id="liveBadge">LIVE</span></div>
+  <div class="osd-right"><span id="clockText"></span><button class="secondary" onclick="closePlayer()">إغلاق</button></div>
  </div>
- <div class="player-controls">
-  <button onclick="seekVideo(-seekStep)">⏪ تأخير</button>
-  <button onclick="changeSeek(-1)">− خطوة</button>
-  <span id="timeText">00:00 / 00:00</span>
-  <button onclick="changeSeek(1)">+ خطوة</button>
-  <button onclick="seekVideo(seekStep)">تقديم ⏩</button>
+ <div class="osd osd-bottom">
+  <div class="osd-bar-row">
+   <span id="stateIcon">&#9654;</span>
+   <div class="bar" id="barWrap" onclick="barClick(event)"><div id="barBuf"></div><div id="barPos"></div></div>
+   <span id="timeText">00:00 / 00:00</span>
+  </div>
+  <div class="osd-btns">
+   <button onclick="nextItem(-1)">&#9198; السابق</button>
+   <button onclick="stepSeek(-1)">&#9194; تأخير</button>
+   <button onclick="togglePlay()">&#9199; تشغيل / إيقاف</button>
+   <button onclick="stepSeek(1)">تقديم &#9193;</button>
+   <button onclick="nextItem(1)">التالي &#9197;</button>
+   <button onclick="cycleAspect()">نسبة العرض</button>
+   <button onclick="cycleAudio()">الصوت</button>
+   <button onclick="cycleSubs()">الترجمة</button>
+  </div>
+  <div class="osd-hint">&#9664; &#9654; تقديم / تأخير مستمر (كل ضغطة تزوّد السرعة: 5 &middot; 10 &middot; 20 &middot; 60 &middot; 120 &middot; 300 ثانية كل ثانية) &nbsp;|&nbsp; OK للتشغيل / الإيقاف &nbsp;|&nbsp; &#9650; &#9660; القناة / الحلقة التالية والسابقة &nbsp;|&nbsp; الأحمر نسبة العرض &nbsp;|&nbsp; الأخضر الصوت &nbsp;|&nbsp; الأصفر الترجمة</div>
  </div>
 </div>
 
@@ -173,9 +207,14 @@ var CURRENT_TYPE="";
 var CURRENT_PAGE=1;
 var PAGE_SIZE=12;
 var SEARCH="";
-var seekSteps=[5,10,20,30,60,120,300,600];
-var seekIndex=1,seekStep=10;
-var holdUntil=0,LAST_FOCUS=null,MODAL_OPENER=null,EPISODES=[];
+var LAST_FOCUS=null,MODAL_OPENER=null,EPISODES=[];
+var SEEK_LADDER=[5,10,20,60,120,300];
+var seekCount=0,scanDir=0,seekTarget=null,seekTimer=null;
+var SCAN_TICK=1000;
+var osdTimer=null,popTimer=null,lastPosSave=0,POS={};
+var PLAYER={live:false,key:"",epIndex:-1,liveId:""};
+var ASPECTS=[["contain","الأصلي"],["cover","ملء الشاشة (قص)"],["fill","تمديد"]];
+var aspectIndex=0;
 var requestToken=0;
  var RENDERED_ITEMS={};
 var RENDERED_COUNTER=0;
@@ -567,7 +606,11 @@ function loadEpisodes(seriesId){
 
 function playEpisodeById(id,ext,title){
  var url=SERVER+"/series/"+encodeURIComponent(USER)+"/"+encodeURIComponent(PASS)+"/"+encodeURIComponent(id)+"."+ext;
- startPlayer(url,title);
+ var epIdx=-1;
+ for(var k=0;k<EPISODES.length;k++){
+  if(String(EPISODES[k].id)===String(id)){epIdx=k;break}
+ }
+ startPlayer(url,title,{key:"ep_"+id,epIndex:epIdx});
 }
 function playEpisodeIndex(i){
  var ep=EPISODES[i];
@@ -595,7 +638,11 @@ function playCurrent(){
  var url=SERVER+"/"+folder+"/"+encodeURIComponent(USER)+"/"+encodeURIComponent(PASS)+"/"+encodeURIComponent(item.stream_id)+"."+ext;
  addHistory(item,type);
  closeModal();
- startPlayer(url,item.name||item.title||"MORA IPTV");
+ startPlayer(url,item.name||item.title||"MORA IPTV",{
+  live:type==="live",
+  liveId:type==="live"?item.stream_id:"",
+  key:type==="movie"?"movie_"+item.stream_id:""
+ });
 }
 function addHistory(item,type){
  var id=itemId(item);
@@ -607,50 +654,275 @@ function addHistory(item,type){
  saveLists();
 }
 
-function startPlayer(url,title){
- if($("playerLayer").style.display==="flex"&&video.getAttribute("src")===url)return;
- LAST_FOCUS=document.activeElement;
- $("playingTitle").innerHTML=esc(title);
- $("playerLayer").style.display="flex";
- video.src=url;
- try{video.play()}catch(e){}
- holdUntil=0;
- updateTime();
-}
-function closePlayer(){
- try{video.pause();video.removeAttribute("src");video.load()}catch(e){}
- $("playerLayer").style.display="none";
- if(LAST_FOCUS&&LAST_FOCUS.focus&&document.body.contains(LAST_FOCUS))try{LAST_FOCUS.focus()}catch(e){}
-}
-function flashInfo(text){
- holdUntil=Date.now()+1500;
- $("timeText").innerHTML=text;
-}
-function seekVideo(seconds){
- if(!video.duration||!isFinite(video.duration)){flashInfo("التقديم غير متاح");return}
- try{video.currentTime=Math.max(0,Math.min(video.duration,video.currentTime+seconds))}catch(e){}
- flashInfo((seconds>0?"+ ":"- ")+Math.abs(seconds)+" ث");
-}
-function changeSeek(direction){
- seekIndex+=direction;
- if(seekIndex<0)seekIndex=0;
- if(seekIndex>=seekSteps.length)seekIndex=seekSteps.length-1;
- seekStep=seekSteps[seekIndex];
- flashInfo("قفزة "+seekStep+" ثانية");
-}
+function p2(n){return n<10?"0"+n:""+n}
+
 function formatTime(s){
  if(!isFinite(s)||s<0)return "00:00";
  var h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=Math.floor(s%60);
- function p(n){return n<10?"0"+n:n}
- return h>0?p(h)+":"+p(m)+":"+p(x):p(m)+":"+p(x);
+ return h>0?p2(h)+":"+p2(m)+":"+p2(x):p2(m)+":"+p2(x);
 }
+
+function loadPos(){
+ try{POS=JSON.parse(localStorage.getItem("mora_pos")||"{}")}catch(e){POS={}}
+}
+function savePos(){
+ try{localStorage.setItem("mora_pos",JSON.stringify(POS))}catch(e){}
+}
+function rememberPos(force){
+ if(!PLAYER.key||PLAYER.live)return;
+ var d=video.duration;
+ if(!d||!isFinite(d))return;
+ var now=Date.now();
+ if(!force&&now-lastPosSave<5000)return;
+ lastPosSave=now;
+ var t=video.currentTime;
+ if(t<30||t>d-30)return;
+ POS[PLAYER.key]={p:Math.floor(t),t:now};
+ var keys=[],k;
+ for(k in POS)keys.push(k);
+ if(keys.length>150){
+  keys.sort(function(a,b){return POS[a].t-POS[b].t});
+  for(var i=0;i<keys.length-150;i++)delete POS[keys[i]];
+ }
+ savePos();
+}
+
+function startPlayer(url,title,opts){
+ var layer=$("playerLayer");
+ if(layer.style.display==="flex"&&video.getAttribute("src")===url)return;
+ if(layer.style.display==="flex")rememberPos(true);
+ else LAST_FOCUS=document.activeElement;
+ opts=opts||{};
+ PLAYER={live:!!opts.live,key:opts.key||"",epIndex:(opts.epIndex==null?-1:opts.epIndex),liveId:opts.liveId||""};
+ cancelScan();
+ $("playingTitle").innerHTML=esc(title);
+ $("liveBadge").style.display=PLAYER.live?"inline-block":"none";
+ layer.style.display="flex";
+ video.style.objectFit=ASPECTS[aspectIndex][0];
+ setBuffering(true);
+ video.src=url;
+ try{var pr=video.play();if(pr&&pr.catch)pr.catch(function(){})}catch(e){}
+ syncState();
+ showOsd();
+ updateTime();
+}
+function closePlayer(){
+ rememberPos(true);
+ cancelScan();clearTimeout(osdTimer);
+ try{video.pause();video.removeAttribute("src");video.load()}catch(e){}
+ $("playerLayer").style.display="none";
+ $("seekPop").style.display="none";
+ setBuffering(false);
+ if(LAST_FOCUS&&LAST_FOCUS.focus&&document.body.contains(LAST_FOCUS))try{LAST_FOCUS.focus()}catch(e){}
+}
+
+function setBuffering(on){$("buffering").style.display=on?"block":"none"}
+function syncState(){
+ $("stateIcon").innerHTML=scanDir!==0?(scanDir>0?"&#9193;":"&#9194;"):(video.paused?"&#10074;&#10074;":"&#9654;");
+}
+
+function showOsd(){
+ var l=$("playerLayer");
+ l.className="";
+ clearTimeout(osdTimer);
+ osdTimer=setTimeout(function(){
+  if(!video.paused&&seekTarget===null)l.className="hide";
+ },5000);
+}
+function flashInfo(text,ms){
+ var p=$("seekPop");
+ p.innerHTML=esc(text);
+ p.style.display="block";
+ clearTimeout(popTimer);
+ popTimer=setTimeout(function(){p.style.display="none"},ms||1600);
+}
+
+function fmtStep(step){return step<60?step+" ث":(step/60)+" د"}
+
+function hidePop(){
+ clearTimeout(popTimer);
+ $("seekPop").style.display="none";
+}
+
+/* التقديم / التأخير المستمر:
+   أول ضغطة تبدأ المسح بسرعة 5 ث كل ثانية، وكل ضغطة في نفس الاتجاه ترفع السرعة
+   (5 > 10 > 20 > 60 > 120 > 300) ويفضل المسح شغال لحد ما تضغط تشغيل (OK). */
+function stepSeek(dir){
+ showOsd();
+ var d=video.duration;
+ if(PLAYER.live||!d||!isFinite(d)){flashInfo("التقديم غير متاح في البث المباشر");return}
+ if(scanDir===dir){
+  if(seekCount<SEEK_LADDER.length-1)seekCount++;
+ }else{
+  seekCount=0;
+  scanDir=dir;
+  if(seekTarget===null)seekTarget=video.currentTime;
+  if(!video.paused)video.pause();
+ }
+ flashInfo((dir>0?"⏩  +":"⏪  -")+fmtStep(SEEK_LADDER[seekCount]),36000000);
+ syncState();
+ clearInterval(seekTimer);
+ scanTick();
+ if(scanDir!==0)seekTimer=setInterval(scanTick,SCAN_TICK);
+}
+function scanTick(){
+ if(scanDir===0)return;
+ var d=video.duration;
+ if(!d||!isFinite(d)){stopScan(true);return}
+ var t=seekTarget+scanDir*SEEK_LADDER[seekCount];
+ var edge=false;
+ if(t<=0){t=0;edge=true}
+ if(t>=d-1){t=d-1;edge=true}
+ seekTarget=t;
+ if(!video.seeking){try{video.currentTime=t}catch(e){}}
+ updateTime();
+ if(edge)stopScan(true);
+}
+function cancelScan(){
+ clearInterval(seekTimer);
+ seekTimer=null;
+ scanDir=0;seekTarget=null;seekCount=0;
+ hidePop();
+}
+function stopScan(resume){
+ if(scanDir===0)return;
+ var t=seekTarget;
+ cancelScan();
+ if(t!==null){try{video.currentTime=t}catch(e){}}
+ if(resume){
+  try{var pr=video.play();if(pr&&pr.catch)pr.catch(function(){})}catch(e){}
+ }
+ syncState();
+ updateTime();
+ showOsd();
+}
+function barClick(ev){
+ var d=video.duration;
+ if(PLAYER.live||!d||!isFinite(d))return;
+ var r=$("barWrap").getBoundingClientRect();
+ var pct=(ev.clientX-r.left)/r.width;
+ if(pct<0)pct=0;if(pct>1)pct=1;
+ try{video.currentTime=pct*d}catch(e){}
+ showOsd();
+}
+
+function togglePlay(){
+ showOsd();
+ if(scanDir!==0){stopScan(true);return}
+ if(video.paused){
+  try{var pr=video.play();if(pr&&pr.catch)pr.catch(function(){})}catch(e){}
+ }else video.pause();
+}
+
+function cycleAspect(){
+ aspectIndex=(aspectIndex+1)%ASPECTS.length;
+ video.style.objectFit=ASPECTS[aspectIndex][0];
+ flashInfo("نسبة العرض: "+ASPECTS[aspectIndex][1]);
+ showOsd();
+}
+function cycleAudio(){
+ showOsd();
+ var tr=video.audioTracks,i;
+ if(!tr||tr.length<2){flashInfo("لا توجد مسارات صوت أخرى");return}
+ var cur=0;
+ for(i=0;i<tr.length;i++)if(tr[i].enabled){cur=i;break}
+ var n=(cur+1)%tr.length;
+ for(i=0;i<tr.length;i++)tr[i].enabled=false;
+ tr[n].enabled=true;
+ flashInfo("الصوت: "+(tr[n].label||tr[n].language||(n+1)));
+}
+function cycleSubs(){
+ showOsd();
+ var tt=video.textTracks,list=[],i;
+ if(tt)for(i=0;i<tt.length;i++)if(tt[i].kind==="subtitles"||tt[i].kind==="captions")list.push(tt[i]);
+ if(!list.length){flashInfo("لا توجد ترجمة متاحة");return}
+ var cur=-1;
+ for(i=0;i<list.length;i++)if(list[i].mode==="showing"){cur=i;break}
+ for(i=0;i<list.length;i++)list[i].mode="disabled";
+ var n=cur+1;
+ if(n>=list.length){flashInfo("الترجمة: إيقاف");return}
+ list[n].mode="showing";
+ flashInfo("الترجمة: "+(list[n].label||list[n].language||(n+1)));
+}
+
+function zap(dir){
+ var idx=-1,i;
+ for(i=0;i<LIVE.length;i++){
+  if(String(LIVE[i].stream_id)===String(PLAYER.liveId)){idx=i;break}
+ }
+ var n=idx<0?null:LIVE[idx+dir];
+ if(!n){flashInfo("لا توجد قناة أخرى");return}
+ var url=SERVER+"/live/"+encodeURIComponent(USER)+"/"+encodeURIComponent(PASS)+"/"+encodeURIComponent(n.stream_id)+"."+(n.container_extension||"ts");
+ addHistory(n,"live");
+ startPlayer(url,n.name||"MORA IPTV",{live:true,liveId:n.stream_id});
+}
+function nextItem(dir){
+ showOsd();
+ if(PLAYER.live){zap(dir);return}
+ if(PLAYER.epIndex>=0&&EPISODES[PLAYER.epIndex+dir]){playEpisodeIndex(PLAYER.epIndex+dir);return}
+ flashInfo(dir>0?"لا توجد حلقة تالية":"لا توجد حلقة سابقة");
+}
+
 function updateTime(){
- if(Date.now()<holdUntil)return;
- if($("playerLayer").style.display==="flex")
- $("timeText").innerHTML=formatTime(video.currentTime)+" / "+formatTime(video.duration);
+ if($("playerLayer").style.display!=="flex")return;
+ var d=video.duration;
+ var known=!PLAYER.live&&d&&isFinite(d);
+ var t=seekTarget!==null?seekTarget:video.currentTime;
+ var n=new Date();
+ $("clockText").innerHTML=p2(n.getHours())+":"+p2(n.getMinutes());
+ var pct=0,buf=0;
+ if(known){
+  pct=Math.max(0,Math.min(100,t/d*100));
+  try{
+   var b=video.buffered;
+   for(var i=0;i<b.length;i++){
+    if(video.currentTime>=b.start(i)&&video.currentTime<=b.end(i)+0.5){buf=b.end(i)/d*100;break}
+   }
+  }catch(e){}
+ }else if(PLAYER.live){pct=100}
+ $("barPos").style.width=pct+"%";
+ $("barBuf").style.width=Math.min(100,buf)+"%";
+ $("barWrap").className="bar"+(seekTarget!==null?" seeking":"");
+ $("timeText").innerHTML=PLAYER.live?"مباشر":(known?formatTime(t)+" / "+formatTime(d):formatTime(t));
 }
-video.addEventListener("timeupdate",updateTime);
-video.addEventListener("ended",closePlayer);
+
+function onMeta(){
+ if(PLAYER.live||!PLAYER.key)return;
+ var r=POS[PLAYER.key],d=video.duration;
+ if(r&&r.p>30&&d&&isFinite(d)&&r.p<d-30){
+  try{video.currentTime=r.p}catch(e){}
+  flashInfo("استكمال من "+formatTime(r.p),2200);
+ }
+}
+function onEnded(){
+ if(PLAYER.key&&POS[PLAYER.key]){delete POS[PLAYER.key];savePos()}
+ PLAYER.key="";
+ if(PLAYER.epIndex>=0&&EPISODES[PLAYER.epIndex+1]){
+  playEpisodeIndex(PLAYER.epIndex+1);
+  flashInfo("الحلقة التالية...",2000);
+  return;
+ }
+ closePlayer();
+}
+function onError(){
+ if($("playerLayer").style.display!=="flex"||!video.getAttribute("src"))return;
+ setBuffering(false);
+ var c=video.error?video.error.code:0;
+ flashInfo("تعذر تشغيل هذا الفيديو"+(c?" (خطأ "+c+")":""),3500);
+ showOsd();
+}
+
+video.addEventListener("timeupdate",function(){updateTime();rememberPos(false)});
+video.addEventListener("loadedmetadata",onMeta);
+video.addEventListener("waiting",function(){setBuffering(true)});
+video.addEventListener("seeking",function(){if(scanDir===0)setBuffering(true)});
+video.addEventListener("playing",function(){setBuffering(false);syncState()});
+video.addEventListener("canplay",function(){setBuffering(false)});
+video.addEventListener("seeked",function(){setBuffering(false)});
+video.addEventListener("play",function(){syncState();showOsd()});
+video.addEventListener("pause",function(){syncState();showOsd()});
+video.addEventListener("error",onError);
+video.addEventListener("ended",onEnded);
 
 function logout(){
  try{
@@ -675,8 +947,13 @@ window.toggleFavoriteCurrent=toggleFavoriteCurrent;
 window.playCurrent=playCurrent;
 window.playEpisodeById=playEpisodeById;
 window.closePlayer=closePlayer;
-window.seekVideo=seekVideo;
-window.changeSeek=changeSeek;
+window.stepSeek=stepSeek;
+window.togglePlay=togglePlay;
+window.nextItem=nextItem;
+window.cycleAspect=cycleAspect;
+window.cycleAudio=cycleAudio;
+window.cycleSubs=cycleSubs;
+window.barClick=barClick;
 window.logout=logout;
 window.openRenderedItem=openRenderedItem;
 window.loadCategories=loadCategories;
@@ -702,20 +979,21 @@ document.addEventListener("keydown",function(e){
  var modalOpen=modalBg.style.display==="flex";
 
  if(playerOpen){
+  showOsd();
   if(isBack(e)||keyIs(e,[413,178],["MediaStop"])){closePlayer();e.preventDefault();return}
-  if(key===37||keyIs(e,[412,227,89],["MediaRewind"])){seekVideo(-seekStep);e.preventDefault();return}
-  if(key===39||keyIs(e,[417,228,90],["MediaFastForward"])){seekVideo(seekStep);e.preventDefault();return}
-  if(key===38){changeSeek(1);e.preventDefault();return}
-  if(key===40){changeSeek(-1);e.preventDefault();return}
-  if(key===13||key===23||keyIs(e,[179],["MediaPlayPause"])){
-   if(video.paused)video.play();
-   else video.pause();
-   e.preventDefault();
-   return;
-  }
-  if(keyIs(e,[415],["MediaPlay"])){video.play();e.preventDefault();return}
-  if(keyIs(e,[19],["MediaPause"])){video.pause();e.preventDefault();return}
-  flashInfo("KEY "+key+(e.key?" ("+e.key+")":""));
+  if(key===37||keyIs(e,[412,227,89],["MediaRewind"])){stepSeek(-1);e.preventDefault();return}
+  if(key===39||keyIs(e,[417,228,90],["MediaFastForward"])){stepSeek(1);e.preventDefault();return}
+  if(key===38){nextItem(1);e.preventDefault();return}
+  if(key===40){nextItem(-1);e.preventDefault();return}
+  if(key===13||key===23||keyIs(e,[179],["MediaPlayPause"])){togglePlay();e.preventDefault();return}
+  if(keyIs(e,[415],["MediaPlay"])){if(video.paused)togglePlay();e.preventDefault();return}
+  if(keyIs(e,[19],["MediaPause"])){if(scanDir!==0)stopScan(false);else if(!video.paused)togglePlay();e.preventDefault();return}
+  if(keyIs(e,[427,34],["MediaTrackNext","ChannelUp","PageDown"])){nextItem(1);e.preventDefault();return}
+  if(keyIs(e,[428,33],["MediaTrackPrevious","ChannelDown","PageUp"])){nextItem(-1);e.preventDefault();return}
+  if(keyIs(e,[403,65],[])){cycleAspect();e.preventDefault();return}
+  if(keyIs(e,[404],[])){cycleAudio();e.preventDefault();return}
+  if(keyIs(e,[405],[])){cycleSubs();e.preventDefault();return}
+  flashInfo("KEY "+key+(e.key?" ("+e.key+")":""),1200);
   return;
  }
 
@@ -751,6 +1029,7 @@ document.addEventListener("keydown",function(e){
 },true);
 
 loadSaved();
+loadPos();
 credentialsSaved();
 if(SERVER&&USER&&PASS)connect();
 else showLogin();
