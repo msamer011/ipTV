@@ -1,481 +1,1807 @@
+
 <!DOCTYPE html>
 <html lang="ar">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>My TV IPTV</title>
+<title>MORA IPTV</title>
 <style>
-/* إعدادات عامة */
-*{box-sizing:border-box;margin:0;padding:0}
-body{background:#070b14;color:#fff;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;overflow-x:hidden;direction:rtl}
-button,input{font-family:inherit}
-button{cursor:pointer;border:none;background:none;color:inherit;outline:none}
-a{text-decoration:none;color:inherit}
+*{box-sizing:border-box}
+body{margin:0;background:#090b10;color:#fff;font-family:Arial,sans-serif;overflow-x:hidden}
+button,input{font-family:Arial,sans-serif}
+button{cursor:pointer}
+button:focus,.item:focus,.category:focus,.episode:focus{outline:3px solid #e7b85c;outline-offset:2px}
+.header{height:76px;background:#10131b;display:flex;align-items:center;padding:0 3%;border-bottom:1px solid #252a36;position:sticky;top:0;z-index:10}
+.logo{font-size:24px;font-weight:bold;letter-spacing:2px;color:#e7b85c;white-space:nowrap}
+.logo small{display:block;font-size:9px;color:#aaa;letter-spacing:3px;margin-top:4px}
+.nav{display:flex;gap:5px;margin-left:25px;flex:1}
+.nav button{border:0;background:transparent;color:#aaa;padding:12px 13px;font-size:14px;border-radius:5px;white-space:nowrap}
+.nav button.active,.nav button:focus{background:#252a36;color:#fff}
+.page{padding:25px 3% 50px}
+.hero{min-height:240px;padding:35px;background:linear-gradient(90deg,#111722,#202b3b,#111722);border:1px solid #252d3a;border-radius:10px;display:flex;flex-direction:column;justify-content:center;margin-bottom:25px}
+.hero h1{font-size:35px;margin:0 0 10px}
+.hero p{color:#aab1c0;line-height:1.6}
+.primary{background:#d9a94e;color:#111;border:0;padding:12px 20px;border-radius:5px;font-weight:bold}
+.secondary{background:#252c39;color:#fff;border:1px solid #394354;padding:10px 16px;border-radius:5px}
+.section-title{font-size:21px;margin:20px 0}
+.grid{
+ width:100%;
+ font-size:0;
+ text-align:right;
+}
 
-/* الشريط العلوي */
-.header{display:flex;justify-content:space-between;align-items:center;padding:25px 4%;}
-.header-icons{display:flex;gap:25px;color:#aab1c0;font-size:22px;align-items:center}
-.header-icons svg{width:26px;height:26px;cursor:pointer;transition:0.3s}
-.header-icons svg:hover{color:#fff}
-.header-time{font-size:18px;color:#aab1c0;margin-right:20px}
-.header-logo{font-size:38px;font-weight:bold;color:#f2b01e;letter-spacing:1px;text-shadow:0 0 20px rgba(242,176,30,0.3)}
+.item{
+ display:inline-block;
+ vertical-align:top;
+ width:15.5%;
+ margin:0.4%;
+ padding:0;
+ font-size:14px;
+ background:#141923;
+ border:1px solid #252d3a;
+ border-radius:7px;
+ overflow:hidden;
+ cursor:pointer;
+ color:#fff;
+ text-align:right;
+}
 
-/* البانر الرئيسي */
-.hero{margin:0 4% 30px;border-radius:20px;overflow:hidden;position:relative;display:flex;align-items:center;height:280px;background:linear-gradient(to left, rgba(7,11,20,0.9), rgba(7,11,20,0.2)), url('https://image.tmdb.org/t/p/original/1X7F6g7r7g7g7g7g7g7g7g7g7g7.jpg') center/cover;background-color:#1a2235;}
-.hero::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg, transparent 40%, rgba(7,11,20,0.95) 100%);z-index:1}
-.hero-content{position:relative;z-index:2;padding:0 40px;width:100%;text-align:right}
-.hero-title{font-size:38px;font-weight:bold;margin-bottom:10px;text-shadow:0 2px 10px #000}
-.hero-sub{font-size:18px;color:#ccc;margin-bottom:20px;text-shadow:0 2px 10px #000}
-.hero-btn{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);padding:10px 30px;border-radius:30px;font-size:16px;font-weight:bold;backdrop-filter:blur(5px);transition:0.3s}
-.hero-btn:hover{background:#f2b01e;color:#000;border-color:#f2b01e}
-.hero-dots{position:absolute;bottom:20px;left:40px;display:flex;gap:8px}
-.hero-dots span{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.3)}
-.hero-dots span.active{background:#fff}
+.item:focus,.item:hover{
+ border:2px solid #e7b85c;
+}
 
-/* صف الأيقونات الرئيسية */
-.main-categories{display:flex;justify-content:center;gap:20px;margin:0 4% 40px;flex-wrap:wrap}
-.cat-box{background:rgba(20,25,35,0.8);border:1px solid rgba(255,255,255,0.05);border-radius:20px;width:150px;height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:15px;transition:0.3s;position:relative;overflow:hidden;cursor:pointer}
-.cat-box::before{content:'';position:absolute;inset:0;opacity:0.1;transition:0.3s}
-.cat-box:hover{transform:translateY(-5px);box-shadow:0 10px 20px rgba(0,0,0,0.5)}
-.cat-box.active{border-color:#f2b01e;box-shadow:0 0 20px rgba(242,176,30,0.2)}
-.cat-box.active::before{background:#f2b01e;opacity:0.05}
-.cat-icon{width:50px;height:50px;display:flex;align-items:center;justify-content:center}
-.cat-icon svg{width:100%;height:100%}
-.cat-title{font-size:18px;font-weight:bold}
-.cat-box.active .cat-icon svg{stroke:#f2b01e;fill:none}
-.cat-box[data-type="movies"] .cat-icon svg{stroke:#3b82f6;fill:none}
-.cat-box[data-type="series"] .cat-icon svg{stroke:#a855f7;fill:none}
-.cat-box[data-type="live"] .cat-icon svg{stroke:#06b6d4;fill:none}
-.cat-box[data-type="radio"] .cat-icon svg{stroke:#ec4899;fill:none}
-.cat-box[data-type="settings"] .cat-icon svg{stroke:#9ca3af;fill:none}
+.poster{
+ display:block;
+ width:100%;
+ height:230px;
+ object-fit:cover;
+ background:#222b39;
+}
 
-/* العناوين والصفوف */
-.section-title{font-size:24px;font-weight:bold;margin:0 4% 20px;display:flex;justify-content:space-between;align-items:center}
-.content-row{display:flex;gap:20px;padding:0 4% 40px;overflow-x:auto;scrollbar-width:none}
-.content-row::-webkit-scrollbar{display:none}
-.card{position:relative;border-radius:15px;overflow:hidden;width:220px;height:300px;flex-shrink:0;cursor:pointer;transition:0.3s;border:2px solid transparent;background:#141923}
-.card:hover,.card:focus{border-color:#f2b01e;transform:scale(1.02);outline:none}
-.card img{width:100%;height:100%;object-fit:cover}
-.card-overlay{position:absolute;inset:0;background:linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.4) 40%, transparent 100%);display:flex;flex-direction:column;justify-content:flex-end;padding:15px}
-.card-rating{position:absolute;bottom:15px;right:15px;font-size:14px;font-weight:bold;display:flex;align-items:center;gap:5px;color:#f2b01e;background:rgba(0,0,0,0.6);padding:4px 10px;border-radius:15px}
-.card-cat{position:absolute;bottom:15px;left:15px;font-size:13px;color:#ccc}
-.card-title{font-size:18px;font-weight:bold;margin-bottom:5px;text-shadow:0 2px 5px #000;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.card-progress{position:absolute;bottom:0;left:0;right:0;height:5px;background:rgba(255,255,255,0.2)}
-.card-progress-fill{height:100%;background:#f2b01e;width:0%}
+.item-info{
+ padding:8px;
+}
 
-/* صفحات التصنيفات */
-.page-header{padding:20px 4%;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #252a36}
-.back-btn{display:flex;align-items:center;gap:10px;font-size:18px;background:#252a36;padding:10px 20px;border-radius:10px;cursor:pointer}
-.back-btn:hover{background:#353b4a}
-.categories-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(200px, 1fr));gap:20px;padding:30px 4%}
-.category-btn{background:#141923;border:1px solid #252d3a;padding:20px;border-radius:12px;font-size:18px;text-align:right;transition:0.3s;cursor:pointer}
-.category-btn:hover,.category-btn:focus{background:#252d3a;border-color:#f2b01e;outline:none}
+.item-name{
+ font-size:13px;
+ line-height:1.4;
+ height:36px;
+ overflow:hidden;
+}
 
-/* شبكة المحتوى */
-.grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));gap:25px;padding:30px 4%}
-.grid .card{width:100%;height:330px}
+.item-type{
+ font-size:11px;
+ color:#929bad;
+ margin-top:5px;
+}
 
-/* نافذة التفاصيل (Modal) */
-.modal-bg{position:fixed;inset:0;background:rgba(7,11,20,0.95);z-index:100;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(10px)}
-.modal{background:#141923;border:1px solid #252d3a;border-radius:20px;max-width:900px;width:100%;max-height:90vh;overflow-y:auto;position:relative;display:flex;gap:30px;padding:30px}
-.modal-close{position:absolute;top:20px;left:20px;background:#252a36;border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;z-index:10}
-.modal-poster{width:300px;flex-shrink:0;border-radius:15px;overflow:hidden}
-.modal-poster img{width:100%;height:auto;display:block;object-fit:cover}
-.modal-info{flex:1;display:flex;flex-direction:column}
-.modal-title{font-size:32px;font-weight:bold;margin-bottom:15px}
-.modal-meta{display:flex;gap:15px;color:#aab1c0;font-size:16px;margin-bottom:20px;flex-wrap:wrap}
-.modal-meta .gold{color:#f2b01e;font-weight:bold}
-.modal-plot{font-size:16px;line-height:1.7;color:#ccc;margin-bottom:30px}
-.modal-actions{display:flex;gap:15px;margin-top:auto;flex-wrap:wrap}
-.btn-primary{background:#f2b01e;color:#000;font-weight:bold;padding:15px 30px;border-radius:10px;font-size:18px;display:flex;align-items:center;gap:10px;transition:0.3s}
-.btn-primary:hover{background:#d9a94e}
-.btn-secondary{background:#252a36;color:#fff;padding:15px 30px;border-radius:10px;font-size:18px;display:flex;align-items:center;gap:10px;transition:0.3s}
-.btn-secondary:hover{background:#353b4a}
+@media(max-width:1000px){
+ .item{width:24%}
+ .poster{height:220px}
+}
 
-/* المشغل */
-#playerLayer{display:none;position:fixed;inset:0;background:#000;z-index:200;align-items:center;justify-content:center}
-#video{width:100%;height:100%;object-fit:contain}
-.player-close{position:absolute;top:30px;right:30px;background:rgba(0,0,0,0.6);border:2px solid #fff;color:#fff;width:50px;height:50px;border-radius:50%;font-size:24px;display:flex;align-items:center;justify-content:center;z-index:210;cursor:pointer}
-.player-close:hover{background:#f2b01e;color:#000;border-color:#f2b01e}
-
-@media(max-width:768px){
- .modal{flex-direction:column;padding:20px}
- .modal-poster{width:100%;max-width:250px;margin:0 auto}
- .main-categories{gap:10px}
- .cat-box{width:100px;height:100px;border-radius:15px}
- .cat-icon{width:30px;height:30px}
- .cat-title{font-size:14px}
- .hero{height:200px}
- .hero-title{font-size:24px}
- .hero-sub{font-size:14px}
+@media(max-width:700px){
+ .item{width:32%}
+ .poster{height:190px}
+}
+ 
+.item-info{padding:8px}
+.item-name{font-size:13px;line-height:1.4;height:36px;overflow:hidden}
+.item-type{font-size:11px;color:#929bad;margin-top:5px}
+.empty{color:#9da5b5;text-align:center;padding:35px 10px;background:#131823;border-radius:8px}
+.category-list{display:flex;flex-direction:column;gap:10px;max-width:650px;margin:20px auto}
+.category{width:100%;padding:17px 20px;text-align:right;background:#171e2a;color:#eee;border:1px solid #303a49;border-radius:6px;font-size:17px}
+.category:focus,.category:hover{background:#302a1e;border-color:#d9a94e}
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;background:#141923;border:1px solid #293242;padding:12px;border-radius:7px;margin-bottom:20px}
+.toolbar-group{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.toolbar button{padding:10px 14px}
+.toolbar input{background:#090d15;color:white;border:1px solid #343d4c;padding:10px;border-radius:5px;width:170px}
+.page-count{color:#e7b85c;font-size:14px;white-space:nowrap}
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:radial-gradient(circle at center,#202938,#090b10 70%)}
+.login{width:100%;max-width:430px;background:#141923;border:1px solid #303746;border-radius:12px;padding:35px}
+.login h1{text-align:center;color:#e7b85c;letter-spacing:3px}
+.login p{text-align:center;color:#9da5b5}
+.field{margin:15px 0}
+.field label{display:block;color:#aab1c0;font-size:13px;margin-bottom:8px}
+.field input{width:100%;padding:13px;background:#090d15;color:white;border:1px solid #343d4c;border-radius:5px;font-size:15px}
+.login button{width:100%;margin-top:15px}
+#message{color:#ff8585;font-size:13px;margin-top:15px;text-align:center}
+.modal-bg{position:fixed;top:0;left:0;right:0;bottom:0;background:#070b14;z-index:30;display:none;align-items:stretch;justify-content:center;padding:0}
+.modal{width:100%;height:100%;max-width:none;max-height:none;overflow:hidden;background:transparent;border:0;border-radius:0;padding:0}
+.modal-content{display:flex;gap:22px}
+.modal-poster{width:180px;height:260px;object-fit:cover;background:#222}
+.modal p{color:#aab1c0;line-height:1.6}
+.modal-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.episode{padding:13px;background:#242c3a;border-radius:5px;margin:8px 0;cursor:pointer}
+#playerLayer{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:#000;z-index:50;align-items:center;justify-content:center}
+#video{position:fixed;top:0;left:0;width:100vw;height:100vh;margin:0;padding:0;object-fit:contain;background:#000}
+.osd{position:absolute;left:0;right:0;z-index:3;-webkit-transition:opacity .3s;transition:opacity .3s}
+#playerLayer.hide .osd{opacity:0}
+#playerLayer.hide{cursor:none}
+.osd-top{top:0;padding:18px 3% 50px;background:-webkit-linear-gradient(rgba(0,0,0,.88),rgba(0,0,0,0));background:linear-gradient(rgba(0,0,0,.88),rgba(0,0,0,0));direction:ltr;display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;-webkit-justify-content:space-between;justify-content:space-between}
+.top-left{display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;font-size:20px;color:#eee;white-space:nowrap}
+.top-left .sep{width:1px;height:30px;background:rgba(255,255,255,.35);margin:0 18px}
+.top-right{display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;direction:rtl;min-width:0}
+.brand{display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;color:#f2b01e;font-size:30px;font-weight:bold;letter-spacing:1px;direction:ltr;margin-left:18px}
+.brand span{display:block;margin-right:8px}
+#playingTitle{font-size:22px;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:46vw}
+#liveBadge{display:none;background:#d33;color:#fff;font-size:12px;font-weight:bold;padding:3px 9px;border-radius:4px;margin-right:12px}
+.osd-sub{top:105px;text-align:center;font-size:40px;font-weight:bold;color:#fff;text-shadow:0 2px 12px #000,0 0 4px #000;padding:0 6%;direction:rtl;line-height:1.4}
+.osd-bottom{bottom:0;padding:60px 3% 22px;background:-webkit-linear-gradient(rgba(0,0,0,0),rgba(0,0,0,.9));background:linear-gradient(rgba(0,0,0,0),rgba(0,0,0,.9))}
+.osd-bar-row{display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;direction:ltr}
+#timeCur,#timeTot{font-size:22px;font-weight:bold;color:#fff;min-width:78px;white-space:nowrap}
+#timeCur{text-align:left;margin-right:14px}
+#timeTot{text-align:right;margin-left:14px}
+.bar{position:relative;-webkit-flex:1;flex:1;height:6px;background:rgba(255,255,255,.3);border-radius:3px;cursor:pointer}
+.bar:after{content:"";position:absolute;left:0;right:0;top:-14px;bottom:-14px}
+.bar div{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:3px}
+#barBuf{background:rgba(255,255,255,.35)}
+#barPos{background:#f2b01e}
+.bar.seeking #barPos{background:#fff}
+#barKnob{top:50%;bottom:auto;width:20px;height:20px;border-radius:50%;background:#f2b01e;margin:-10px 0 0 -10px;box-shadow:0 0 10px rgba(242,176,30,.9)}
+.bar.seeking #barKnob{background:#fff}
+.ctl-row{display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;direction:ltr;margin-top:20px}
+.ctl-side{-webkit-flex:1;flex:1;display:-webkit-flex;display:flex}
+.ctl-left{-webkit-justify-content:flex-start;justify-content:flex-start}
+.ctl-right{-webkit-justify-content:flex-end;justify-content:flex-end}
+.ctl-main{display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center}
+.cbtn{width:78px;height:62px;padding:0;margin:0 6px;border-radius:28px;border:1px solid rgba(255,255,255,.25);background:rgba(70,70,76,.6);color:#fff}
+.cbtn-wide{width:100px}
+.cbtn:hover,.cbtn:focus{background:rgba(242,176,30,.38);border-color:#f2b01e;outline:none}
+.cbtn svg{display:block;margin:0 auto}
+.cbtn-play{width:100px;height:100px;padding:0;margin:0 10px;border-radius:50%;border:5px solid #f2b01e;background:rgba(18,18,20,.88);color:#fff;box-shadow:0 0 24px rgba(242,176,30,.55)}
+.cbtn-play:hover,.cbtn-play:focus{outline:none;box-shadow:0 0 34px rgba(242,176,30,.95)}
+.cbtn-play svg{display:block;margin:0 auto}
+.osd-hint{text-align:center;color:#8f98aa;font-size:12px;margin-top:14px;line-height:1.7;direction:rtl}
+#plPanel{display:none;position:absolute;top:0;right:0;bottom:0;width:34%;max-width:480px;min-width:300px;background:rgba(8,10,16,.95);border-left:1px solid #333;z-index:8;direction:rtl}
+#plTitle{font-size:22px;font-weight:bold;color:#f2b01e;padding:22px 20px 14px}
+#plBody{position:absolute;top:66px;left:0;right:0;bottom:10px;overflow-y:auto;padding:0 16px}
+.pl-item{padding:14px 16px;margin:6px 0;border-radius:8px;background:#1c2230;color:#fff;font-size:17px;line-height:1.5;cursor:pointer;text-align:right}
+.pl-item.cur{border:1px solid #f2b01e}
+.pl-item:focus,.pl-item:hover{outline:3px solid #f2b01e;outline-offset:0;background:#2a3042}
+#buffering{display:none;position:absolute;top:50%;left:50%;margin:-30px 0 0 -30px;z-index:4}
+.spinner{width:60px;height:60px;border:6px solid #ffffff33;border-top-color:#f2b01e;border-radius:50%;-webkit-animation:spin 1s linear infinite;animation:spin 1s linear infinite}
+@-webkit-keyframes spin{to{-webkit-transform:rotate(360deg)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+#seekPop{display:none;position:absolute;top:50%;left:50%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%);z-index:5;background:rgba(0,0,0,.7);color:#fff;font-size:38px;padding:14px 34px;border-radius:14px;white-space:nowrap}
+#seekPop svg{display:inline-block;vertical-align:middle;margin:0 10px}
+#seekPop span{direction:ltr;unicode-bidi:embed;display:inline-block;vertical-align:middle}
+.episode.last{border:1px solid #f2b01e}
+.episode.last:after{content:"  (آخر مشاهدة)";color:#f2b01e;font-size:12px}
+.category.special{border-color:#6b5a2e;background:#221d12}
+.dp{position:relative;width:100%;height:100%;overflow:hidden;color:#fff;direction:rtl;background:#070b14}
+.dp-bg{position:absolute;top:0;left:0;right:0;bottom:0;background-size:cover;background-position:center;opacity:.4}
+.dp-shade{position:absolute;top:0;left:0;right:0;bottom:0;background:-webkit-linear-gradient(left,rgba(7,11,20,.95),rgba(7,11,20,.72) 55%,rgba(7,11,20,.93));background:linear-gradient(90deg,rgba(7,11,20,.95),rgba(7,11,20,.72) 55%,rgba(7,11,20,.93))}
+.dp-top{position:relative;height:9vh;padding:0 3vw;display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;-webkit-justify-content:space-between;justify-content:space-between}
+.dp-brand{display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;color:#f2b01e;font-size:4vh;font-weight:bold;letter-spacing:1px;direction:ltr}
+.dp-brand span{margin-left:1vh}
+.dp-clock{display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;direction:ltr;font-size:2.6vh;color:#eee;white-space:nowrap}
+.dp-sep{display:inline-block;width:1px;height:2.6vh;background:rgba(255,255,255,.4);margin:0 1.4vw}
+.dp-main{position:relative;display:-webkit-flex;display:flex;height:91vh;padding:1vh 3vw 2vh}
+.dp-right{-webkit-flex:1;flex:1;min-width:0;display:-webkit-flex;display:flex;-webkit-flex-direction:column;flex-direction:column;overflow:hidden}
+.dp-left{width:22vw;-webkit-flex:none;flex:none;margin-right:3vw;display:-webkit-flex;display:flex;-webkit-flex-direction:column;flex-direction:column;overflow:hidden}
+.dp-poster{-webkit-flex:1;flex:1;min-height:0;display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;-webkit-justify-content:center;justify-content:center;margin-bottom:.4vh}
+.dp-poster img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;border-radius:1.6vh;border:2px solid rgba(120,150,255,.55);background:#101626}
+.dp-poster-fb{width:23.6vh;height:35vh;border-radius:1.6vh;border:2px solid rgba(120,150,255,.55);background:-webkit-linear-gradient(#232c52,#0e1326);background:linear-gradient(#232c52,#0e1326);display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;-webkit-justify-content:center;justify-content:center;text-align:center;padding:2vh;font-size:3vh;font-weight:bold;line-height:1.3;overflow:hidden}
+.dp-actions{margin-top:1vh}
+.dbtn{display:-webkit-flex;display:flex;direction:rtl;-webkit-align-items:center;align-items:center;-webkit-justify-content:center;justify-content:center;width:100%;height:5.8vh;margin-top:.9vh;padding:0 1vh;border-radius:3vh;border:2px solid rgba(110,130,255,.55);background:rgba(28,38,86,.92);color:#fff;font-size:2.3vh;cursor:pointer;overflow:hidden;white-space:nowrap}
+.dbtn svg{-webkit-flex:none;flex:none;margin-left:1vh}
+.dbtn span{overflow:hidden;text-overflow:ellipsis}
+.dbtn.gold{border-color:#f2b01e;background:rgba(54,44,18,.94)}
+.dbtn:hover,.dbtn:focus{outline:none;border-color:#f2b01e;background:rgba(98,74,18,.95);box-shadow:0 0 14px rgba(242,176,30,.75)}
+.dp-title{margin:0;font-size:5.6vh;font-weight:bold;line-height:1.25;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.dp-meta{display:-webkit-flex;display:flex;-webkit-flex-wrap:wrap;flex-wrap:wrap;-webkit-align-items:center;align-items:center;font-size:2.5vh;color:#e6e9f2;margin:.8vh 0 1.2vh;min-height:3vh}
+.dp-meta .gold{color:#f2b01e;font-weight:bold}
+.dp-meta svg{vertical-align:middle;color:#f2b01e;margin-right:.5vh}
+.dp-box{border:1px solid rgba(120,150,255,.45);border-radius:1.4vh;background:rgba(14,20,44,.72);padding:1.1vh 1.6vw;-webkit-flex:none;flex:none}
+.dp-box h3{margin:0 0 .5vh;font-size:3vh;color:#f2b01e}
+.dp-box p{margin:0;font-size:2.4vh;line-height:1.55;color:#e4e8f2;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.dp-sec{font-size:3vh;color:#f2b01e;font-weight:bold;margin:1.4vh 0 .6vh}
+.dp-cast{display:-webkit-flex;display:flex;overflow:hidden;height:16vh;-webkit-flex:none;flex:none}
+.cast-i{width:13vh;margin-left:1.8vw;text-align:center;font-size:2vh;color:#e8ebf4;-webkit-flex:none;flex:none}
+.cast-av{position:relative;overflow:hidden;width:9.4vh;height:9.4vh;border-radius:50%;border:2px solid rgba(140,160,255,.7);display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;-webkit-justify-content:center;justify-content:center;margin:0 auto .6vh;font-size:3.4vh;font-weight:bold;color:#fff;direction:ltr}
+.cast-av img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover}
+.cast-n{line-height:1.25;max-height:2.6em;overflow:hidden;word-wrap:break-word}
+.dp-seasons{display:-webkit-flex;display:flex;-webkit-flex-wrap:wrap;flex-wrap:wrap;margin-bottom:.4vh}
+.chip{margin-left:.8vw;padding:.7vh 1.4vw;border-radius:3vh;border:1px solid rgba(255,255,255,.32);background:rgba(255,255,255,.08);color:#fff;font-size:2.1vh;cursor:pointer}
+.chip.on{background:#f2b01e;border-color:#f2b01e;color:#111;font-weight:bold}
+.chip:hover,.chip:focus{outline:none;box-shadow:0 0 12px rgba(242,176,30,.85);border-color:#f2b01e}
+.dp-eps{display:-webkit-flex;display:flex;overflow-x:auto;overflow-y:hidden;padding:.8vh .4vw 1.4vh;-webkit-flex:none;flex:none}
+.ep{position:relative;width:25vh;height:19vh;margin-left:1.3vw;-webkit-flex:none;flex:none;border-radius:1.6vh;overflow:hidden;border:2px solid rgba(160,120,255,.5);background:-webkit-linear-gradient(#1b2347,#0d1226);background:linear-gradient(#1b2347,#0d1226);cursor:pointer}
+.ep img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover}
+.ep.last{border-color:#f2b01e}
+.ep:hover,.ep:focus{outline:none;border-color:#f2b01e;box-shadow:0 0 18px rgba(242,176,30,.9)}
+.ep-info{position:absolute;bottom:0;left:0;right:0;padding:3.5vh 1vh 2.3vh;background:-webkit-linear-gradient(rgba(0,0,0,0),rgba(0,0,0,.94));background:linear-gradient(rgba(0,0,0,0),rgba(0,0,0,.94));display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;-webkit-justify-content:space-between;justify-content:space-between}
+.ep-txt{min-width:0;font-size:2.1vh;line-height:1.35}
+.ep-txt b{display:block;color:#fff}
+.ep-txt span{display:block;color:#f2b01e;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ep-play{-webkit-flex:none;flex:none;width:4vh;height:4vh;border-radius:50%;border:2px solid #fff;display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;-webkit-justify-content:center;justify-content:center;margin-right:.8vh}
+.ep-bar{position:absolute;left:1vh;right:1vh;bottom:.8vh;height:.6vh;border-radius:1vh;background:rgba(255,255,255,.3);direction:ltr}
+.ep-bar i{display:block;height:100%;border-radius:1vh;background:#f2b01e}
+.ep-badge{position:absolute;top:.8vh;left:.8vh;background:#f2b01e;color:#111;font-size:1.7vh;font-weight:bold;padding:.3vh 1vh;border-radius:1vh}
+.dp-wait{color:#aab1c0;font-size:2.3vh;padding:1vh 0}
+.dp-hint{color:#8f98aa;font-size:1.8vh;margin-top:.2vh}
+.ep-check{position:absolute;top:.8vh;right:.8vh;width:3.6vh;height:3.6vh;border-radius:50%;background:#2fa56a;display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;-webkit-justify-content:center;justify-content:center;color:#fff}
+.dbtn.on{border-color:#2fa56a;background:rgba(20,70,48,.92)}
+.item{position:relative}
+.wbadge{position:absolute;top:6px;left:6px;width:30px;height:30px;border-radius:50%;background:#2fa56a;color:#fff;display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;-webkit-justify-content:center;justify-content:center;z-index:2}
+#trailerLayer{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:#000;z-index:40}
+#trailerLayer iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0}
+#trailerLayer button{position:absolute;top:2vh;left:2vw;z-index:2;width:auto;padding:0 3vh;margin:0}
+.notice{background:#1a2631;border:1px solid #34485b;color:#b8c9d9;padding:12px;border-radius:6px;margin-bottom:20px;font-size:13px}
+@media(max-width:700px){
+ .header{height:auto;min-height:70px;flex-wrap:wrap;padding:12px}
+ .nav{order:3;width:100%;margin:10px 0 0;overflow-x:auto}
+ .hero{padding:25px}.hero h1{font-size:25px}
+ .modal-content{flex-direction:column}
+ .modal-poster{width:130px;height:190px}
 }
 </style>
 </head>
 <body>
-
-<!-- الحاوية الرئيسية التي سيتغير محتواها بناءً على الصفحة -->
 <div id="app"></div>
 
-<!-- نافذة التفاصيل -->
 <div class="modal-bg" id="modalBg">
- <div class="modal" id="modalContent">
-  <div class="modal-close" onclick="closeModal()">✕</div>
-  <div class="modal-poster"><img id="modalImg" src="" alt=""></div>
-  <div class="modal-info">
-   <h1 class="modal-title" id="modalTitle">اسم الفيلم</h1>
-   <div class="modal-meta" id="modalMeta"></div>
-   <div class="modal-plot" id="modalPlot"></div>
-   <div class="modal-actions">
-    <button class="btn-primary" onclick="playCurrent()">▶ تشغيل الآن</button>
-    <button class="btn-secondary" id="favBtn" onclick="toggleFavorite()">⭐ إضافة للمفضلة</button>
-   </div>
-  </div>
- </div>
+ <div class="modal" id="modal"></div>
 </div>
 
-<!-- المشغل -->
+<div id="trailerLayer"><button class="dbtn" onclick="closeTrailer()">إغلاق الإعلان</button><iframe id="trailerFrame" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>
+
 <div id="playerLayer">
- <video id="video" autoplay controls></video>
- <div class="player-close" onclick="closePlayer()">✕</div>
+ <video id="video" autoplay></video>
+ <div id="buffering"><div class="spinner"></div></div>
+ <div id="seekPop"></div>
+
+ <div class="osd osd-top">
+  <div class="top-left"><span id="clockDate"></span><span class="sep"></span><span id="clockText"></span></div>
+  <div class="top-right">
+   <div class="brand"><span data-icon="logo" data-size="36"></span>MORA IPTV</div>
+   <span id="playingTitle">MORA IPTV</span><span id="liveBadge">LIVE</span>
+  </div>
+ </div>
+ <div class="osd osd-sub" id="subTitle"></div>
+
+ <div class="osd osd-bottom">
+  <div class="osd-bar-row">
+   <span id="timeCur">00:00</span>
+   <div class="bar" id="barWrap" onclick="barClick(event)"><div id="barBuf"></div><div id="barPos"></div><div id="barKnob"></div></div>
+   <span id="timeTot">00:00</span>
+  </div>
+  <div class="ctl-row">
+   <div class="ctl-side ctl-left">
+    <button class="cbtn" data-icon="list" data-size="30" onclick="openPanel('list')"></button>
+    <button class="cbtn" data-icon="cc" data-size="30" onclick="cycleSubs()"></button>
+   </div>
+   <div class="ctl-main">
+    <button class="cbtn cbtn-wide" data-icon="rew" data-size="34" onclick="stepSeek(-1)"></button>
+    <button class="cbtn cbtn-wide" data-icon="back10" data-size="36" onclick="jumpBy(-10)"></button>
+    <button class="cbtn-play" id="btnPlay" onclick="togglePlay()"></button>
+    <button class="cbtn cbtn-wide" data-icon="fwd10" data-size="36" onclick="jumpBy(10)"></button>
+    <button class="cbtn cbtn-wide" data-icon="ff" data-size="34" onclick="stepSeek(1)"></button>
+   </div>
+   <div class="ctl-side ctl-right">
+    <button class="cbtn" data-icon="prev" data-size="28" onclick="nextItem(-1)"></button>
+    <button class="cbtn" data-icon="next" data-size="28" onclick="nextItem(1)"></button>
+    <button class="cbtn" data-icon="gear" data-size="30" onclick="openPanel('settings')"></button>
+    <button class="cbtn" data-icon="return" data-size="30" onclick="closePlayer()"></button>
+   </div>
+  </div>
+  <div class="osd-hint">يمين / يسار: تقديم وتأخير مستمر (5 &middot; 10 &middot; 20 &middot; 60 &middot; 120 &middot; 300 ثانية كل ثانية) &nbsp;|&nbsp; OK: تشغيل / إيقاف &nbsp;|&nbsp; أعلى / أسفل: القناة أو الحلقة التالية والسابقة &nbsp;|&nbsp; أحمر: نسبة العرض &nbsp;|&nbsp; أخضر: الصوت &nbsp;|&nbsp; أصفر: الترجمة &nbsp;|&nbsp; أزرق: القائمة</div>
+ </div>
+ <div id="plPanel"><div id="plTitle"></div><div id="plBody"></div></div>
 </div>
 
 <script>
-// ================= المتغيرات العامة =================
-var SERVER="", USER="", PASS="";
-var CURRENT_PAGE="home", CURRENT_SECTION="", CURRENT_CATEGORY_ID="", CURRENT_CATEGORY_NAME="";
-var CATEGORIES=[], CONTENT=[];
-var CURRENT_ITEM=null, CURRENT_TYPE="";
-var FAVORITES=[], POSITIONS={};
-var RENDERED_ITEMS={}, RENDERED_COUNTER=0;
-var app = document.getElementById("app");
+(function(){
 
-// ================= الدوال المساعدة =================
-function $(id){ return document.getElementById(id); }
-function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
-function apiUrl(action, extra){ return SERVER.replace(/\/+$/, "") + "/player_api.php?username=" + encodeURIComponent(USER) + "&password=" + encodeURIComponent(PASS) + (action ? "&action=" + action : "") + (extra || ""); }
+var app=document.getElementById("app");
+var modalBg=document.getElementById("modalBg");
+var modal=document.getElementById("modal");
+var video=document.getElementById("video");
 
-function request(url, callback){
- if(!SERVER || !USER || !PASS){ callback("يرجى إدخال بيانات الاشتراك في الإعدادات"); return; }
- var xhr = new XMLHttpRequest();
- xhr.open("GET", url, true);
- xhr.timeout = 20000;
- xhr.onreadystatechange = function(){
-  if(xhr.readyState === 4){
-   if(xhr.status >= 200 && xhr.status < 300){ try { callback(null, JSON.parse(xhr.responseText)); } catch(e) { callback("خطأ في الاستجابة"); } }
-   else callback("فشل الاتصال (" + xhr.status + ")");
+var SERVER="",USER="",PASS="";
+var PAGE="home";
+var SECTION="";
+var CATEGORY_ID="";
+var CATEGORY_NAME="";
+var CATEGORIES=[];
+var CONTENT=[];
+var LIVE=[],MOVIES=[],SERIES=[];
+var FAVORITES=[],HISTORY=[];
+var CURRENT=null;
+var CURRENT_TYPE="";
+var CURRENT_PAGE=1;
+var PAGE_SIZE=12;
+var SEARCH="";
+var LAST_FOCUS=null,MODAL_OPENER=null,EPISODES=[];
+var SPROG={},PANEL="",LIST_KIND="";
+var DINFO=null,DSEASON=0,SEASONS=[],DERR=false,LISTS_DIRTY=false,OPENER_IDX=-1;
+var TMDB_KEY="",DCAST=null,CASTCACHE={};
+var SEEK_LADDER=[5,10,20,60,120,300];
+var seekCount=0,scanDir=0,seekTarget=null,seekTimer=null;
+var SCAN_TICK=1000;
+var osdTimer=null,popTimer=null,lastPosSave=0,POS={};
+var PLAYER={live:false,key:"",epIndex:-1,liveId:""};
+var ASPECTS=[["contain","الأصلي"],["cover","ملء الشاشة (قص)"],["fill","تمديد"]];
+var aspectIndex=0;
+var requestToken=0;
+ var RENDERED_ITEMS={};
+var RENDERED_COUNTER=0;
+var connected=false;
+var BackKey=461;
+
+function $(id){return document.getElementById(id)}
+
+function esc(s){
+ return String(s==null?"":s).replace(/[&<>"']/g,function(c){
+  return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
+ });
+}
+
+function loadSaved(){
+ try{
+  FAVORITES=JSON.parse(localStorage.getItem("mora_favorites")||"[]");
+  HISTORY=JSON.parse(localStorage.getItem("mora_history")||"[]");
+ }catch(e){FAVORITES=[];HISTORY=[]}
+}
+
+function saveLists(){
+ LISTS_DIRTY=true;
+ try{
+  localStorage.setItem("mora_favorites",JSON.stringify(FAVORITES));
+  localStorage.setItem("mora_history",JSON.stringify(HISTORY));
+ }catch(e){}
+}
+
+function credentialsSaved(){
+ try{
+  SERVER=localStorage.getItem("mora_server")||"";
+  USER=localStorage.getItem("mora_user")||"";
+  PASS=localStorage.getItem("mora_pass")||"";
+ }catch(e){}
+}
+
+function apiUrl(action,extra){
+ var url=SERVER.replace(/\/+$/,"");
+ return url+"/player_api.php?username="+encodeURIComponent(USER)+
+ "&password="+encodeURIComponent(PASS)+(action?"&action="+action:"")+(extra||"");
+}
+
+function request(url,callback){
+ var xhr=new XMLHttpRequest();
+ xhr.open("GET",url,true);
+ xhr.timeout=20000;
+ xhr.onreadystatechange=function(){
+  if(xhr.readyState===4){
+   if(xhr.status>=200&&xhr.status<300){
+    try{callback(null,JSON.parse(xhr.responseText))}
+    catch(e){callback("استجابة غير مفهومة من السيرفر")}
+   }else callback("تعذر الاتصال بالسيرفر ("+xhr.status+")");
   }
  };
- xhr.onerror = function(){ callback("خطأ في الشبكة"); };
- xhr.ontimeout = function(){ callback("انتهت المهلة"); };
+ xhr.onerror=function(){callback("حدث خطأ في الاتصال")};
+ xhr.ontimeout=function(){callback("انتهت مهلة الاتصال")};
  xhr.send();
 }
 
-function updateClock(){
- var now = new Date();
- var time = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
- var date = now.toLocaleDateString('ar-EG', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
- var clockEl = $("liveClock"); var dateEl = $("liveDate");
- if(clockEl) clockEl.innerText = time;
- if(dateEl) dateEl.innerText = date;
+function showLogin(error){
+ connected=false;
+ app.innerHTML='<div class="login-wrap"><div class="login">'+
+ '<h1>MORA IPTV</h1><p>YOUR ENTERTAINMENT WORLD</p>'+
+ '<div class="field"><label>Server URL</label><input id="serverInput" placeholder="http://example.com:8080" value="'+esc(SERVER)+'"></div>'+
+ '<div class="field"><label>Username</label><input id="userInput" value="'+esc(USER)+'"></div>'+
+ '<div class="field"><label>Password</label><input id="passInput" type="password" value="'+esc(PASS)+'"></div>'+
+ '<button class="primary" onclick="connect()">اتصال بالسيرفر</button>'+
+ '<div id="message">'+esc(error||"أدخل بيانات اشتراك Xtream Codes")+'</div></div></div>';
 }
-setInterval(updateClock, 1000);
 
-function loadSavedData(){
- try { FAVORITES = JSON.parse(localStorage.getItem("mora_favorites") || "[]"); } catch(e){ FAVORITES = []; }
- try { POSITIONS = JSON.parse(localStorage.getItem("mora_positions") || "{}"); } catch(e){ POSITIONS = {}; }
- try { SERVER = localStorage.getItem("mora_server") || ""; USER = localStorage.getItem("mora_user") || ""; PASS = localStorage.getItem("mora_pass") || ""; } catch(e){}
+function connect(){
+ var s=$("serverInput"),u=$("userInput"),p=$("passInput");
+ if(s){SERVER=s.value.replace(/\/+$/,"");USER=u.value;PASS=p.value}
+ if(!SERVER||!USER||!PASS){showLogin("من فضلك أدخل جميع البيانات");return}
+ if($("message"))$("message").innerHTML="جاري الاتصال...";
+ request(apiUrl(""),function(err,data){
+  if(err||!data||!data.user_info||Number(data.user_info.auth)!==1){
+   showLogin(err||"بيانات الاشتراك غير صحيحة");return;
+  }
+  try{
+   localStorage.setItem("mora_server",SERVER);
+   localStorage.setItem("mora_user",USER);
+   localStorage.setItem("mora_pass",PASS);
+  }catch(e){}
+  connected=true;
+  PAGE="home";
+  render();
+ });
 }
-function saveFavorites(){ try { localStorage.setItem("mora_favorites", JSON.stringify(FAVORITES)); } catch(e){} }
-function savePositions(){ try { localStorage.setItem("mora_positions", JSON.stringify(POSITIONS)); } catch(e){} }
 
-function isFavorite(item, type){
- var id = String(item.stream_id || item.series_id || item.id);
- for(var i=0; i<FAVORITES.length; i++){ if(String(FAVORITES[i].id) === id && FAVORITES[i].type === type) return true; }
+function headerCur(){
+ return (PAGE==="categories"||PAGE==="content"||PAGE==="list")?SECTION:PAGE;
+}
+function headerHTML(){
+ var nav=[
+  ["home","الرئيسية"],["live","القنوات"],["movies","الأفلام"],
+  ["series","المسلسلات"],["settings","الإعدادات"]
+ ];
+ var h='<div class="header"><div class="logo">MORA IPTV<small>YOUR ENTERTAINMENT WORLD</small></div><div class="nav">';
+ for(var i=0;i<nav.length;i++){
+  h+='<button class="'+(headerCur()===nav[i][0]?"active":"")+'" onclick="goPage(\''+nav[i][0]+'\')">'+nav[i][1]+'</button>';
+ }
+ return h+'</div></div>';
+}
+
+function render(){
+ RENDERED_ITEMS={};RENDERED_COUNTER=0;
+ if(!connected){showLogin();return}
+ var html="";
+ if(PAGE==="home"){
+  html='<div class="hero"><h1>YOUR ENTERTAINMENT WORLD</h1>'+
+  '<p>اكتشف عالمًا من الأفلام والمسلسلات والقنوات في مكان واحد.</p>'+
+  '<button class="primary" onclick="goPage(\'movies\')">استكشف الأفلام</button></div>'+
+  '<h2 class="section-title">الأفلام</h2>'+drawItems(MOVIES,"movie",12)+
+  '<h2 class="section-title">المسلسلات</h2>'+drawItems(SERIES,"series",12)+
+  '<h2 class="section-title">القنوات</h2>'+drawItems(LIVE,"live",12);
+ }
+ else if(PAGE==="categories"){
+  html=renderCategories();
+ }
+ else if(PAGE==="content"){
+  html=renderContent();
+ }
+ else if(PAGE==="list"){
+  html=renderList();
+ }
+ else if(PAGE==="settings"){
+  html='<h2 class="section-title">الإعدادات</h2><div class="notice">بيانات الاشتراك محفوظة على هذا الجهاز.</div>'+
+  '<div class="notice">سيرفر IPTV بيرجّع أسماء الممثلين بس. لعرض صورهم: اعمل حساب مجاني على themoviedb.org، وخد API Key (v3) من Settings ثم API، والصقه هنا.</div>'+
+  '<div class="field"><label>مفتاح TMDB لصور الممثلين (اختياري)</label><input id="tmdbInput" value="'+esc(TMDB_KEY)+'" placeholder="32 حرف" style="max-width:420px"></div>'+
+  '<button class="primary" onclick="saveTmdbKey()">حفظ المفتاح</button> '+
+  '<button class="secondary" onclick="logout()">تغيير الاشتراك / تسجيل الخروج</button>';
+ }
+ app.innerHTML=headerHTML()+'<div class="page">'+html+'</div>';
+}
+
+function drawItems(list,type,limit){
+ if(!list||!list.length)
+  return '<div class="empty">لا يوجد محتوى للعرض</div>';
+
+ var count=Math.min(list.length,limit||12);
+ var h='<div class="grid">';
+
+ for(var i=0;i<count;i++){
+  var x=list[i];
+  var t=type;
+  if(x.data){t=x.type||type;x=x.data}
+  t=realType(x,t);
+  var name=x.name||x.title||"بدون اسم";
+  var img=x.stream_icon||x.cover||x.movie_image||x.backdrop_path||"";
+
+  RENDERED_COUNTER++;
+  var key="mora_item_"+RENDERED_COUNTER;
+  RENDERED_ITEMS[key]={item:x,type:t};
+
+  h+='<div class="item" tabindex="0" '+
+  'data-item-key="'+key+'" '+
+  'onclick="openRenderedItem(this.getAttribute(\'data-item-key\'))">'+
+  '<img class="poster" src="'+esc(img)+'" '+
+  'onerror="this.style.display=\'none\'">'+
+  (isWatchedItem(x,t)?'<div class="wbadge">'+icon("check",18)+'</div>':'')+
+  '<div class="item-info">'+
+  '<div class="item-name">'+esc(name)+'</div>'+
+  '<div class="item-type">'+
+  typeLabel(x,t)+
+'</div></div></div>';
+ }
+
+ h+='</div>';
+ return h;
+}
+ 
+function itemId(item){
+ return String(item.stream_id||item.series_id||item.id||"");
+}
+
+function goPage(page){
+ SEARCH="";
+ requestToken++;
+ if(page==="live"||page==="movies"||page==="series"){
+  SECTION=page;
+  PAGE="categories";
+  CATEGORY_ID="";
+  CATEGORY_NAME="";
+  CATEGORIES=[];
+  loadCategories();
+  return;
+ }
+ PAGE=page;
+ render();
+}
+
+function loadCategories(){
+ var action=SECTION==="live"?"get_live_categories":
+ SECTION==="movies"?"get_vod_categories":"get_series_categories";
+ app.innerHTML=headerHTML()+'<div class="page"><div class="empty">جاري تحميل التصنيفات...</div></div>';
+ var token=++requestToken;
+ request(apiUrl(action),function(err,data){
+  if(token!==requestToken)return;
+  if(err||!Array.isArray(data)){
+   app.innerHTML=headerHTML()+'<div class="page"><div class="empty">'+esc(err||"لم يتم العثور على التصنيفات")+'</div><button class="secondary" onclick="loadCategories()">إعادة المحاولة</button></div>';
+   return;
+  }
+  CATEGORIES=data;
+  render();
+ });
+}
+
+function renderCategories(){
+ var title=SECTION==="live"?"القنوات":SECTION==="movies"?"الأفلام":"المسلسلات";
+ var h='<h2 class="section-title">'+title+' - اختر التصنيف</h2>';
+ h+='<div class="category-list">';
+ h+='<button class="category special" onclick="openList(\'favorites\')">المفضلة ('+listFor("favorites").length+')</button>';
+ h+='<button class="category special" onclick="openList(\'history\')">تابع المشاهدة ('+listFor("history").length+')</button>';
+ h+='<button class="category" onclick="chooseCategory(\'\',\'جميع '+title+'\')">جميع '+title+'</button>';
+ for(var i=0;i<CATEGORIES.length;i++){
+  var c=CATEGORIES[i];
+  h+='<button class="category" onclick="chooseCategory(\''+esc(c.category_id)+'\',\''+esc(c.category_name)+'\')">'+esc(c.category_name)+'</button>';
+ }
+ h+='</div>';
+ return h;
+}
+
+function chooseCategory(id,name){
+ CATEGORY_ID=id;
+ CATEGORY_NAME=name;
+ CURRENT_PAGE=1;
+ SEARCH="";
+ PAGE="content";
+ loadCategoryContent();
+}
+
+function loadCategoryContent(){
+ var token=++requestToken;
+ app.innerHTML=headerHTML()+'<div class="page"><div class="empty">جاري تحميل '+esc(CATEGORY_NAME)+'...</div></div>';
+ var action=SECTION==="live"?"get_live_streams":
+ SECTION==="movies"?"get_vod_streams":"get_series";
+ var extra=CATEGORY_ID?"&category_id="+encodeURIComponent(CATEGORY_ID):"";
+ request(apiUrl(action,extra),function(err,data){
+  if(token!==requestToken)return;
+  if(err||!Array.isArray(data)){
+   CONTENT=[];
+   render();
+   return;
+  }
+  CONTENT=data;
+  if(SECTION==="live")LIVE=data;
+  else if(SECTION==="movies")MOVIES=data;
+  else SERIES=data;
+  render();
+ });
+}
+
+function renderContent(){
+ var filtered=CONTENT;
+ if(SEARCH){
+  filtered=[];
+  for(var i=0;i<CONTENT.length;i++){
+   var n=String(CONTENT[i].name||CONTENT[i].title||"").toLowerCase();
+   if(n.indexOf(SEARCH.toLowerCase())>=0)filtered.push(CONTENT[i]);
+  }
+ }
+ var total=Math.max(1,Math.ceil(filtered.length/PAGE_SIZE));
+ if(CURRENT_PAGE>total)CURRENT_PAGE=total;
+ var start=(CURRENT_PAGE-1)*PAGE_SIZE;
+ var pageItems=filtered.slice(start,start+PAGE_SIZE);
+ var type=SECTION==="live"?"live":SECTION==="series"?"series":"movie";
+ var h='<div class="toolbar"><div class="toolbar-group">'+
+ '<button class="secondary" onclick="previousPage()">السابق</button>'+
+ '<span class="page-count">صفحة '+CURRENT_PAGE+' من '+total+'</span>'+
+ '<button class="secondary" onclick="nextPage()">التالي</button></div>'+
+ '<div class="toolbar-group"><input id="searchInput" placeholder="بحث في التصنيف..." value="'+esc(SEARCH)+'" onkeydown="if(event.keyCode===13)doSearch()">'+
+ '<button class="secondary" onclick="doSearch()">بحث</button>'+
+ '<button class="secondary" onclick="goPage(\'home\')">الرئيسية</button>'+
+ '<button class="secondary" onclick="loadCategoryContent()">تحديث</button>'+
+ '<button class="secondary" onclick="backCategories()">التصنيفات</button></div></div>';
+ h+='<h2 class="section-title">'+esc(CATEGORY_NAME)+'</h2>';
+ h+=pageItems.length?drawItems(pageItems,type,12):'<div class="empty">لا توجد نتائج في هذا التصنيف</div>';
+ return h;
+}
+
+function previousPage(){
+ if(CURRENT_PAGE>1){CURRENT_PAGE--;render()}
+}
+function nextPage(){
+ var filtered=CONTENT;
+ if(SEARCH){
+  filtered=[];
+  for(var i=0;i<CONTENT.length;i++){
+   if(String(CONTENT[i].name||CONTENT[i].title||"").toLowerCase().indexOf(SEARCH.toLowerCase())>=0)filtered.push(CONTENT[i]);
+  }
+ }
+ var total=Math.ceil(filtered.length/PAGE_SIZE);
+ if(CURRENT_PAGE<total){CURRENT_PAGE++;render()}
+}
+function doSearch(){
+ var input=$("searchInput");
+ SEARCH=input?input.value:"";
+ CURRENT_PAGE=1;
+ render();
+}
+function backCategories(){
+ PAGE="categories";
+ SEARCH="";
+ loadCategories();
+}
+
+function realType(item,type){
+ if(type==="live"||type==="movie"||type==="series")return type;
+ if(item&&item.series_id)return "series";
+ if(item&&item.stream_type==="live")return "live";
+ return "movie";
+}
+function typeLabel(item,t){
+ if(t==="live")return "قناة";
+ if(t==="movie")return "فيلم";
+ if(t==="series"){
+  var sp=SPROG[String(item.series_id)];
+  if(sp&&sp.num!==""&&sp.num!=null)return "مسلسل - الحلقة "+sp.num;
+  return "مسلسل";
+ }
+ return "";
+}
+function sectionType(){return SECTION==="live"?"live":SECTION==="series"?"series":"movie"}
+function sectionTitle(){return SECTION==="live"?"القنوات":SECTION==="movies"?"الأفلام":"المسلسلات"}
+function listFor(kind){
+ var src=kind==="favorites"?FAVORITES:HISTORY,out=[],want=sectionType();
+ for(var i=0;i<src.length;i++){
+  var d=src[i].data||src[i];
+  if(realType(d,src[i].type)===want)out.push(src[i]);
+ }
+ return out;
+}
+function openList(kind){
+ LIST_KIND=kind;
+ PAGE="list";
+ render();
+}
+function renderList(){
+ var items=listFor(LIST_KIND);
+ var name=LIST_KIND==="favorites"?"المفضلة":"تابع المشاهدة";
+ var h='<div class="toolbar"><div class="toolbar-group">'+
+ '<button class="secondary" onclick="backCategories()">التصنيفات</button>'+
+ '<button class="secondary" onclick="goPage(\'home\')">الرئيسية</button></div></div>';
+ h+='<h2 class="section-title">'+esc(name)+' - '+sectionTitle()+'</h2>';
+ h+=items.length?drawItems(items,sectionType(),items.length):'<div class="empty">لا يوجد محتوى هنا بعد</div>';
+ return h;
+}
+function loadSprog(){
+ try{SPROG=JSON.parse(localStorage.getItem("mora_series")||"{}")}catch(e){SPROG={}}
+}
+function saveSprog(){
+ try{localStorage.setItem("mora_series",JSON.stringify(SPROG))}catch(e){}
+}
+
+function openItem(type,id){
+ var list=type==="live"?LIVE:type==="series"?SERIES:type==="movie"?MOVIES:type==="favorite"?FAVORITES:HISTORY;
+ var item=null;
+ for(var i=0;i<list.length;i++){
+  var x=list[i].data||list[i];
+  if(itemId(x)===String(id)){item=x;break}
+ }
+ if(!item)return;
+ showDetails(item,type);
+}
+
+ function openRenderedItem(key){
+ var entry=RENDERED_ITEMS[key];
+
+ if(!entry || !entry.item)return;
+
+ showDetails(entry.item,entry.type);
+ }
+ 
+function isFavorite(item){
+ var id=itemId(item);
+ for(var i=0;i<FAVORITES.length;i++){
+  if(itemId(FAVORITES[i].data||FAVORITES[i])===id)return true;
+ }
  return false;
 }
-function getProgress(item, type){
- var id = String(item.stream_id || item.series_id || item.id);
- var p = POSITIONS[type + "_" + id];
- if(p && p.duration > 0 && !p.done) return Math.round((p.position / p.duration) * 100);
+function toggleFavorite(item){
+ var id=itemId(item),found=-1;
+ for(var i=0;i<FAVORITES.length;i++){
+  if(itemId(FAVORITES[i].data||FAVORITES[i])===id){found=i;break}
+ }
+ if(found>=0)FAVORITES.splice(found,1);
+ else FAVORITES.push({id:id,name:item.name||item.title,image:item.stream_icon||item.cover||"",data:item,type:CURRENT?CURRENT.type:"movie"});
+ saveLists();
+ if(CURRENT)renderDetails("fav");
+}
+
+function resumeLabel(sp){
+ var s="استكمال المشاهدة - ";
+ if(sp.season!==""&&sp.season!=null)s+="الموسم "+sp.season+" ";
+ if(sp.num!==""&&sp.num!=null)s+="الحلقة "+sp.num;
+ else s+=sp.title;
+ return s;
+}
+
+function firstImg(v){
+ if(v&&typeof v==="object"&&v.length)return String(v[0]||"");
+ return typeof v==="string"?v:"";
+}
+function ordinal(n){
+ var o=["","الأول","الثاني","الثالث","الرابع","الخامس","السادس","السابع","الثامن","التاسع","العاشر"];
+ n=Number(n);
+ return (n>=1&&n<=10)?o[n]:String(n);
+}
+function ytId(v){
+ v=String(v||"").replace(/^\s+|\s+$/g,"");
+ if(!v)return "";
+ var m=/(?:v=|youtu\.be\/|embed\/)([A-Za-z0-9_-]{11})/.exec(v);
+ if(m)return m[1];
+ if(/^[A-Za-z0-9_-]{11}$/.test(v))return v;
+ return "";
+}
+function yearOf(v){var m=/(\d{4})/.exec(String(v||""));return m?m[1]:""}
+function castNames(info){
+ var c=info&&info.cast?String(info.cast):"";
+ var parts=c.split(/[,،\/|]/),out=[];
+ for(var i=0;i<parts.length;i++){
+  var n=parts[i].replace(/^\s+|\s+$/g,"");
+  if(n)out.push(n);
+  if(out.length>=7)break;
+ }
+ return out;
+}
+function initials(n){
+ var w=n.split(/\s+/);
+ var a=w[0]?w[0].charAt(0):"",b=w.length>1?w[w.length-1].charAt(0):"";
+ return (a+b).toUpperCase();
+}
+var AVC=["#3b4f9a","#7a3b9a","#9a3b5a","#2f7f7a","#9a7a2f","#4a7a2f"];
+function avColor(n){var h=0;for(var i=0;i<n.length;i++)h=(h*31+n.charCodeAt(i))%997;return AVC[h%AVC.length]}
+function movieDuration(info){
+ var sec=Number(info.duration_secs);
+ if(!(sec>0)&&info.duration){
+  var p=String(info.duration).split(":");
+  if(p.length===3)sec=(+p[0])*3600+(+p[1])*60+(+p[2]);
+ }
+ if(!(sec>0)||!isFinite(sec))return "";
+ var h=Math.floor(sec/3600),m=Math.round(sec%3600/60);
+ return (h?h+" ساعة ":"")+(m?m+" دقيقة":"");
+}
+function inHistory(item){
+ var id=itemId(item);
+ for(var i=0;i<HISTORY.length;i++){
+  if(itemId(HISTORY[i].data||HISTORY[i])===id)return true;
+ }
+ return false;
+}
+function epProgress(ep){
+ var r=POS["ep_"+ep.id];
+ if(!r)return 0;
+ if(r.done)return 100;
+ if(r.d>0)return Math.max(0,Math.min(100,Math.round(r.p/r.d*100)));
  return 0;
 }
+function dBtn(id,label,ic,onclick,cls){
+ return '<button class="dbtn'+(cls?" "+cls:"")+'" data-f="'+id+'" onclick="'+onclick+'">'+icon(ic,26)+'<span>'+esc(label)+'</span></button>';
+}
+function primaryInfo(){
+ var item=CURRENT.item,type=CURRENT.type;
+ if(type==="series"){
+  var sp=SPROG[String(item.series_id)];
+  return {label:sp?resumeLabel(sp):"تشغيل أول حلقة",restart:!!sp};
+ }
+ if(type==="movie"){
+  var r=POS["movie_"+item.stream_id];
+  if(r&&!r.done&&r.p>30)return {label:"استكمال المشاهدة - من "+formatTime(r.p),restart:true};
+ }
+ return {label:"تشغيل",restart:false};
+}
+function epSectionHTML(){
+ if(CURRENT.type!=="series")return "";
+ if(DERR)return '<div class="dp-sec">قائمة الحلقات</div><div class="dp-wait">تعذر تحميل الحلقات</div>';
+ if(!SEASONS.length)return '<div class="dp-sec">قائمة الحلقات</div><div class="dp-wait">جاري تحميل الحلقات...</div>';
+ var sp=SPROG[String(CURRENT.item.series_id)];
+ var se=SEASONS[DSEASON]||SEASONS[0];
+ var h='<div class="dp-sec">قائمة الحلقات - الموسم '+esc(ordinal(se.key))+'</div>';
+ if(SEASONS.length>1){
+  h+='<div class="dp-seasons">';
+  for(var k=0;k<SEASONS.length;k++){
+   h+='<button class="chip'+(SEASONS[k]===se?" on":"")+'" data-f="season-'+k+'" onclick="setSeason('+k+')">الموسم '+esc(SEASONS[k].key)+'</button>';
+  }
+  h+='</div>';
+ }
+ h+='<div class="dp-eps" id="dpEps">';
+ for(var i=se.first;i<=se.last;i++){
+  var ep=EPISODES[i];
+  var last=!!(sp&&String(sp.id)===String(ep.id));
+  var pct=epProgress(ep);
+  h+='<div class="ep'+(last?" last":"")+'" tabindex="0" data-f="ep-'+i+'" onclick="playEpisodeIndex('+i+')">'+
+   (ep.img?'<img src="'+esc(ep.img)+'" onerror="this.style.display=\'none\'">':'')+
+   (last?'<div class="ep-badge">آخر مشاهدة</div>':'')+
+   (isDone("ep_"+ep.id)?'<div class="ep-check">'+icon("check",20)+'</div>':'')+
+   '<div class="ep-info"><div class="ep-txt"><b>الحلقة '+esc(ep.num)+':</b><span>'+esc(ep.title)+'</span></div>'+
+   '<span class="ep-play">'+icon("play",22)+'</span></div>'+
+   (pct>0?'<div class="ep-bar"><i style="width:'+pct+'%"></i></div>':'')+
+   '</div>';
+ }
+ return h+'</div><div class="dp-hint">الزر الأصفر على الحلقة: تمييزها كمشاهَدة / إلغاء التمييز</div>';
+}
+function renderDetails(focusId){
+ if(!CURRENT)return;
+ if(CURRENT.type==="series"&&EPISODES.length)syncSeriesFlag();
+ var item=CURRENT.item,type=CURRENT.type,info=DINFO||{};
+ var name=item.name||item.title||info.name||"بدون اسم";
+ var cover=info.movie_image||info.cover||item.stream_icon||item.cover||item.movie_image||"";
+ var bg=firstImg(info.backdrop_path)||firstImg(item.backdrop_path)||cover;
 
-// ================= بناء الصفحات (Routing) =================
-function renderPage(page, section){
- CURRENT_PAGE = page;
- if(section) CURRENT_SECTION = section;
+ var meta=[],rn=Number(info.rating||item.rating);
+ if(!(rn>0)&&info.rating_5based)rn=Number(info.rating_5based)*2;
+ if(rn>0)meta.push('<span>التقييم: <span class="gold">'+(Math.round(rn*10)/10)+'</span>'+icon("star",22)+'</span>');
+ if(type==="series"){
+  if(EPISODES.length)meta.push('<span>عدد الحلقات: '+EPISODES.length+' حلقة</span>');
+  var rt=Number(info.episode_run_time);
+  if(rt>0)meta.push('<span>وقت الحلقة: '+rt+' دقيقة</span>');
+ }else if(type==="movie"){
+  var md=movieDuration(info);
+  if(md)meta.push('<span>المدة: '+esc(md)+'</span>');
+ }
+ var yr=yearOf(info.releaseDate||info.releasedate||item.releaseDate||item.year||info.year);
+ if(yr)meta.push('<span>السنة: '+esc(yr)+'</span>');
+ var genre=String(info.genre||item.genre||"").replace(/\s*[,\/،]\s*/g," • ");
+ if(genre)meta.push('<span>'+esc(genre)+'</span>');
+ if(type!=="live"&&isWatchedItem(item,type))meta.unshift('<span class="gold">'+icon("check",22)+' تمت المشاهدة</span>');
 
- if(page === "home") renderHome();
- else if(page === "settings") renderSettings();
- else if(page === "categories") renderCategories();
- else if(page === "content") renderContentGrid();
+ var plot=info.plot||item.plot||item.overview||item.description||"";
+ var box="";
+ if(type!=="live"){
+  box='<div class="dp-box"><h3>'+(type==="series"?"فكرة المسلسل":"قصة الفيلم")+'</h3><p>'+esc(plot||"لا توجد تفاصيل متاحة.")+'</p></div>';
+ }
+ var cast="",people=castPeople(info);
+ if(people.length){
+  cast='<div class="dp-sec">طاقم العمل</div><div class="dp-cast">';
+  for(var i=0;i<people.length;i++){
+   var pn=people[i].name;
+   cast+='<div class="cast-i"><div class="cast-av" style="background:'+avColor(pn)+'"><span>'+esc(initials(pn))+'</span>'+
+    (people[i].img?'<img src="'+esc(people[i].img)+'" onerror="this.style.display=\'none\'">':'')+
+    '</div><div class="cast-n">'+esc(pn)+'</div></div>';
+  }
+  cast+='</div>';
+ }
+
+ var pi=primaryInfo();
+ var btns=dBtn("primary",pi.label,"play","playCurrent()","gold");
+ if(pi.restart)btns+=dBtn("restart","تشغيل من البداية","restart","playFromStart()");
+ btns+=dBtn("fav",isFavorite(item)?"إزالة من المفضلة":"إضافة إلى المفضلة","star","toggleFavoriteCurrent()");
+ if(type!=="live"){
+  var wd=isWatchedItem(item,type);
+  btns+=dBtn("watched",wd?"إلغاء التمييز كمشاهَد":(type==="series"?"تمييز المسلسل كمشاهَد":"تمييز كمشاهَد"),"check","toggleWatched()",wd?"on":"");
+ }
+ if(ytId(info.youtube_trailer))btns+=dBtn("trailer","عرض الإعلان","trailer","openTrailer()");
+ if(inHistory(item))btns+=dBtn("unwatch","إزالة من تابع المشاهدة","remove","removeFromHistory()");
+ btns+=dBtn("back","الرجوع","return","closeModal()");
+
+ modal.innerHTML='<div class="dp">'+
+  '<div class="dp-bg"'+(bg?' style="background-image:url(\''+esc(bg)+'\')"':'')+'></div><div class="dp-shade"></div>'+
+  '<div class="dp-top"><div class="dp-brand">'+icon("logo",34)+'<span>MORA IPTV</span></div>'+
+  '<div class="dp-clock"><span id="dClockTime"></span><i class="dp-sep"></i><span id="dClockDate"></span></div></div>'+
+  '<div class="dp-main"><div class="dp-right">'+
+  '<h1 class="dp-title">'+esc(name)+'</h1>'+
+  '<div class="dp-meta">'+meta.join('<i class="dp-sep"></i>')+'</div>'+
+  box+cast+epSectionHTML()+
+  '</div><div class="dp-left"><div class="dp-poster">'+
+  (cover?'<img src="'+esc(cover)+'" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'flex\'">':'')+
+  '<div class="dp-poster-fb"'+(cover?' style="display:none"':'')+'>'+esc(name)+'</div></div>'+
+  '<div class="dp-actions">'+btns+'</div></div></div></div>';
+ updateDetailsClock();
+ if(focusId){
+  var el=modal.querySelector('[data-f="'+focusId+'"]');
+  if(el)try{el.focus()}catch(e){}
+ }
+}
+function updateDetailsClock(){
+ var a=$("dClockTime"),b=$("dClockDate");
+ if(!a||!b)return;
+ var n=new Date(),h=n.getHours(),ap=h>=12?"PM":"AM";
+ h=h%12;if(h===0)h=12;
+ a.innerHTML=h+":"+p2(n.getMinutes())+" "+ap;
+ b.innerHTML=DAYS[n.getDay()]+"، "+n.getDate()+" "+MONTHS[n.getMonth()]+" "+n.getFullYear();
+}
+function isDone(key){var r=POS[key];return !!(r&&r.done)}
+function markDone(key,on){
+ if(on)POS[key]={p:0,d:0,t:Date.now(),done:1};
+ else delete POS[key];
+}
+function isWatchedItem(item,type){
+ if(!item)return false;
+ if(type==="movie")return isDone("movie_"+item.stream_id);
+ if(type==="series")return isDone("series_"+item.series_id);
+ return false;
+}
+function dropHistory(item,type){
+ var id=itemId(item);
+ for(var i=HISTORY.length-1;i>=0;i--){
+  var d=HISTORY[i].data||HISTORY[i];
+  if(itemId(d)===id&&realType(d,HISTORY[i].type)===type)HISTORY.splice(i,1);
+ }
+ saveLists();
+}
+function syncSeriesFlag(){
+ var key="series_"+CURRENT.item.series_id,all=EPISODES.length>0,i;
+ for(i=0;i<EPISODES.length;i++){
+  if(!isDone("ep_"+EPISODES[i].id)){all=false;break}
+ }
+ if(all!==isDone(key)){markDone(key,all);savePos();LISTS_DIRTY=true}
+}
+function toggleWatched(){
+ if(!CURRENT||CURRENT.type==="live")return;
+ var item=CURRENT.item,type=CURRENT.type,on,i;
+ if(type==="movie"){
+  var mk="movie_"+item.stream_id;
+  on=!isDone(mk);
+  markDone(mk,on);
+  if(on)dropHistory(item,type);
+ }else{
+  if(!EPISODES.length){alert(DERR?"تعذر تحميل الحلقات":"جاري تحميل الحلقات... حاول بعد لحظات");return}
+  on=!isWatchedItem(item,type);
+  for(i=0;i<EPISODES.length;i++)markDone("ep_"+EPISODES[i].id,on);
+  markDone("series_"+item.series_id,on);
+  if(on){
+   delete SPROG[String(item.series_id)];
+   saveSprog();
+   dropHistory(item,type);
+  }
+ }
+ savePos();
+ LISTS_DIRTY=true;
+ renderDetails("watched");
+}
+function toggleEpWatched(i){
+ var ep=EPISODES[i];
+ if(!ep)return;
+ markDone("ep_"+ep.id,!isDone("ep_"+ep.id));
+ savePos();
+ LISTS_DIRTY=true;
+ renderDetails("ep-"+i);
 }
 
-// 1. الصفحة الرئيسية
-function renderHome(){
- RENDERED_ITEMS = {}; RENDERED_COUNTER = 0;
- var h = `
- <div class="header">
-  <div class="header-icons">
-   <span id="liveClock">00:00 PM</span>
-   <span id="liveDate">جاري التحميل...</span>
-   <svg onclick="renderPage('settings')" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 15a3 3 0 100-6 3 3 0 000 6z"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
-   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0114.08 0"/><path d="M1.42 9a16 16 0 0121.16 0"/><path d="M8.53 16.11a6 6 0 016.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
-   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-  </div>
-  <div class="header-logo">My TV</div>
- </div>
- <div class="hero">
-  <div class="hero-content">
-   <h1 class="hero-title">بوابتك لعالم من الترفيه بلا حدود</h1>
-   <p class="hero-sub">استمتع بأحدث الأفلام والمسلسلات والقنوات في مكان واحد</p>
-   <button class="hero-btn">شاهد الآن</button>
-  </div>
-  <div class="hero-dots"><span></span><span></span><span></span><span class="active"></span></div>
- </div>
- <div class="main-categories">
-  <div class="cat-box active" data-type="home" onclick="renderPage('home')">
-   <div class="cat-icon"><svg viewBox="0 0 24 24" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
-   <div class="cat-title">الرئيسية</div>
-  </div>
-  <div class="cat-box" data-type="movies" onclick="renderPage('categories', 'movies')">
-   <div class="cat-icon"><svg viewBox="0 0 24 24" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></div>
-   <div class="cat-title">الأفلام</div>
-  </div>
-  <div class="cat-box" data-type="series" onclick="renderPage('categories', 'series')">
-   <div class="cat-icon"><svg viewBox="0 0 24 24" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/></svg></div>
-   <div class="cat-title">المسلسلات</div>
-  </div>
-  <div class="cat-box" data-type="live" onclick="renderPage('categories', 'live')">
-   <div class="cat-icon"><svg viewBox="0 0 24 24" stroke-width="2"><path d="M4 11a9 9 0 019 9"/><path d="M4 4a16 16 0 0116 16"/><circle cx="5" cy="19" r="1"/></svg></div>
-   <div class="cat-title">القنوات</div>
-  </div>
-  <div class="cat-box" data-type="radio" onclick="alert('قريباً')">
-   <div class="cat-icon"><svg viewBox="0 0 24 24" stroke-width="2"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"/><polyline points="17 2 12 7 7 2"/></svg></div>
-   <div class="cat-title">الراديو</div>
-  </div>
-  <div class="cat-box" data-type="settings" onclick="renderPage('settings')">
-   <div class="cat-icon"><svg viewBox="0 0 24 24" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg></div>
-   <div class="cat-title">الإعدادات</div>
-  </div>
- </div>
- <div class="section-title">المحتوى المميز</div>
- <div class="content-row" id="featuredRow"><div style="color:#ccc;">جاري التحميل...</div></div>
- <div class="section-title">أحدث الإضافات</div>
- <div class="content-row" id="latestRow"><div style="color:#ccc;">جاري التحميل...</div></div>
- `;
- app.innerHTML = h;
- updateClock();
- 
- // تحميل المحتوى
- if(SERVER && USER && PASS){
-  request(apiUrl("get_vod_streams"), function(err, data){
-   if(err || !Array.isArray(data)){ 
-    if($("featuredRow")) $("featuredRow").innerHTML = '<div style="color:#ff5555;">تعذر التحميل: '+err+'</div>';
-    return; 
+function castPeople(info){
+ if(DCAST&&DCAST.length)return DCAST;
+ var n=castNames(info),out=[];
+ for(var i=0;i<n.length;i++)out.push({name:n[i],img:""});
+ return out;
+}
+function tmdbGet(path,cb){
+ request("https://api.themoviedb.org/3"+path+(path.indexOf("?")>=0?"&":"?")+"api_key="+encodeURIComponent(TMDB_KEY)+"&language=en-US",cb);
+}
+function searchTitle(n){
+ n=String(n||"");
+ var m=/\(([^)]*[A-Za-z][^)]*)\)/.exec(n);
+ if(m)return m[1].replace(/^\s+|\s+$/g,"");
+ return n.replace(/[\(\[][^\)\]]*[\)\]]/g," ").replace(/\b(19|20)\d{2}\b/g," ").replace(/\s+/g," ").replace(/^\s+|\s+$/g,"");
+}
+function loadCast(){
+ if(!TMDB_KEY||!CURRENT||CURRENT.type==="live")return;
+ var token=CURRENT.item,info=DINFO||{},kind=CURRENT.type==="series"?"tv":"movie";
+ var tid=info.tmdb_id||info.tmdb||token.tmdb||token.tmdb_id;
+ function apply(list){
+  if(!CURRENT||CURRENT.item!==token)return;
+  DCAST=list;
+  renderDetails(curFocusId());
+ }
+ function credits(id){
+  var ck=kind+id;
+  if(CASTCACHE[ck]){apply(CASTCACHE[ck]);return}
+  tmdbGet("/"+kind+"/"+id+"/credits",function(err,d){
+   if(err||!d||!d.cast||!d.cast.length)return;
+   var out=[];
+   for(var i=0;i<d.cast.length&&out.length<7;i++){
+    var c=d.cast[i];
+    if(c&&c.name)out.push({name:c.name,img:c.profile_path?"https://image.tmdb.org/t/p/w185"+c.profile_path:""});
    }
-   var items = data.slice(0, 10);
-   var h1 = ""; var h2 = "";
-   for(var i=0; i<items.length; i++){
-    h1 += buildCard(items[i], "movie");
-   }
-   var latest = data.slice(-10).reverse();
-   for(var j=0; j<latest.length; j++){
-    h2 += buildCard(latest[j], "movie");
-   }
-   if($("featuredRow")) $("featuredRow").innerHTML = h1;
-   if($("latestRow")) $("latestRow").innerHTML = h2;
+   CASTCACHE[ck]=out;
+   apply(out);
   });
- } else {
-  if($("featuredRow")) $("featuredRow").innerHTML = '<div style="color:#f2b01e;">يرجى الذهاب للإعدادات وإدخال بيانات الاشتراك أولاً.</div>';
-  if($("latestRow")) $("latestRow").innerHTML = '';
+ }
+ if(tid&&/^\d+$/.test(String(tid))){credits(String(tid));return}
+ var q=searchTitle(token.name||token.title||info.name);
+ if(!q)return;
+ var yr=yearOf(info.releaseDate||info.releasedate||token.releaseDate||token.year||info.year);
+ tmdbGet("/search/"+kind+"?query="+encodeURIComponent(q)+(yr?(kind==="tv"?"&first_air_date_year=":"&year=")+yr:""),function(err,d){
+  if(err||!d||!d.results||!d.results.length)return;
+  credits(String(d.results[0].id));
+ });
+}
+function saveTmdbKey(){
+ var el=$("tmdbInput"),v=el?el.value.replace(/^\s+|\s+$/g,""):"";
+ if(v&&!/^[A-Fa-f0-9]{32}$/.test(v)){alert("المفتاح غير صحيح. لازم يكون 32 حرف وأرقام (API Key v3)");return}
+ TMDB_KEY=v;
+ try{localStorage.setItem("mora_tmdb",v)}catch(e){}
+ CASTCACHE={};
+ alert(v?"تم حفظ المفتاح":"تم مسح المفتاح");
+}
+
+var LASTB="primary";
+function toArr(nl){return Array.prototype.slice.call(nl)}
+/* تنقل بالأسهم في صفحة التفاصيل (الصفحة RTL: أول حلقة على اليمين) */
+function detailsNav(dir){
+ var a=document.activeElement,id=(a&&a.getAttribute)?(a.getAttribute("data-f")||""):"";
+ var btns=toArr(modal.querySelectorAll(".dp-actions .dbtn")),chips=toArr(modal.querySelectorAll(".chip")),eps=toArr(modal.querySelectorAll(".ep"));
+ var grp=btns.indexOf(a)>=0?"b":(chips.indexOf(a)>=0?"c":(eps.indexOf(a)>=0?"e":""));
+ function f(el){if(el)try{el.focus()}catch(e){}}
+ function lastBtn(){return modal.querySelector('[data-f="'+LASTB+'"]')||btns[0]}
+ function epTarget(){return modal.querySelector(".ep.last")||eps[0]}
+ if(!grp){f(modal.querySelector('[data-f="primary"]')||btns[0]);return}
+ var i=(grp==="b"?btns:(grp==="c"?chips:eps)).indexOf(a);
+ if(grp==="b"){
+  LASTB=id;
+  if(dir===38)f(btns[i-1]);
+  else if(dir===40)f(btns[i+1]);
+  else if(dir===39)f(epTarget()||chips[0]);
+ }else if(grp==="e"){
+  if(dir===37){if(eps[i+1])f(eps[i+1]);else f(lastBtn())}
+  else if(dir===39)f(eps[i-1]);
+  else if(dir===38)f(modal.querySelector(".chip.on")||chips[0]||lastBtn());
+ }else{
+  if(dir===37){if(chips[i+1])f(chips[i+1]);else f(lastBtn())}
+  else if(dir===39)f(chips[i-1]);
+  else if(dir===40)f(epTarget());
  }
 }
 
-// 2. صفحة الإعدادات
-function renderSettings(){
- var h = `
- <div class="page-header"><div class="back-btn" onclick="renderPage('home')">← رجوع</div><h2>الإعدادات</h2></div>
- <div style="max-width:500px; margin:50px auto; padding:0 20px;">
-  <label style="display:block;margin-bottom:5px;">Server URL</label>
-  <input type="text" id="setServer" value="${esc(SERVER)}" style="width:100%;padding:12px;border-radius:8px;border:1px solid #333;background:#141923;color:#fff;margin-bottom:15px;">
-  <label style="display:block;margin-bottom:5px;">Username</label>
-  <input type="text" id="setUser" value="${esc(USER)}" style="width:100%;padding:12px;border-radius:8px;border:1px solid #333;background:#141923;color:#fff;margin-bottom:15px;">
-  <label style="display:block;margin-bottom:5px;">Password</label>
-  <input type="password" id="setPass" value="${esc(PASS)}" style="width:100%;padding:12px;border-radius:8px;border:1px solid #333;background:#141923;color:#fff;margin-bottom:25px;">
-  <button class="btn-primary" style="width:100%;justify-content:center;" onclick="saveSettings()">حفظ البيانات</button>
- </div>
- `;
- app.innerHTML = h;
+function curFocusId(){
+ var a=document.activeElement;
+ if(a&&a!==document.body&&modal.contains(a)&&a.getAttribute)return a.getAttribute("data-f");
+ return null;
 }
-function saveSettings(){
- SERVER = $("setServer").value.trim(); USER = $("setUser").value.trim(); PASS = $("setPass").value.trim();
- localStorage.setItem("mora_server", SERVER); localStorage.setItem("mora_user", USER); localStorage.setItem("mora_pass", PASS);
- renderPage("home");
+function setSeason(i){
+ DSEASON=i;
+ renderDetails("season-"+i);
 }
 
-// 3. صفحة التصنيفات
-function renderCategories(){
- var title = CURRENT_SECTION === "live" ? "القنوات" : CURRENT_SECTION === "movies" ? "الأفلام" : "المسلسلات";
- var h = `<div class="page-header"><div class="back-btn" onclick="renderPage('home')">← رجوع</div><h2>تصنيفات ${title}</h2></div><div class="categories-grid" id="catGrid"><div style="padding:20px;color:#ccc;">جاري التحميل...</div></div>`;
- app.innerHTML = h;
- 
- var action = CURRENT_SECTION === "live" ? "get_live_categories" : CURRENT_SECTION === "movies" ? "get_vod_categories" : "get_series_categories";
- request(apiUrl(action), function(err, data){
-  if(err || !Array.isArray(data)){ $("catGrid").innerHTML = `<div style="color:#ff5555;padding:20px;">${err}</div>`; return; }
-  CATEGORIES = data;
-  var h = `<button class="category-btn" onclick="loadContent('', 'جميع ${title}')">جميع ${title}</button>`;
-  for(var i=0; i<CATEGORIES.length; i++){
-   h += `<button class="category-btn" onclick="loadContent('${esc(CATEGORIES[i].category_id)}', '${esc(CATEGORIES[i].category_name)}')">${esc(CATEGORIES[i].category_name)}</button>`;
+function showDetails(item,type){
+ type=realType(item,type);
+ if(modalBg.style.display!=="flex"){
+  MODAL_OPENER=document.activeElement;
+  OPENER_IDX=-1;
+  var its=document.querySelectorAll(".item");
+  for(var q=0;q<its.length;q++){if(its[q]===MODAL_OPENER){OPENER_IDX=q;break}}
+ }
+ CURRENT={item:item,type:type};
+ DINFO=null;DSEASON=0;SEASONS=[];DERR=false;DCAST=null;
+ if(type==="series")EPISODES=[];
+ renderDetails();
+ modalBg.style.display="flex";
+ setTimeout(function(){
+  if(modalBg.style.display!=="flex")return;
+  if(modal.contains(document.activeElement)&&document.activeElement!==modal)return;
+  var b=modal.querySelector('[data-f="primary"]');
+  if(b)try{b.focus()}catch(e){}
+ },400);
+ if(type==="series")loadEpisodes(item.series_id);
+ else if(type==="movie")loadMovieInfo(item);
+}
+function closeModal(){
+ closeTrailer();
+ modalBg.style.display="none";
+ if(LISTS_DIRTY){
+  LISTS_DIRTY=false;
+  render();
+  var its=document.querySelectorAll(".item");
+  var t=its[OPENER_IDX]||its[0];
+  if(t)try{t.focus()}catch(e){}
+  return;
+ }
+ if(MODAL_OPENER&&document.body.contains(MODAL_OPENER))try{MODAL_OPENER.focus()}catch(e){}
+}
+function toggleFavoriteCurrent(){if(CURRENT)toggleFavorite(CURRENT.item)}
+
+function openTrailer(){
+ var id=ytId(DINFO&&DINFO.youtube_trailer);
+ if(!id)return;
+ $("trailerFrame").src="https://www.youtube.com/embed/"+id+"?autoplay=1&rel=0";
+ $("trailerLayer").style.display="block";
+}
+function closeTrailer(){
+ if($("trailerLayer").style.display!=="block")return;
+ $("trailerFrame").src="about:blank";
+ $("trailerLayer").style.display="none";
+ var b=modal.querySelector('[data-f="trailer"]');
+ if(b)try{b.focus()}catch(e){}
+}
+function removeFromHistory(){
+ if(!CURRENT)return;
+ var item=CURRENT.item,id=itemId(item),i;
+ for(i=HISTORY.length-1;i>=0;i--){
+  if(itemId(HISTORY[i].data||HISTORY[i])===id)HISTORY.splice(i,1);
+ }
+ if(CURRENT.type==="series"){
+  delete SPROG[String(item.series_id)];
+  saveSprog();
+  for(i=0;i<EPISODES.length;i++)delete POS["ep_"+EPISODES[i].id];
+ }else if(CURRENT.type==="movie"){
+  delete POS["movie_"+item.stream_id];
+ }
+ savePos();
+ saveLists();
+ renderDetails("primary");
+}
+
+function buildEpisodes(data){
+ EPISODES=[];SEASONS=[];
+ for(var season in data.episodes){
+  var eps=data.episodes[season]||[];
+  var first=EPISODES.length;
+  for(var i=0;i<eps.length;i++){
+   var ep=eps[i],inf=ep.info||{};
+   var etitle=ep.title||ep.name||("الحلقة "+(i+1));
+   var num=(ep.episode_num!=null&&ep.episode_num!=="")?ep.episode_num:(i+1);
+   EPISODES.push({id:ep.id,ext:ep.container_extension||"mp4",title:etitle,season:season,num:num,img:inf.movie_image||""});
   }
-  $("catGrid").innerHTML = h;
+  if(EPISODES.length>first)SEASONS.push({key:season,first:first,last:EPISODES.length-1});
+ }
+}
+function isCurrentSeries(seriesId){
+ return !!(CURRENT&&CURRENT.type==="series"&&String(CURRENT.item.series_id)===String(seriesId));
+}
+function loadEpisodes(seriesId){
+ request(apiUrl("get_series_info","&series_id="+encodeURIComponent(seriesId)),function(err,data){
+  if(!isCurrentSeries(seriesId))return;
+  if(err||!data||!data.episodes){DERR=true;renderDetails(curFocusId());return}
+  buildEpisodes(data);
+  DINFO=(data.info&&typeof data.info==="object")?data.info:{};
+  loadCast();
+  var sp=SPROG[String(seriesId)];
+  DSEASON=0;
+  if(sp){
+   for(var i=0;i<SEASONS.length;i++){
+    if(String(SEASONS[i].key)===String(sp.season)){DSEASON=i;break}
+   }
+  }
+  renderDetails(curFocusId());
+ });
+}
+function loadMovieInfo(item){
+ request(apiUrl("get_vod_info","&vod_id="+encodeURIComponent(item.stream_id)),function(err,data){
+  if(err||!data||!data.info||typeof data.info!=="object")return;
+  if(!CURRENT||CURRENT.item!==item)return;
+  DINFO=data.info;
+  loadCast();
+  renderDetails(curFocusId());
  });
 }
 
-// 4. صفحة محتوى التصنيف (الشبكة)
-function loadContent(catId, catName){
- CURRENT_CATEGORY_ID = catId; CURRENT_CATEGORY_NAME = catName;
- CURRENT_PAGE = "content";
- var action = CURRENT_SECTION === "live" ? "get_live_streams" : CURRENT_SECTION === "movies" ? "get_vod_streams" : "get_series";
- var extra = catId ? "&category_id=" + encodeURIComponent(catId) : "";
- 
- var h = `<div class="page-header"><div class="back-btn" onclick="renderPage('categories')">← التصنيفات</div><h2>${esc(catName)}</h2></div><div class="grid" id="contentGrid"><div style="padding:20px;color:#ccc;">جاري التحميل...</div></div>`;
- app.innerHTML = h;
- 
- request(apiUrl(action, extra), function(err, data){
-  if(err || !Array.isArray(data)){ $("contentGrid").innerHTML = `<div style="color:#ff5555;padding:20px;">${err}</div>`; return; }
-  CONTENT = data;
-  renderContentGrid();
+function playEpisodeById(id,ext,title,fresh){
+ var url=SERVER+"/series/"+encodeURIComponent(USER)+"/"+encodeURIComponent(PASS)+"/"+encodeURIComponent(id)+"."+ext;
+ var epIdx=-1,ep=null;
+ for(var k=0;k<EPISODES.length;k++){
+  if(String(EPISODES[k].id)===String(id)){epIdx=k;ep=EPISODES[k];break}
+ }
+ var sItem=(CURRENT&&CURRENT.type==="series")?CURRENT.item:null;
+ var heading=title,sub=title;
+ if(sItem){
+  var skey=String(sItem.series_id);
+  var season=ep?ep.season:"",num=ep?ep.num:"";
+  var prev=SPROG[skey];
+  if(!ep&&prev&&String(prev.id)===String(id)){season=prev.season;num=prev.num}
+  var sname=sItem.name||sItem.title||"";
+  heading=sname+(season!==""?" - الموسم "+season:"");
+  sub="مسلسل"+(season!==""?" - الموسم "+season:"")+(num!==""?" - الحلقة "+num+": ":" - ")+title;
+  SPROG[skey]={id:id,ext:ext,title:title,season:season,num:num};
+  saveSprog();
+  addHistory(sItem,"series");
+ }
+ startPlayer(url,title,{key:"ep_"+id,epIndex:epIdx,heading:heading,sub:sub,fresh:!!fresh});
+}
+function playEpisodeIndex(i,fresh){
+ var ep=EPISODES[i];
+ if(ep)playEpisodeById(ep.id,ep.ext,ep.title,fresh);
+}
+function playFromStart(){playCurrent(true)}
+function playCurrent(fresh){
+ if(!CURRENT)return;
+ fresh=(fresh===true);
+ var item=CURRENT.item,type=CURRENT.type;
+ if(type==="series"){
+  var go=function(){
+   var sp=fresh?null:SPROG[String(item.series_id)];
+   if(sp){playEpisodeById(sp.id,sp.ext,sp.title);return}
+   if(EPISODES.length){playEpisodeIndex(0,fresh);return}
+   alert("لا توجد حلقات");
+  };
+  if(EPISODES.length){go();return}
+  request(apiUrl("get_series_info","&series_id="+encodeURIComponent(item.series_id)),function(err,data){
+   if(err||!data||!data.episodes){alert("تعذر تحميل الحلقات");return}
+   if(!isCurrentSeries(item.series_id))return;
+   buildEpisodes(data);
+   go();
+  });
+  return;
+ }
+ var ext=item.container_extension||(type==="live"?"ts":"mp4");
+ var folder=type==="live"?"live":"movie";
+ var url=SERVER+"/"+folder+"/"+encodeURIComponent(USER)+"/"+encodeURIComponent(PASS)+"/"+encodeURIComponent(item.stream_id)+"."+ext;
+ addHistory(item,type);
+ var nm=item.name||item.title||"MORA IPTV";
+ startPlayer(url,nm,{
+  live:type==="live",
+  liveId:type==="live"?item.stream_id:"",
+  key:type==="movie"?"movie_"+item.stream_id:"",
+  heading:nm,
+  sub:(type==="live"?"بث مباشر - ":"فيلم - ")+nm,
+  fresh:fresh
  });
 }
-
-function renderContentGrid(){
- var grid = $("contentGrid");
- if(!grid) return;
- RENDERED_ITEMS = {}; RENDERED_COUNTER = 0;
- var h = "";
- for(var i=0; i<CONTENT.length; i++){
-  h += buildCard(CONTENT[i], CURRENT_SECTION === "live" ? "live" : CURRENT_SECTION === "series" ? "series" : "movie");
+function addHistory(item,type){
+ var id=itemId(item);
+ for(var i=HISTORY.length-1;i>=0;i--){
+  if(itemId(HISTORY[i].data||HISTORY[i])===id)HISTORY.splice(i,1);
  }
- grid.innerHTML = h || '<div style="color:#ccc;padding:20px;">لا يوجد محتوى</div>';
+ HISTORY.unshift({id:id,data:item,type:type});
+ if(HISTORY.length>40)HISTORY.length=40;
+ saveLists();
 }
 
-// دالة بناء الكارت (تستخدم في الرئيسية والشبكة)
-function buildCard(item, type) {
- var img = item.stream_icon || item.cover || "";
- var name = item.name || item.title || "";
- RENDERED_COUNTER++;
- var key = "item_" + RENDERED_COUNTER;
- RENDERED_ITEMS[key] = {item: item, type: type};
- var prog = getProgress(item, type);
- var fav = isFavorite(item, type) ? '<div style="position:absolute;top:10px;right:10px;color:#f2b01e;font-size:24px;z-index:5;text-shadow:0 0 5px #000;">★</div>' : '';
- 
- return `<div class="card" tabindex="0" onclick="openDetails('${key}')">
-  <img src="${esc(img)}" onerror="this.src='https://via.placeholder.com/220x330/141923/fff?text=No+Image'">
-  ${fav}
-  <div class="card-overlay"><div class="card-title">${esc(name)}</div></div>
-  <div class="card-rating">★ ${(Math.random()*2+7).toFixed(1)}</div>
-  <div class="card-cat">${type === 'movie' ? 'فيلم' : type === 'series' ? 'مسلسل' : 'قناة'}</div>
-  ${prog > 0 ? `<div class="card-progress"><div class="card-progress-fill" style="width:${prog}%"></div></div>` : ''}
- </div>`;
+function p2(n){return n<10?"0"+n:""+n}
+
+function formatTime(s){
+ if(!isFinite(s)||s<0)return "00:00";
+ var h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=Math.floor(s%60);
+ return h>0?p2(h)+":"+p2(m)+":"+p2(x):p2(m)+":"+p2(x);
 }
 
-// ================= نافذة التفاصيل =================
-function openDetails(key){
- var entry = RENDERED_ITEMS[key];
- if(!entry) return;
- CURRENT_ITEM = entry.item; CURRENT_TYPE = entry.type;
- 
- var title = CURRENT_ITEM.name || CURRENT_ITEM.title || "بدون اسم";
- var img = CURRENT_ITEM.stream_icon || CURRENT_ITEM.cover || "";
- var plot = CURRENT_ITEM.plot || CURRENT_ITEM.description || "لا توجد تفاصيل متاحة لهذا المحتوى حالياً.";
- 
- $("modalImg").src = img || 'https://via.placeholder.com/300x450/141923/fff?text=No+Image';
- $("modalTitle").innerText = title;
- $("modalMeta").innerHTML = `<span class="gold">★ ${(Math.random()*2+7).toFixed(1)}</span><span>|</span><span>${CURRENT_TYPE === 'series' ? 'مسلسل' : CURRENT_TYPE === 'live' ? 'قناة مباشرة' : 'فيلم'}</span>`;
- $("modalPlot").innerText = plot;
- 
- updateFavButton();
- $("modalBg").style.display = "flex";
+function loadPos(){
+ try{POS=JSON.parse(localStorage.getItem("mora_pos")||"{}")}catch(e){POS={}}
 }
-function closeModal(){ $("modalBg").style.display = "none"; }
+function savePos(){
+ try{localStorage.setItem("mora_pos",JSON.stringify(POS))}catch(e){}
+}
+function rememberPos(force){
+ if(!PLAYER.key||PLAYER.live)return;
+ var d=video.duration;
+ if(!d||!isFinite(d))return;
+ var now=Date.now();
+ if(!force&&now-lastPosSave<5000)return;
+ lastPosSave=now;
+ var t=video.currentTime;
+ if(t<30||t>d-30)return;
+ POS[PLAYER.key]={p:Math.floor(t),d:Math.round(d),t:now};
+ var keys=[],k;
+ for(k in POS)if(!POS[k].done)keys.push(k);
+ if(keys.length>150){
+  keys.sort(function(a,b){return POS[a].t-POS[b].t});
+  for(var i=0;i<keys.length-150;i++)delete POS[keys[i]];
+ }
+ savePos();
+}
 
-function updateFavButton(){
- if(isFavorite(CURRENT_ITEM, CURRENT_TYPE)){
-  $("favBtn").innerHTML = "★ إزالة من المفضلة"; $("favBtn").style.color = "#f2b01e";
- } else {
-  $("favBtn").innerHTML = "⭐ إضافة للمفضلة"; $("favBtn").style.color = "#fff";
+function startPlayer(url,title,opts){
+ var layer=$("playerLayer");
+ if(layer.style.display==="flex"&&video.getAttribute("src")===url)return;
+ if(layer.style.display==="flex")rememberPos(true);
+ else LAST_FOCUS=document.activeElement;
+ opts=opts||{};
+ PLAYER={live:!!opts.live,key:opts.key||"",epIndex:(opts.epIndex==null?-1:opts.epIndex),liveId:opts.liveId||""};
+ if(opts.fresh&&PLAYER.key){delete POS[PLAYER.key];savePos()}
+ cancelScan();
+ $("playingTitle").innerHTML=esc(opts.heading||title);
+ $("subTitle").innerHTML=esc(opts.sub||title);
+ closePanel();
+ $("liveBadge").style.display=PLAYER.live?"inline-block":"none";
+ layer.style.display="flex";
+ video.style.objectFit=ASPECTS[aspectIndex][0];
+ setBuffering(true);
+ video.src=url;
+ try{var pr=video.play();if(pr&&pr.catch)pr.catch(function(){})}catch(e){}
+ syncState();
+ showOsd();
+ updateTime();
+}
+function closePlayer(){
+ rememberPos(true);
+ closePanel();cancelScan();clearTimeout(osdTimer);
+ try{video.pause();video.removeAttribute("src");video.load()}catch(e){}
+ $("playerLayer").style.display="none";
+ $("seekPop").style.display="none";
+ setBuffering(false);
+ if(modalBg.style.display==="flex"&&CURRENT){
+  var fid=(LAST_FOCUS&&LAST_FOCUS.getAttribute)?LAST_FOCUS.getAttribute("data-f"):null;
+  renderDetails(fid||"primary");
+ }else if(LAST_FOCUS&&LAST_FOCUS.focus&&document.body.contains(LAST_FOCUS))try{LAST_FOCUS.focus()}catch(e){}
+}
+
+function setBuffering(on){$("buffering").style.display=on?"block":"none"}
+function syncState(){
+ var playing=scanDir===0&&!video.paused;
+ $("btnPlay").innerHTML=icon(playing?"pause":"play",48);
+}
+
+function showOsd(){
+ var l=$("playerLayer");
+ l.className="";
+ clearTimeout(osdTimer);
+ osdTimer=setTimeout(function(){
+  if(!video.paused&&seekTarget===null&&PANEL==="")l.className="hide";
+ },5000);
+}
+function flashHTML(html,ms){
+ var p=$("seekPop");
+ p.innerHTML=html;
+ p.style.display="block";
+ clearTimeout(popTimer);
+ popTimer=setTimeout(function(){p.style.display="none"},ms||1600);
+}
+function flashInfo(text,ms){flashHTML(esc(text),ms)}
+
+function fmtStep(step){return step<60?step+" ث":(step/60)+" د"}
+
+function hidePop(){
+ clearTimeout(popTimer);
+ $("seekPop").style.display="none";
+}
+
+/* التقديم / التأخير المستمر:
+   أول ضغطة تبدأ المسح بسرعة 5 ث كل ثانية، وكل ضغطة في نفس الاتجاه ترفع السرعة
+   (5 > 10 > 20 > 60 > 120 > 300) ويفضل المسح شغال لحد ما تضغط تشغيل (OK). */
+function stepSeek(dir){
+ showOsd();
+ var d=video.duration;
+ if(PLAYER.live||!d||!isFinite(d)){flashInfo("التقديم غير متاح في البث المباشر");return}
+ if(scanDir===dir){
+  if(seekCount<SEEK_LADDER.length-1)seekCount++;
+ }else{
+  seekCount=0;
+  scanDir=dir;
+  if(seekTarget===null)seekTarget=video.currentTime;
+  if(!video.paused)video.pause();
+ }
+ flashHTML(icon(dir>0?"ff":"rew",44)+"<span>"+(dir>0?"+":"-")+fmtStep(SEEK_LADDER[seekCount])+"</span>",36000000);
+ syncState();
+ clearInterval(seekTimer);
+ scanTick();
+ if(scanDir!==0)seekTimer=setInterval(scanTick,SCAN_TICK);
+}
+function scanTick(){
+ if(scanDir===0)return;
+ var d=video.duration;
+ if(!d||!isFinite(d)){stopScan(true);return}
+ var t=seekTarget+scanDir*SEEK_LADDER[seekCount];
+ var edge=false;
+ if(t<=0){t=0;edge=true}
+ if(t>=d-1){t=d-1;edge=true}
+ seekTarget=t;
+ if(!video.seeking){try{video.currentTime=t}catch(e){}}
+ updateTime();
+ if(edge)stopScan(true);
+}
+function cancelScan(){
+ clearInterval(seekTimer);
+ seekTimer=null;
+ scanDir=0;seekTarget=null;seekCount=0;
+ hidePop();
+}
+function stopScan(resume){
+ if(scanDir===0)return;
+ var t=seekTarget;
+ cancelScan();
+ if(t!==null){try{video.currentTime=t}catch(e){}}
+ if(resume){
+  try{var pr=video.play();if(pr&&pr.catch)pr.catch(function(){})}catch(e){}
+ }
+ syncState();
+ updateTime();
+ showOsd();
+}
+function barClick(ev){
+ var d=video.duration;
+ if(PLAYER.live||!d||!isFinite(d))return;
+ var r=$("barWrap").getBoundingClientRect();
+ var pct=(ev.clientX-r.left)/r.width;
+ if(pct<0)pct=0;if(pct>1)pct=1;
+ try{video.currentTime=pct*d}catch(e){}
+ showOsd();
+}
+
+function togglePlay(){
+ showOsd();
+ if(scanDir!==0){stopScan(true);return}
+ if(video.paused){
+  try{var pr=video.play();if(pr&&pr.catch)pr.catch(function(){})}catch(e){}
+ }else video.pause();
+}
+
+function cycleAspect(){
+ aspectIndex=(aspectIndex+1)%ASPECTS.length;
+ video.style.objectFit=ASPECTS[aspectIndex][0];
+ flashInfo("نسبة العرض: "+ASPECTS[aspectIndex][1]);
+ showOsd();
+}
+function cycleAudio(){
+ showOsd();
+ var tr=video.audioTracks,i;
+ if(!tr||tr.length<2){flashInfo("لا توجد مسارات صوت أخرى");return}
+ var cur=0;
+ for(i=0;i<tr.length;i++)if(tr[i].enabled){cur=i;break}
+ var n=(cur+1)%tr.length;
+ for(i=0;i<tr.length;i++)tr[i].enabled=false;
+ tr[n].enabled=true;
+ flashInfo("الصوت: "+(tr[n].label||tr[n].language||(n+1)));
+}
+function cycleSubs(){
+ showOsd();
+ var tt=video.textTracks,list=[],i;
+ if(tt)for(i=0;i<tt.length;i++)if(tt[i].kind==="subtitles"||tt[i].kind==="captions")list.push(tt[i]);
+ if(!list.length){flashInfo("لا توجد ترجمة متاحة");return}
+ var cur=-1;
+ for(i=0;i<list.length;i++)if(list[i].mode==="showing"){cur=i;break}
+ for(i=0;i<list.length;i++)list[i].mode="disabled";
+ var n=cur+1;
+ if(n>=list.length){flashInfo("الترجمة: إيقاف");return}
+ list[n].mode="showing";
+ flashInfo("الترجمة: "+(list[n].label||list[n].language||(n+1)));
+}
+
+function liveIndex(){
+ for(var i=0;i<LIVE.length;i++){
+  if(String(LIVE[i].stream_id)===String(PLAYER.liveId))return i;
+ }
+ return -1;
+}
+function zapTo(idx){
+ var n=LIVE[idx];
+ if(!n){flashInfo("لا توجد قناة أخرى");return}
+ var url=SERVER+"/live/"+encodeURIComponent(USER)+"/"+encodeURIComponent(PASS)+"/"+encodeURIComponent(n.stream_id)+"."+(n.container_extension||"ts");
+ addHistory(n,"live");
+ var nm=n.name||"MORA IPTV";
+ startPlayer(url,nm,{live:true,liveId:n.stream_id,heading:nm,sub:"بث مباشر - "+nm});
+}
+function zap(dir){
+ var idx=liveIndex();
+ if(idx<0){flashInfo("لا توجد قناة أخرى");return}
+ zapTo(idx+dir);
+}
+function nextItem(dir){
+ showOsd();
+ if(PLAYER.live){zap(dir);return}
+ if(PLAYER.epIndex>=0&&EPISODES[PLAYER.epIndex+dir]){playEpisodeIndex(PLAYER.epIndex+dir);return}
+ flashInfo(dir>0?"لا توجد حلقة تالية":"لا توجد حلقة سابقة");
+}
+
+var ICONS={
+ play:'<path d="M8 5v14l11-7z"/>',
+ pause:'<path d="M6 5h4v14H6zM14 5h4v14h-4z"/>',
+ rew:'<path d="M11 18V6l-8.5 6zM21.5 18V6L13 12z"/>',
+ ff:'<path d="M2.5 18l8.5-6-8.5-6zM13 6v12l8.5-6z"/>',
+ back10:'<path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/><text x="12" y="16.4" font-size="7.2" font-weight="bold" text-anchor="middle" font-family="Arial,sans-serif">10</text>',
+ fwd10:'<path d="M12 5V1l5 5-5 5V7c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6h2c0 4.42-3.58 8-8 8s-8-3.58-8-8 3.58-8 8-8z"/><text x="12" y="16.4" font-size="7.2" font-weight="bold" text-anchor="middle" font-family="Arial,sans-serif">10</text>',
+ prev:'<path d="M6 6h2v12H6zM9.5 12l8.5 6V6z"/>',
+ next:'<path d="M6 18l8.5-6L6 6zM16 6h2v12h-2z"/>',
+ list:'<path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/>',
+ cc:'<rect x="2.5" y="5" width="19" height="14" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><text x="12" y="15.2" font-size="8" font-weight="bold" text-anchor="middle" font-family="Arial,sans-serif">CC</text>',
+ gear:'<circle cx="12" cy="12" r="3.3" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="6.4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="8.6" fill="none" stroke="currentColor" stroke-width="3.4" stroke-dasharray="3.2 3.2"/>',
+ "return":'<path d="M10 9V5l-7 7 7 7v-4.1c5 0 8.5 1.6 11 5.1-1-5-4-10-11-11z"/>',
+ check:'<path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/>',
+ logo:'<path d="M6 4.2c0-1 1.1-1.6 2-1.1l12 7.1c.9.5.9 1.7 0 2.2L8 19.5c-.9.5-2 0-2-1.1z"/>',
+ star:'<path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/>',
+ trailer:'<rect x="2.5" y="5" width="19" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="M10 8.8v6.4l5.2-3.2z"/>',
+ restart:'<path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/>',
+ remove:'<path d="M6 7h12l-1 13H7zM9 4h6l1 2h3v1.6H5V6h3z"/>'
+};
+function icon(name,size){
+ return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 24 24" fill="currentColor">'+(ICONS[name]||"")+'</svg>';
+}
+function initIcons(){
+ var els=document.querySelectorAll("[data-icon]");
+ for(var i=0;i<els.length;i++){
+  els[i].innerHTML=icon(els[i].getAttribute("data-icon"),Number(els[i].getAttribute("data-size"))||30);
+ }
+ syncState();
+}
+
+var DAYS=["الأحد","الإثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"];
+var MONTHS=["يناير","فبراير","مارس","أبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"];
+function updateClock(){
+ var n=new Date(),h=n.getHours(),ap=h>=12?"PM":"AM";
+ h=h%12;if(h===0)h=12;
+ $("clockText").innerHTML=h+":"+p2(n.getMinutes())+" "+ap;
+ $("clockDate").innerHTML=DAYS[n.getDay()]+". "+n.getDate()+" "+MONTHS[n.getMonth()]+" "+n.getFullYear();
+}
+
+function updateTime(){
+ if($("playerLayer").style.display!=="flex")return;
+ var d=video.duration;
+ var known=!PLAYER.live&&d&&isFinite(d);
+ var t=seekTarget!==null?seekTarget:video.currentTime;
+ updateClock();
+ var pct=0,buf=0;
+ if(known){
+  pct=Math.max(0,Math.min(100,t/d*100));
+  try{
+   var b=video.buffered;
+   for(var i=0;i<b.length;i++){
+    if(video.currentTime>=b.start(i)&&video.currentTime<=b.end(i)+0.5){buf=b.end(i)/d*100;break}
+   }
+  }catch(e){}
+ }else if(PLAYER.live){pct=100}
+ $("barPos").style.width=pct+"%";
+ $("barBuf").style.width=Math.min(100,buf)+"%";
+ $("barKnob").style.left=pct+"%";
+ $("barKnob").style.display=PLAYER.live?"none":"block";
+ $("barWrap").className="bar"+(seekTarget!==null?" seeking":"");
+ $("timeCur").innerHTML=PLAYER.live?"مباشر":formatTime(t);
+ $("timeTot").innerHTML=known?formatTime(d):"";
+}
+
+function jumpBy(sec){
+ showOsd();
+ var d=video.duration;
+ if(PLAYER.live||!d||!isFinite(d)){flashInfo("التقديم غير متاح في البث المباشر");return}
+ if(scanDir!==0)stopScan(false);
+ var t=Math.max(0,Math.min(d-1,video.currentTime+sec));
+ try{video.currentTime=t}catch(e){}
+ flashHTML(icon(sec>0?"fwd10":"back10",52),1200);
+}
+
+function audioLabel(){
+ var tr=video.audioTracks;
+ if(!tr||tr.length<2)return "غير متاح";
+ for(var i=0;i<tr.length;i++)if(tr[i].enabled)return tr[i].label||tr[i].language||String(i+1);
+ return "تلقائي";
+}
+function subsList(){
+ var tt=video.textTracks,list=[];
+ if(tt)for(var i=0;i<tt.length;i++)if(tt[i].kind==="subtitles"||tt[i].kind==="captions")list.push(tt[i]);
+ return list;
+}
+function subsLabel(){
+ var l=subsList();
+ if(!l.length)return "غير متاح";
+ for(var i=0;i<l.length;i++)if(l[i].mode==="showing")return l[i].label||l[i].language||String(i+1);
+ return "إيقاف";
+}
+function panelItem(label,onclick,cur){
+ return '<div class="pl-item'+(cur?" cur":"")+'" tabindex="0" onclick="'+onclick+'">'+esc(label)+'</div>';
+}
+function openPanel(kind,focusIdx){
+ showOsd();
+ var title="",h="",idx=0,i;
+ if(kind==="list"){
+  if(PLAYER.live){
+   var cur=liveIndex();
+   if(cur<0){flashInfo("لا توجد قائمة قنوات");return}
+   title="القنوات";
+   var a=Math.max(0,cur-30),b=Math.min(LIVE.length,cur+60);
+   for(i=a;i<b;i++)h+=panelItem(LIVE[i].name||"قناة","zapTo("+i+");closePanel()",i===cur);
+   idx=cur-a;
+  }else if(PLAYER.epIndex>=0&&EPISODES.length){
+   title="الحلقات";
+   for(i=0;i<EPISODES.length;i++){
+    var ep=EPISODES[i];
+    var lbl=(ep.season!==""?"الموسم "+ep.season+" - ":"")+(ep.num!==""?"الحلقة "+ep.num+": ":"")+ep.title;
+    h+=panelItem(lbl,"playEpisodeIndex("+i+");closePanel()",i===PLAYER.epIndex);
+   }
+   idx=PLAYER.epIndex;
+  }else{flashInfo("لا توجد قائمة لهذا المحتوى");return}
+ }else if(kind==="settings"){
+  title="الإعدادات";
+  h=panelItem("نسبة العرض: "+ASPECTS[aspectIndex][1],"cycleAspect();refreshPanel()")+
+    panelItem("مسار الصوت: "+audioLabel(),"cycleAudio();refreshPanel()")+
+    panelItem("الترجمة: "+subsLabel(),"cycleSubs();refreshPanel()");
+ }else return;
+ if(focusIdx!=null)idx=focusIdx;
+ PANEL=kind;
+ $("plTitle").innerHTML=esc(title);
+ $("plBody").innerHTML=h;
+ $("plPanel").style.display="block";
+ var items=$("plBody").querySelectorAll(".pl-item");
+ if(items[idx])try{items[idx].focus()}catch(e){}
+}
+function refreshPanel(){
+ var items=$("plBody").querySelectorAll(".pl-item"),ai=0;
+ for(var i=0;i<items.length;i++)if(items[i]===document.activeElement)ai=i;
+ openPanel(PANEL,ai);
+}
+function closePanel(){
+ PANEL="";
+ $("plPanel").style.display="none";
+}
+
+function onMeta(){
+ if(PLAYER.live||!PLAYER.key)return;
+ var r=POS[PLAYER.key],d=video.duration;
+ if(r&&r.p>30&&d&&isFinite(d)&&r.p<d-30){
+  try{video.currentTime=r.p}catch(e){}
+  flashInfo("استكمال من "+formatTime(r.p),2200);
  }
 }
-
-function toggleFavorite(){
- if(!CURRENT_ITEM) return;
- var id = String(CURRENT_ITEM.stream_id || CURRENT_ITEM.series_id || CURRENT_ITEM.id);
- var found = -1;
- for(var i=0; i<FAVORITES.length; i++){
-  if(String(FAVORITES[i].id) === id && FAVORITES[i].type === CURRENT_TYPE){ found = i; break; }
+function onEnded(){
+ if(PLAYER.key){POS[PLAYER.key]={p:0,d:Math.round(video.duration)||0,t:Date.now(),done:1};savePos()}
+ PLAYER.key="";
+ if(PLAYER.epIndex>=0&&EPISODES[PLAYER.epIndex+1]){
+  playEpisodeIndex(PLAYER.epIndex+1);
+  flashInfo("الحلقة التالية...",2000);
+  return;
  }
- if(found >= 0) FAVORITES.splice(found, 1);
- else FAVORITES.push({id: id, type: CURRENT_TYPE, name: CURRENT_ITEM.name || CURRENT_ITEM.title});
- saveFavorites();
- updateFavButton();
- 
- // تحديث النجمة في الواجهة الخلفية (بدون إغلاق المودال)
- for(var k in RENDERED_ITEMS){
-  if(RENDERED_ITEMS[k].item === CURRENT_ITEM){
-   var card = document.querySelector(`[onclick="openDetails('${k}')"]`);
-   if(card){
-    var star = card.querySelector('div[style*="color:#f2b01e"]');
-    if(isFavorite(CURRENT_ITEM, CURRENT_TYPE)){
-     if(!star){ var d=document.createElement('div'); d.style.cssText='position:absolute;top:10px;right:10px;color:#f2b01e;font-size:24px;z-index:5;text-shadow:0 0 5px #000;'; d.innerText='★'; card.appendChild(d); }
-    } else {
-     if(star) star.remove();
-    }
+ closePlayer();
+}
+function onError(){
+ if($("playerLayer").style.display!=="flex"||!video.getAttribute("src"))return;
+ setBuffering(false);
+ var c=video.error?video.error.code:0;
+ flashInfo("تعذر تشغيل هذا الفيديو"+(c?" (خطأ "+c+")":""),3500);
+ showOsd();
+}
+
+video.addEventListener("timeupdate",function(){updateTime();rememberPos(false)});
+video.addEventListener("loadedmetadata",onMeta);
+video.addEventListener("waiting",function(){setBuffering(true)});
+video.addEventListener("seeking",function(){if(scanDir===0)setBuffering(true)});
+video.addEventListener("playing",function(){setBuffering(false);syncState()});
+video.addEventListener("canplay",function(){setBuffering(false)});
+video.addEventListener("seeked",function(){setBuffering(false)});
+video.addEventListener("play",function(){syncState();showOsd()});
+video.addEventListener("pause",function(){syncState();showOsd()});
+video.addEventListener("error",onError);
+video.addEventListener("ended",onEnded);
+
+function logout(){
+ try{
+  localStorage.removeItem("mora_server");
+  localStorage.removeItem("mora_user");
+  localStorage.removeItem("mora_pass");
+ }catch(e){}
+ SERVER="";USER="";PASS="";connected=false;showLogin();
+}
+
+window.connect=connect;
+window.goPage=goPage;
+window.chooseCategory=chooseCategory;
+window.previousPage=previousPage;
+window.nextPage=nextPage;
+window.doSearch=doSearch;
+window.loadCategoryContent=loadCategoryContent;
+window.backCategories=backCategories;
+window.openItem=openItem;
+window.closeModal=closeModal;
+window.toggleFavoriteCurrent=toggleFavoriteCurrent;
+window.playCurrent=playCurrent;
+window.playEpisodeById=playEpisodeById;
+window.closePlayer=closePlayer;
+window.stepSeek=stepSeek;
+window.togglePlay=togglePlay;
+window.nextItem=nextItem;
+window.cycleAspect=cycleAspect;
+window.cycleAudio=cycleAudio;
+window.cycleSubs=cycleSubs;
+window.barClick=barClick;
+window.logout=logout;
+window.openRenderedItem=openRenderedItem;
+window.loadCategories=loadCategories;
+window.playEpisodeIndex=playEpisodeIndex;
+window.jumpBy=jumpBy;
+window.openPanel=openPanel;
+window.closePanel=closePanel;
+window.refreshPanel=refreshPanel;
+window.zapTo=zapTo;
+window.openList=openList;
+window.playFromStart=playFromStart;
+window.openTrailer=openTrailer;
+window.closeTrailer=closeTrailer;
+window.removeFromHistory=removeFromHistory;
+window.setSeason=setSeason;
+window.toggleWatched=toggleWatched;
+window.saveTmdbKey=saveTmdbKey;
+
+function keyIs(e,codes,names){
+ var k=e.keyCode||e.which,i;
+ for(i=0;i<codes.length;i++)if(k===codes[i])return true;
+ for(i=0;i<names.length;i++)if(e.key===names[i])return true;
+ return false;
+}
+function isBack(e){
+ var k=e.keyCode||e.which;
+ var tag=document.activeElement&&document.activeElement.tagName;
+ if(k===8)return tag!=="INPUT"&&tag!=="TEXTAREA";
+ return k===27||k===BackKey||k===10009||e.key==="GoBack"||e.key==="BrowserBack";
+}
+
+document.addEventListener("keydown",function(e){
+
+ var key=e.keyCode||e.which;
+ var playerOpen=$("playerLayer").style.display==="flex";
+ var modalOpen=modalBg.style.display==="flex";
+
+ if($("trailerLayer").style.display==="block"){
+  if(isBack(e)){closeTrailer();e.preventDefault()}
+  return;
+ }
+
+ if(playerOpen){
+  showOsd();
+  if(PANEL){
+   var pitems=$("plBody").querySelectorAll(".pl-item"),pai=-1,pi;
+   for(pi=0;pi<pitems.length;pi++)if(pitems[pi]===document.activeElement)pai=pi;
+   if(isBack(e)||keyIs(e,[406],[])){closePanel();e.preventDefault();return}
+   if(key===38){var up=pitems[pai>0?pai-1:0];if(up)up.focus();e.preventDefault();return}
+   if(key===40){var dn=pitems[pai<pitems.length-1?pai+1:pitems.length-1];if(dn)dn.focus();e.preventDefault();return}
+   if(key===13||key===23){if(pai>=0)pitems[pai].click();e.preventDefault();return}
+   e.preventDefault();
+   return;
+  }
+  if(isBack(e)||keyIs(e,[413,178],["MediaStop"])){closePlayer();e.preventDefault();return}
+  if(key===37||keyIs(e,[412,227,89],["MediaRewind"])){stepSeek(-1);e.preventDefault();return}
+  if(key===39||keyIs(e,[417,228,90],["MediaFastForward"])){stepSeek(1);e.preventDefault();return}
+  if(key===38){nextItem(1);e.preventDefault();return}
+  if(key===40){nextItem(-1);e.preventDefault();return}
+  if(key===13||key===23||keyIs(e,[179],["MediaPlayPause"])){togglePlay();e.preventDefault();return}
+  if(keyIs(e,[415],["MediaPlay"])){if(video.paused)togglePlay();e.preventDefault();return}
+  if(keyIs(e,[19],["MediaPause"])){if(scanDir!==0)stopScan(false);else if(!video.paused)togglePlay();e.preventDefault();return}
+  if(keyIs(e,[427,34],["MediaTrackNext","ChannelUp","PageDown"])){nextItem(1);e.preventDefault();return}
+  if(keyIs(e,[428,33],["MediaTrackPrevious","ChannelDown","PageUp"])){nextItem(-1);e.preventDefault();return}
+  if(keyIs(e,[403,65],[])){cycleAspect();e.preventDefault();return}
+  if(keyIs(e,[404],[])){cycleAudio();e.preventDefault();return}
+  if(keyIs(e,[405],[])){cycleSubs();e.preventDefault();return}
+  if(keyIs(e,[406],[])){openPanel("list");e.preventDefault();return}
+  if(keyIs(e,[457,73],["Info"])){openPanel("settings");e.preventDefault();return}
+  flashInfo("KEY "+key+(e.key?" ("+e.key+")":""),1200);
+  return;
+ }
+
+ var active=document.activeElement;
+ var cls=active&&active.className?String(active.className):"";
+
+ if(key===13||key===23){
+  if(modalOpen&&active&&active!==modal&&modal.contains(active)&&active.click){
+   e.preventDefault();
+   active.click();
+   return;
+  }
+  if(!modalOpen&&cls.indexOf("item")!==-1){
+   var itemKey=active.getAttribute("data-item-key");
+   if(itemKey){
+    e.preventDefault();
+    openRenderedItem(itemKey);
+    return;
    }
   }
  }
-}
 
-// ================= المشغل =================
-function playCurrent(){
- if(!CURRENT_ITEM) return;
- var ext = CURRENT_ITEM.container_extension || (CURRENT_TYPE === "live" ? "ts" : "mp4");
- var folder = CURRENT_TYPE === "live" ? "live" : "movie";
- var url = SERVER + "/" + folder + "/" + encodeURIComponent(USER) + "/" + encodeURIComponent(PASS) + "/" + encodeURIComponent(CURRENT_ITEM.stream_id) + "." + ext;
- 
- $("video").src = url;
- $("playerLayer").style.display = "flex";
- closeModal();
- $("video").play().catch(function(e){ alert("تعذر تشغيل الفيديو."); });
-}
-
-function closePlayer(){
- var vid = $("video");
- if(CURRENT_ITEM && !vid.paused && vid.currentTime > 0 && vid.duration > 0){
-  var id = String(CURRENT_ITEM.stream_id || CURRENT_ITEM.series_id);
-  POSITIONS[CURRENT_TYPE + "_" + id] = { position: vid.currentTime, duration: vid.duration, done: false };
-  savePositions();
+ if(modalOpen){
+  if(isBack(e)){closeModal();e.preventDefault();return}
+  if(key>=37&&key<=40){detailsNav(key);e.preventDefault();return}
+  if(key===405&&active&&active.getAttribute){
+   var af=active.getAttribute("data-f")||"";
+   if(af.indexOf("ep-")===0){toggleEpWatched(Number(af.substring(3)));e.preventDefault();return}
+  }
+  return;
  }
- vid.pause(); vid.removeAttribute("src"); vid.load();
- $("playerLayer").style.display = "none";
- renderPage(CURRENT_PAGE);
-}
 
-// ================= التشغيل الأولي =================
-loadSavedData();
-if(!SERVER || !USER || !PASS){ renderPage("settings"); }
-else { renderPage("home"); }
+ if(isBack(e)){
+  if(PAGE==="content"||PAGE==="list"){backCategories();e.preventDefault();return}
+  if(PAGE==="categories"){goPage("home");e.preventDefault();return}
+  if(PAGE!=="home"){goPage("home");e.preventDefault()}
+ }
+},true);
 
-// تصدير الدوال للنطاق العام
-window.renderPage = renderPage;
-window.loadContent = loadContent;
-window.openDetails = openDetails;
-window.closeModal = closeModal;
-window.toggleFavorite = toggleFavorite;
-window.playCurrent = playCurrent;
-window.closePlayer = closePlayer;
-window.saveSettings = saveSettings;
+loadSaved();
+loadPos();
+loadSprog();
+try{TMDB_KEY=localStorage.getItem("mora_tmdb")||""}catch(e){}
+initIcons();
+setInterval(function(){
+ if($("playerLayer").style.display==="flex")updateClock();
+ if(modalBg.style.display==="flex")updateDetailsClock();
+},15000);
+credentialsSaved();
+if(SERVER&&USER&&PASS)connect();
+else showLogin();
 
+ 
+
+ 
+})();
 </script>
 </body>
 </html>
