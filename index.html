@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ar">
 <head>
@@ -105,64 +106,13 @@ button:focus,.item:focus,.category:focus,.episode:focus{outline:3px solid #e7b85
 .field input{width:100%;padding:13px;background:#090d15;color:white;border:1px solid #343d4c;border-radius:5px;font-size:15px}
 .login button{width:100%;margin-top:15px}
 #message{color:#ff8585;font-size:13px;margin-top:15px;text-align:center}
-
-/* ===== شاشة التفاصيل (التصميم الجديد) ===== */
-.modal-bg{position:fixed;top:0;left:0;right:0;bottom:0;background:#05070c;z-index:30;display:none;align-items:center;justify-content:center;padding:0}
-.modal{width:100%;height:100%;max-width:none;max-height:none;overflow:hidden;background:#070a12;border:0;border-radius:0;padding:0}
-.dt{position:relative;width:100%;height:100%;overflow:hidden;direction:rtl;color:#fff;background:radial-gradient(circle at 70% 20%,#1b2540,#070a12 70%)}
-.dt-bg{position:absolute;top:0;left:0;right:0;bottom:0;background-size:cover;background-position:center;opacity:.4}
-.dt-shade{position:absolute;top:0;left:0;right:0;bottom:0;background:-webkit-linear-gradient(rgba(7,10,18,.55),rgba(7,10,18,.93));background:linear-gradient(rgba(7,10,18,.55),rgba(7,10,18,.93))}
-.dt-top{position:absolute;top:0;left:0;right:0;height:10vh;padding:0 3%;display:flex;align-items:center;justify-content:space-between;direction:ltr;z-index:2}
-.dt-clock{display:flex;align-items:center;font-size:3vh;color:#e8ecf5;white-space:nowrap}
-.dt-clock #dtDate{direction:rtl;unicode-bidi:embed;display:inline-block}
-.dt-vsep{display:inline-block;width:2px;height:4vh;background:rgba(255,255,255,.35);margin:0 1.6vw}
-.dt-brand{display:flex;align-items:center;font-size:4.4vh;font-weight:bold;color:#f2b01e;letter-spacing:1px}
-.dt-brand svg{margin-right:1vh}
-.dt-body{position:absolute;top:10vh;bottom:3vh;left:3%;right:3%;display:flex;direction:rtl;z-index:2}
-.dt-main{flex:1;min-width:0;display:flex;flex-direction:column;padding-left:3vw}
-.dt-title{font-size:5.4vh;font-weight:bold;margin:0 0 1.2vh;line-height:1.25;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
-.dt-meta{font-size:2.7vh;color:#dfe5f1;margin-bottom:2vh;display:flex;align-items:center;flex-wrap:wrap;min-height:3.5vh}
-.dt-meta .dt-vsep{height:3vh;margin:0 1.2vw}
-.dt-star{color:#f2b01e}
-.dt-meta b{color:#f2b01e}
-.dt-plotbox{border:1px solid #3f5f94;background:rgba(14,22,40,.78);border-radius:1.4vh;padding:1.6vh 1.6vw;margin-bottom:2vh}
-.dt-h{font-size:3.2vh;font-weight:bold;color:#f2b01e;margin-bottom:.8vh}
-.dt-plot{font-size:2.5vh;line-height:1.7;color:#e3e8f2;max-height:17vh;overflow:hidden}
-.dt-cast{display:flex;overflow:hidden;margin-bottom:1.5vh}
-.dt-actor{width:11vw;margin-left:1vw;text-align:center;flex:none}
-.dt-avatar{width:10vh;height:10vh;border-radius:50%;margin:0 auto 1vh;border:.4vh solid #5a78b8;background:-webkit-linear-gradient(#2a3a5f,#141c30);background:linear-gradient(#2a3a5f,#141c30);font-size:4.6vh;line-height:9.2vh;font-weight:bold;color:#f2b01e;text-align:center}
-.dt-aname{font-size:2.3vh;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-#episodes{margin-top:auto}
-.dt-seasons{margin-bottom:1vh;white-space:nowrap;overflow-x:auto;overflow-y:hidden;padding:.6vh}
-.dt-season{display:inline-block;margin-left:1vw;padding:1vh 2vw;font-size:2.4vh;border-radius:3vh;border:1px solid #394a72;background:rgba(30,42,70,.85);color:#fff}
-.dt-season.on{background:#f2b01e;color:#111;border-color:#f2b01e;font-weight:bold}
-.dt-season:focus{outline:none;box-shadow:0 0 2vh rgba(242,176,30,.85);border-color:#f2b01e}
-.dt-eps{white-space:nowrap;overflow-x:auto;overflow-y:hidden;padding:1vh .8vh 1.4vh;font-size:0}
-.episode,.ep-card{display:inline-block;position:relative;vertical-align:top;width:17vw;height:17vh;margin:0 0 0 1.2vw;padding:0;border-radius:1.6vh;overflow:hidden;background:#1a2133;border:.3vh solid #5b4a8a;cursor:pointer;white-space:normal;font-size:2vh}
-.ep-img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover}
-.ep-shade{position:absolute;left:0;right:0;bottom:0;height:75%;background:-webkit-linear-gradient(rgba(0,0,0,0),rgba(0,0,0,.9));background:linear-gradient(rgba(0,0,0,0),rgba(0,0,0,.9))}
-.ep-text{position:absolute;right:1vw;left:5.4vh;bottom:2.4vh;text-align:right}
-.ep-num{font-size:2.3vh;font-weight:bold;color:#fff}
-.ep-name{font-size:2.1vh;color:#f2b01e;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ep-play{position:absolute;left:.8vw;bottom:2.2vh;width:4vh;height:4vh;border:.25vh solid #fff;border-radius:50%;color:#fff;display:flex;align-items:center;justify-content:center}
-.ep-prog{position:absolute;left:1vw;right:1vw;bottom:.8vh;height:.7vh;background:rgba(255,255,255,.3);border-radius:.4vh;direction:ltr}
-.ep-prog div{height:100%;width:0;background:#f2b01e;border-radius:.4vh}
-.episode:focus,.ep-card:focus{outline:none;border-color:#f2b01e;box-shadow:0 0 2.4vh rgba(242,176,30,.85)}
-.ep-card.last{border-color:#f2b01e}
-.ep-card.last:after{content:"آخر مشاهدة";position:absolute;top:.8vh;right:.8vw;background:#f2b01e;color:#111;font-size:1.8vh;padding:.3vh 1vh;border-radius:.8vh;font-weight:bold}
-.dt-side{width:27%;flex:none;display:flex;flex-direction:column}
-.dt-poster{height:50vh;border-radius:1.8vh;overflow:hidden;border:.3vh solid #4b6aa8;background:#0b0f1a;box-shadow:0 0 3vh rgba(0,0,0,.6)}
-.dt-poster img{width:100%;height:100%;object-fit:cover;display:block}
-.dt-poster.contain img{object-fit:contain}
-.dt-btns{margin-top:2.4vh}
-.dt-btn{display:flex;align-items:center;justify-content:center;width:100%;height:7vh;margin:0 0 1.6vh;padding:0 1.5vw;border-radius:4vh;border:1px solid #4a63a3;background:-webkit-linear-gradient(#2b3a68,#1b2548);background:linear-gradient(#2b3a68,#1b2548);color:#fff;font-size:2.8vh;font-weight:bold}
-.dt-btn svg{margin-left:1vw;flex:none}
-.dt-btn-t{display:block;line-height:1.2}
-.dt-btn-t small{display:block;font-size:1.8vh;color:#f2b01e;font-weight:normal}
-.dt-primary{border-color:#f2b01e;background:-webkit-linear-gradient(#3a3320,#241f12);background:linear-gradient(#3a3320,#241f12)}
-.dt-btn:focus,.dt-btn:hover{outline:none;border:.3vh solid #f2b01e;background:-webkit-linear-gradient(#3a3320,#241f12);background:linear-gradient(#3a3320,#241f12);box-shadow:0 0 2.4vh rgba(242,176,30,.75);color:#fff}
-/* ===== نهاية شاشة التفاصيل ===== */
-
+.modal-bg{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.88);z-index:30;display:none;align-items:center;justify-content:center;padding:20px}
+.modal{width:100%;max-width:720px;max-height:85vh;overflow:auto;background:#171d29;border:1px solid #394354;border-radius:10px;padding:25px}
+.modal-content{display:flex;gap:22px}
+.modal-poster{width:180px;height:260px;object-fit:cover;background:#222}
+.modal p{color:#aab1c0;line-height:1.6}
+.modal-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.episode{padding:13px;background:#242c3a;border-radius:5px;margin:8px 0;cursor:pointer}
 #playerLayer{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:#000;z-index:50;align-items:center;justify-content:center}
 #video{position:fixed;top:0;left:0;width:100vw;height:100vh;margin:0;padding:0;object-fit:contain;background:#000}
 .osd{position:absolute;left:0;right:0;z-index:3;-webkit-transition:opacity .3s;transition:opacity .3s}
@@ -216,12 +166,16 @@ button:focus,.item:focus,.category:focus,.episode:focus{outline:3px solid #e7b85
 #seekPop{display:none;position:absolute;top:50%;left:50%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%);z-index:5;background:rgba(0,0,0,.7);color:#fff;font-size:38px;padding:14px 34px;border-radius:14px;white-space:nowrap}
 #seekPop svg{display:inline-block;vertical-align:middle;margin:0 10px}
 #seekPop span{direction:ltr;unicode-bidi:embed;display:inline-block;vertical-align:middle}
+.episode.last{border:1px solid #f2b01e}
+.episode.last:after{content:"  (آخر مشاهدة)";color:#f2b01e;font-size:12px}
 .category.special{border-color:#6b5a2e;background:#221d12}
 .notice{background:#1a2631;border:1px solid #34485b;color:#b8c9d9;padding:12px;border-radius:6px;margin-bottom:20px;font-size:13px}
 @media(max-width:700px){
  .header{height:auto;min-height:70px;flex-wrap:wrap;padding:12px}
  .nav{order:3;width:100%;margin:10px 0 0;overflow-x:auto}
  .hero{padding:25px}.hero h1{font-size:25px}
+ .modal-content{flex-direction:column}
+ .modal-poster{width:130px;height:190px}
 }
 </style>
 </head>
@@ -299,7 +253,6 @@ var CURRENT_PAGE=1;
 var PAGE_SIZE=12;
 var SEARCH="";
 var LAST_FOCUS=null,MODAL_OPENER=null,EPISODES=[];
-var SEASONS=[],DT_SEASON="",DT_INFO=null;
 var SPROG={},PANEL="",LIST_KIND="";
 var SEEK_LADDER=[5,10,20,60,120,300];
 var seekCount=0,scanDir=0,seekTarget=null,seekTimer=null;
@@ -696,86 +649,37 @@ function toggleFavorite(item){
  render();
 }
 
-/* ================= شاشة التفاصيل ================= */
-
-function resumeSub(sp){
- var s="";
+function resumeLabel(sp){
+ var s="استكمال المشاهدة - ";
  if(sp.season!==""&&sp.season!=null)s+="الموسم "+sp.season+" ";
  if(sp.num!==""&&sp.num!=null)s+="الحلقة "+sp.num;
  else s+=sp.title;
  return s;
 }
-function playInner(label,sub){
- return icon("play",30)+'<span class="dt-btn-t">'+esc(label)+(sub?'<small>'+esc(sub)+'</small>':'')+'</span>';
-}
-function updateDtClock(){
- var a=$("dtDate"),b=$("dtTime");
- if(!a||!b)return;
- var n=new Date(),h=n.getHours(),ap=h>=12?"PM":"AM";
- h=h%12;if(h===0)h=12;
- b.innerHTML=h+":"+p2(n.getMinutes())+" "+ap;
- a.innerHTML=DAYS[n.getDay()]+"، "+n.getDate()+" "+MONTHS[n.getMonth()]+" "+n.getFullYear();
-}
-var SEASON_NAMES=["","الأول","الثاني","الثالث","الرابع","الخامس","السادس","السابع","الثامن","التاسع","العاشر"];
-function seasonName(s){
- var n=parseInt(s,10);
- if(n>0&&n<SEASON_NAMES.length&&String(n)===String(s))return SEASON_NAMES[n];
- return String(s);
-}
-
 function showDetails(item,type){
  type=realType(item,type);
  if(modalBg.style.display!=="flex")MODAL_OPENER=document.activeElement;
  CURRENT={item:item,type:type};
- EPISODES=[];SEASONS=[];DT_SEASON="";DT_INFO=null;
- var isLive=type==="live";
+ if(type==="series")EPISODES=[];
  var name=item.name||item.title||"بدون اسم";
  var image=item.stream_icon||item.cover||item.movie_image||"";
  var sp=type==="series"?SPROG[String(item.series_id)]:null;
- var playLabel="تشغيل",playSub="";
- if(type==="series"){
-  if(sp){playLabel="استكمال المشاهدة";playSub=resumeSub(sp)}
-  else playLabel="تشغيل أول حلقة";
- }else if(type==="movie"&&POS["movie_"+item.stream_id]){
-  playLabel="استكمال المشاهدة";
- }
- var plot=item.plot||item.overview||item.description||"";
- var h='<div class="dt">'+
- '<div class="dt-bg" id="dtBg"></div><div class="dt-shade"></div>'+
- '<div class="dt-top">'+
-  '<div class="dt-clock"><span id="dtTime"></span><span class="dt-vsep"></span><span id="dtDate"></span></div>'+
-  '<div class="dt-brand">'+icon("logo",40)+'MORA IPTV</div>'+
- '</div>'+
- '<div class="dt-body">'+
-  '<div class="dt-main">'+
-   '<h1 class="dt-title">'+esc(name)+'</h1>'+
-   '<div class="dt-meta" id="dtMeta"></div>'+
-   (isLive?'':'<div class="dt-plotbox"><div class="dt-h">'+(type==="series"?"فكرة المسلسل":"قصة الفيلم")+'</div>'+
-    '<div class="dt-plot" id="dtPlot">'+esc(plot||"جاري تحميل التفاصيل...")+'</div></div>')+
-   '<div id="dtCast"></div>'+
-   '<div id="episodes"></div>'+
-  '</div>'+
-  '<div class="dt-side">'+
-   '<div class="dt-poster'+(isLive?' contain':'')+'"><img src="'+esc(image)+'" onerror="this.style.display=\'none\'"></div>'+
-   '<div class="dt-btns">'+
-    '<button class="dt-btn dt-primary" onclick="playCurrent()">'+playInner(playLabel,playSub)+'</button>'+
-    '<button class="dt-btn" onclick="toggleFavoriteCurrent()">'+icon("heart",28)+'<span class="dt-btn-t">'+(isFavorite(item)?"إزالة من المفضلة":"إضافة إلى المفضلة")+'</span></button>'+
-    '<button class="dt-btn" onclick="closeModal()">'+icon("return",28)+'<span class="dt-btn-t">الرجوع</span></button>'+
-   '</div>'+
-  '</div>'+
- '</div></div>';
- modal.innerHTML=h;
+ var playLabel=type==="series"?(sp?resumeLabel(sp):"تشغيل أول حلقة"):"تشغيل";
+ modal.innerHTML='<div class="modal-content"><img class="modal-poster" src="'+esc(image)+'">'+
+ '<div><h2>'+esc(name)+'</h2><p>'+esc(item.plot||item.overview||item.description||"لا توجد تفاصيل متاحة.")+'</p>'+
+ '<p>التقييم: '+esc(item.rating||"غير متاح")+'</p>'+
+ '<div class="modal-actions"><button class="primary" onclick="playCurrent()">'+esc(playLabel)+'</button>'+
+ '<button class="secondary" onclick="toggleFavoriteCurrent()">'+(isFavorite(item)?"إزالة من المفضلة":"إضافة للمفضلة")+'</button>'+
+ '<button class="secondary" onclick="closeModal()">إغلاق</button></div></div></div>'+
+ '<div id="episodes"></div>';
  modalBg.style.display="flex";
- updateDtClock();
- applyInfo(item);
  if(type!=="series"){
   setTimeout(function(){
-   var b=modal.querySelector(".dt-primary");
+   var b=modal.querySelector(".primary");
    if(b&&modalBg.style.display==="flex")try{b.focus()}catch(e){}
   },400);
  }
  if(type==="series")loadEpisodes(item.series_id);
- else if(type==="movie")fetchMovieInfo(item);
 }
 function closeModal(){
  modalBg.style.display="none";
@@ -783,138 +687,21 @@ function closeModal(){
 }
 function toggleFavoriteCurrent(){if(CURRENT)toggleFavorite(CURRENT.item)}
 
-function fetchMovieInfo(item){
- request(apiUrl("get_vod_info","&vod_id="+encodeURIComponent(item.stream_id)),function(err,data){
-  if(!CURRENT||CURRENT.item!==item)return;
-  if(err||!data||!data.info){noPlot();return}
-  applyInfo(data.info);
-  noPlot();
- });
-}
-function noPlot(){
- var p=$("dtPlot");
- if(p&&p.innerHTML==="جاري تحميل التفاصيل...")p.innerHTML="لا توجد تفاصيل متاحة.";
-}
-function firstOf(v){
- if(v&&typeof v!=="string"&&v.length!==undefined)return v[0]||"";
- return v||"";
-}
-function applyInfo(info){
- if(!info||!CURRENT)return;
- var merged={},k;
- if(DT_INFO)for(k in DT_INFO)merged[k]=DT_INFO[k];
- for(k in info){if(info[k]!==""&&info[k]!=null)merged[k]=info[k]}
- DT_INFO=merged;
- var plot=info.plot||info.description||info.overview||"";
- var p=$("dtPlot");
- if(p&&plot)p.innerHTML=esc(plot);
- var bg=firstOf(info.backdrop_path);
- var bgEl=$("dtBg");
- if(bg&&bgEl)bgEl.style.backgroundImage='url("'+String(bg).replace(/"/g,"%22")+'")';
- renderMeta();
- if(info.cast)renderCast(info.cast);
-}
-function renderMeta(){
- var el=$("dtMeta");
- if(!el||!CURRENT)return;
- var item=CURRENT.item,type=CURRENT.type,info=DT_INFO||{};
- var parts=[];
- if(type==="live"){
-  el.innerHTML="بث مباشر";
-  return;
- }
- var rn=parseFloat(info.rating||item.rating);
- if(rn>0)parts.push('التقييم: <span class="dt-star">&#9733;</span> <b>'+rn.toFixed(1)+'</b>');
- if(type==="series"&&EPISODES.length)parts.push("عدد الحلقات: "+EPISODES.length);
- var mins=0;
- if(Number(info.duration_secs)>0)mins=Math.round(Number(info.duration_secs)/60);
- else if(parseInt(info.episode_run_time,10)>0)mins=parseInt(info.episode_run_time,10);
- if(mins>0)parts.push((type==="series"?"وقت الحلقة: ":"المدة: ")+mins+" دقيقة");
- else if(type==="movie"&&info.duration)parts.push("المدة: "+esc(info.duration));
- var rel=String(info.releasedate||info.releaseDate||info.release_date||"");
- var yr=rel.match(/\d{4}/);
- if(yr)parts.push(yr[0]);
- var g=String(info.genre||"").replace(/\s*[\/,،|]\s*/g," &bull; ");
- if(g)parts.push(g.indexOf("&bull;")>=0||true?g.replace(/&(?!bull;)/g,"&amp;"):g);
- el.innerHTML=parts.join('<span class="dt-vsep"></span>');
-}
-function renderCast(cast){
- var t=$("dtCast");
- if(!t||!CURRENT||CURRENT.type==="live")return;
- var names=String(cast).split(/[,،]/),out=[],i;
- for(i=0;i<names.length&&out.length<5;i++){
-  var n=names[i].replace(/^\s+|\s+$/g,"");
-  if(n)out.push(n);
- }
- if(!out.length){t.innerHTML="";return}
- var h='<div class="dt-h">طاقم العمل</div><div class="dt-cast">';
- for(i=0;i<out.length;i++){
-  h+='<div class="dt-actor"><div class="dt-avatar">'+esc(out[i].charAt(0))+'</div><div class="dt-aname">'+esc(out[i])+'</div></div>';
- }
- t.innerHTML=h+'</div>';
-}
-
 function buildEpisodes(data){
- EPISODES=[];SEASONS=[];
+ var html="<h3>المواسم والحلقات</h3>";
+ EPISODES=[];
  for(var season in data.episodes){
+  html+="<h4>الموسم "+esc(season)+"</h4>";
   var eps=data.episodes[season];
-  if(!eps||!eps.length)continue;
-  SEASONS.push(String(season));
   for(var i=0;i<eps.length;i++){
    var ep=eps[i];
-   var inf=ep.info||{};
    var etitle=ep.title||ep.name||("الحلقة "+(i+1));
    var num=(ep.episode_num!=null&&ep.episode_num!=="")?ep.episode_num:(i+1);
-   EPISODES.push({id:ep.id,ext:ep.container_extension||"mp4",title:etitle,season:season,num:num,
-    img:inf.movie_image||"",dur:Number(inf.duration_secs)||0});
+   EPISODES.push({id:ep.id,ext:ep.container_extension||"mp4",title:etitle,season:season,num:num});
+   html+='<div class="episode" tabindex="0" data-i="'+(EPISODES.length-1)+'" onclick="playEpisodeIndex('+(EPISODES.length-1)+')">'+esc(etitle)+'</div>';
   }
  }
- var sp=CURRENT&&CURRENT.item?SPROG[String(CURRENT.item.series_id)]:null;
- DT_SEASON=SEASONS.length?SEASONS[0]:"";
- if(sp&&sp.season!==""&&sp.season!=null){
-  for(var k=0;k<SEASONS.length;k++)if(SEASONS[k]===String(sp.season))DT_SEASON=SEASONS[k];
- }
-}
-function epProgress(idx){
- var ep=EPISODES[idx];
- if(!ep)return 0;
- var r=POS["ep_"+ep.id];
- if(!r)return 0;
- if(ep.dur>0)return Math.min(100,Math.round(r.p/ep.dur*100));
- return 35;
-}
-function renderEpisodesArea(){
- var t=$("episodes");
- if(!t)return;
- if(!SEASONS.length){t.innerHTML="";return}
- var h='<div class="dt-h">قائمة الحلقات - الموسم '+esc(seasonName(DT_SEASON))+'</div>';
- if(SEASONS.length>1){
-  h+='<div class="dt-seasons">';
-  for(var i=0;i<SEASONS.length;i++){
-   h+='<button class="dt-season'+(SEASONS[i]===DT_SEASON?" on":"")+'" onclick="showSeason(\''+esc(SEASONS[i])+'\')">الموسم '+esc(SEASONS[i])+'</button>';
-  }
-  h+='</div>';
- }
- h+='<div class="dt-eps">';
- var sp=CURRENT?SPROG[String(CURRENT.item.series_id)]:null;
- for(var j=0;j<EPISODES.length;j++){
-  var ep=EPISODES[j];
-  if(String(ep.season)!==DT_SEASON)continue;
-  var last=sp&&String(sp.id)===String(ep.id);
-  h+='<div class="episode ep-card'+(last?" last":"")+'" tabindex="0" data-i="'+j+'" onclick="playEpisodeIndex('+j+')">'+
-   (ep.img?'<img class="ep-img" src="'+esc(ep.img)+'" onerror="this.style.display=\'none\'">':'')+
-   '<div class="ep-shade"></div>'+
-   '<div class="ep-text"><div class="ep-num">الحلقة '+esc(ep.num)+':</div><div class="ep-name">'+esc(ep.title)+'</div></div>'+
-   '<div class="ep-play">'+icon("play",20)+'</div>'+
-   '<div class="ep-prog"><div style="width:'+epProgress(j)+'%"></div></div></div>';
- }
- t.innerHTML=h+'</div>';
-}
-function showSeason(s){
- DT_SEASON=String(s);
- renderEpisodesArea();
- var b=modal.querySelector(".dt-season.on");
- if(b)try{b.focus()}catch(e){}
+ return html;
 }
 function isCurrentSeries(seriesId){
  return !!(CURRENT&&CURRENT.type==="series"&&String(CURRENT.item.series_id)===String(seriesId));
@@ -922,36 +709,30 @@ function isCurrentSeries(seriesId){
 function refreshSeriesUI(){
  if(!CURRENT||CURRENT.type!=="series")return;
  var sp=SPROG[String(CURRENT.item.series_id)];
- var b=modal.querySelector(".dt-primary");
- if(b)b.innerHTML=sp?playInner("استكمال المشاهدة",resumeSub(sp)):playInner("تشغيل أول حلقة","");
- var els=modal.querySelectorAll(".ep-card");
+ var b=modal.querySelector(".primary");
+ if(b)b.innerHTML=esc(sp?resumeLabel(sp):"تشغيل أول حلقة");
+ var els=modal.querySelectorAll(".episode");
  for(var i=0;i<els.length;i++){
   var idx=Number(els[i].getAttribute("data-i"));
-  els[i].className="episode ep-card"+(sp&&EPISODES[idx]&&String(EPISODES[idx].id)===String(sp.id)?" last":"");
-  var pg=els[i].querySelector(".ep-prog div");
-  if(pg)pg.style.width=epProgress(idx)+"%";
+  els[i].className="episode"+(sp&&EPISODES[idx]&&String(EPISODES[idx].id)===String(sp.id)?" last":"");
  }
 }
 function loadEpisodes(seriesId){
  request(apiUrl("get_series_info","&series_id="+encodeURIComponent(seriesId)),function(err,data){
+  if(err||!data||!data.episodes)return;
   if(!isCurrentSeries(seriesId))return;
-  if(err||!data||!data.episodes){noPlot();return}
-  buildEpisodes(data);
-  applyInfo(data.info);
-  noPlot();
-  renderMeta();
-  renderEpisodesArea();
+  var html=buildEpisodes(data);
+  var target=$("episodes");
+  if(target)target.innerHTML=html;
   refreshSeriesUI();
   setTimeout(function(){
    if(modalBg.style.display!=="flex")return;
    var sp=SPROG[String(seriesId)];
-   var el=sp?modal.querySelector(".dt-primary"):modal.querySelector(".ep-card");
+   var el=sp?modal.querySelector(".primary"):modal.querySelector(".episode");
    if(el)try{el.focus()}catch(e){}
   },400);
  });
 }
-
-/* ================= نهاية شاشة التفاصيل ================= */
 
 function playEpisodeById(id,ext,title){
  var url=SERVER+"/series/"+encodeURIComponent(USER)+"/"+encodeURIComponent(PASS)+"/"+encodeURIComponent(id)+"."+ext;
@@ -1084,7 +865,6 @@ function closePlayer(){
  $("playerLayer").style.display="none";
  $("seekPop").style.display="none";
  setBuffering(false);
- if(modalBg.style.display==="flex")refreshSeriesUI();
  if(LAST_FOCUS&&LAST_FOCUS.focus&&document.body.contains(LAST_FOCUS))try{LAST_FOCUS.focus()}catch(e){}
 }
 
@@ -1258,7 +1038,6 @@ var ICONS={
  cc:'<rect x="2.5" y="5" width="19" height="14" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><text x="12" y="15.2" font-size="8" font-weight="bold" text-anchor="middle" font-family="Arial,sans-serif">CC</text>',
  gear:'<circle cx="12" cy="12" r="3.3" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="6.4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="8.6" fill="none" stroke="currentColor" stroke-width="3.4" stroke-dasharray="3.2 3.2"/>',
  "return":'<path d="M10 9V5l-7 7 7 7v-4.1c5 0 8.5 1.6 11 5.1-1-5-4-10-11-11z"/>',
- heart:'<path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>',
  logo:'<path d="M6 4.2c0-1 1.1-1.6 2-1.1l12 7.1c.9.5.9 1.7 0 2.2L8 19.5c-.9.5-2 0-2-1.1z"/>'
 };
 function icon(name,size){
@@ -1458,7 +1237,6 @@ window.closePanel=closePanel;
 window.refreshPanel=refreshPanel;
 window.zapTo=zapTo;
 window.openList=openList;
-window.showSeason=showSeason;
 
 function keyIs(e,codes,names){
  var k=e.keyCode||e.which,i;
@@ -1545,14 +1323,14 @@ loadSaved();
 loadPos();
 loadSprog();
 initIcons();
-setInterval(function(){
- if($("playerLayer").style.display==="flex")updateClock();
- if(modalBg.style.display==="flex")updateDtClock();
-},15000);
+setInterval(function(){if($("playerLayer").style.display==="flex")updateClock()},15000);
 credentialsSaved();
 if(SERVER&&USER&&PASS)connect();
 else showLogin();
 
+ 
+
+ 
 })();
 </script>
 </body>
