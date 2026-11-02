@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar">
 <head>
@@ -18,9 +17,6 @@ button:focus,.item:focus,.category:focus,.episode:focus{outline:3px solid #e7b85
 .nav button{border:0;background:transparent;color:#aaa;padding:12px 13px;font-size:14px;border-radius:5px;white-space:nowrap}
 .nav button.active,.nav button:focus{background:#252a36;color:#fff}
 .page{padding:25px 3% 50px}
-.hero{min-height:240px;padding:35px;background:linear-gradient(90deg,#111722,#202b3b,#111722);border:1px solid #252d3a;border-radius:10px;display:flex;flex-direction:column;justify-content:center;margin-bottom:25px}
-.hero h1{font-size:35px;margin:0 0 10px}
-.hero p{color:#aab1c0;line-height:1.6}
 .primary{background:#d9a94e;color:#111;border:0;padding:12px 20px;border-radius:5px;font-weight:bold}
 .secondary{background:#252c39;color:#fff;border:1px solid #394354;padding:10px 16px;border-radius:5px}
 .section-title{font-size:21px;margin:20px 0}
@@ -106,6 +102,40 @@ button:focus,.item:focus,.category:focus,.episode:focus{outline:3px solid #e7b85
 .field input{width:100%;padding:13px;background:#090d15;color:white;border:1px solid #343d4c;border-radius:5px;font-size:15px}
 .login button{width:100%;margin-top:15px}
 #message{color:#ff8585;font-size:13px;margin-top:15px;text-align:center}
+
+/* ===== الصفحة الرئيسية (بدون بوسترات) ===== */
+.hm{position:relative;min-height:100vh;padding:0 4vw 4vh;direction:rtl;color:#fff;background:radial-gradient(circle at 82% 6%,#18284a,rgba(7,11,20,0) 45%),radial-gradient(circle at 12% 62%,#131f3b,rgba(7,11,20,0) 50%),#070b14}
+.hm-top{height:11vh;display:flex;align-items:center;justify-content:space-between;direction:ltr}
+.hm-tools{display:flex;align-items:center;color:#d3daec;font-size:2.7vh;white-space:nowrap}
+.hm-tools svg{width:3.6vh;height:3.6vh;margin-right:2vw;color:#cfd6e8}
+.hm-sep{display:inline-block;width:2px;height:3vh;background:rgba(255,255,255,.45);margin:0 1.2vw}
+.hm-date{direction:rtl;unicode-bidi:embed;display:inline-block}
+.hm-logo{font-size:6vh;font-weight:bold;color:#f2b01e;letter-spacing:1px;text-shadow:0 0 2.5vh rgba(242,176,30,.5)}
+.hm-banner{position:relative;height:31vh;border-radius:2.2vh;border:1px solid rgba(120,150,230,.35);overflow:hidden;background:linear-gradient(100deg,#0a1020 30%,#16284a 72%,#1d3160);padding:0 4vw;display:flex;flex-direction:column;justify-content:center}
+.hm-banner:before{content:"";position:absolute;left:-6vw;top:-12vh;width:42vw;height:56vh;background:radial-gradient(circle,rgba(242,176,30,.2),rgba(242,176,30,0) 65%)}
+.hm-bt{position:relative;font-size:5.2vh;font-weight:bold;margin:0 0 1.6vh}
+.hm-bs{position:relative;font-size:3vh;color:#cdd5e8;margin:0}
+.hm-watch{position:absolute;left:2.5vw;bottom:3.5vh;height:6.4vh;padding:0 2.6vw;border-radius:3.5vh;border:1px solid rgba(242,176,30,.65);background:rgba(60,48,26,.85);color:#fff;font-size:2.6vh;font-weight:bold}
+.hm-watch:focus,.hm-watch:hover{outline:none;border:.35vh solid #f2b01e;box-shadow:0 0 2.4vh rgba(242,176,30,.75)}
+.hm-dots{position:absolute;right:2.5vw;bottom:3.2vh;direction:ltr}
+.hm-dots i{display:inline-block;width:1.2vh;height:1.2vh;border-radius:50%;background:rgba(255,255,255,.35);margin-left:1vh}
+.hm-dots i.on{background:#fff}
+.hm-tiles{display:flex;justify-content:space-between;margin-top:3.6vh;direction:rtl}
+.hm-tile{display:flex;flex-direction:column;align-items:center;justify-content:center;width:15.6%;height:31vh;margin:0;padding:0;border-radius:2.2vh;border:1px solid rgba(150,170,220,.3);background:linear-gradient(160deg,rgba(62,72,98,.75),rgba(14,21,38,.95));color:#fff;font-size:3.6vh;font-weight:bold}
+.hm-tile:focus,.hm-tile:hover{outline:none;border:.4vh solid #f2b01e;background:linear-gradient(160deg,rgba(80,66,34,.8),rgba(24,22,18,.95));box-shadow:0 0 3.2vh rgba(242,176,30,.7)}
+.hm-ic{display:block;height:13vh;margin-bottom:2.6vh}
+.hm-ic svg{width:13vh;height:13vh}
+.c-home{color:#f2b01e}.c-movies{color:#3d8bff}.c-series{color:#a35cff}.c-live{color:#2fd0e8}.c-radio{color:#ff4d79}.c-set{color:#aab2c4}
+.hm-sec{font-size:3.4vh;font-weight:bold;margin:3.8vh 0 1.4vh}
+.hm-cards{display:flex;overflow-x:auto;overflow-y:hidden;padding:1vh .6vw 1.4vh}
+.hcard{flex:none;width:21vw;height:15vh;margin-left:1.4vw;border-radius:1.8vh;background:linear-gradient(160deg,#1c2640,#0e1424);border:1px solid rgba(150,170,220,.3);padding:1.6vh 1.4vw;display:flex;flex-direction:column;justify-content:space-between;cursor:pointer;color:#fff;text-align:right}
+.hcard:focus,.hcard:hover{outline:none;border:.35vh solid #f2b01e;box-shadow:0 0 2.6vh rgba(242,176,30,.7)}
+.hcard-n{font-size:2.8vh;line-height:1.3;max-height:7.4vh;overflow:hidden;font-weight:bold}
+.hcard-f{display:flex;justify-content:space-between;font-size:2.2vh;color:#aab4cc}
+.hcard-f b{color:#f2b01e}
+.hm-empty{color:#8f98aa;font-size:2.4vh;padding:1.5vh .6vw}
+/* ===== نهاية الصفحة الرئيسية ===== */
+
 .modal-bg{position:fixed;top:0;left:0;right:0;bottom:0;background:#070b14;z-index:30;display:none;align-items:stretch;justify-content:center;padding:0}
 .modal{width:100%;height:100%;max-width:none;max-height:none;overflow:hidden;background:transparent;border:0;border-radius:0;padding:0}
 .modal-content{display:flex;gap:22px}
@@ -232,7 +262,6 @@ button:focus,.item:focus,.category:focus,.episode:focus{outline:3px solid #e7b85
 @media(max-width:700px){
  .header{height:auto;min-height:70px;flex-wrap:wrap;padding:12px}
  .nav{order:3;width:100%;margin:10px 0 0;overflow-x:auto}
- .hero{padding:25px}.hero h1{font-size:25px}
  .modal-content{flex-direction:column}
  .modal-poster{width:130px;height:190px}
 }
@@ -317,6 +346,7 @@ var LAST_FOCUS=null,MODAL_OPENER=null,EPISODES=[];
 var SPROG={},PANEL="",LIST_KIND="";
 var DINFO=null,DSEASON=0,SEASONS=[],DERR=false,LISTS_DIRTY=false,OPENER_IDX=-1;
 var TMDB_KEY="",DCAST=null,CASTCACHE={};
+var RADIO_NONE=false;
 var SEEK_LADDER=[5,10,20,60,120,300];
 var seekCount=0,scanDir=0,seekTarget=null,seekTimer=null;
 var SCAN_TICK=1000;
@@ -420,8 +450,8 @@ function headerCur(){
 }
 function headerHTML(){
  var nav=[
-  ["home","الرئيسية"],["live","القنوات"],["movies","الأفلام"],
-  ["series","المسلسلات"],["settings","الإعدادات"]
+  ["home","الرئيسية"],["movies","الأفلام"],["series","المسلسلات"],["live","القنوات"],
+  ["radio","الراديو"],["settings","الإعدادات"]
  ];
  var h='<div class="header"><div class="logo">MORA IPTV<small>YOUR ENTERTAINMENT WORLD</small></div><div class="nav">';
  for(var i=0;i<nav.length;i++){
@@ -430,19 +460,74 @@ function headerHTML(){
  return h+'</div></div>';
 }
 
+/* ================= الصفحة الرئيسية ================= */
+function homeTile(id,label,ic,cls,page,f){
+ return '<button class="hm-tile" '+(f?'data-f="'+f+'" ':'')+'onclick="goPage(\''+page+'\')">'+
+  '<span class="hm-ic '+cls+'">'+icon(ic,100)+'</span>'+esc(label)+'</button>';
+}
+function drawHomeCards(list,limit){
+ if(!list||!list.length)return '<div class="hm-empty">لا يوجد محتوى هنا بعد</div>';
+ var count=Math.min(list.length,limit||8);
+ var h='<div class="hm-cards">';
+ for(var i=0;i<count;i++){
+  var x=list[i],t="movie";
+  if(x.data){t=x.type||t;x=x.data}
+  t=realType(x,t);
+  var name=x.name||x.title||"بدون اسم";
+  RENDERED_COUNTER++;
+  var key="mora_item_"+RENDERED_COUNTER;
+  RENDERED_ITEMS[key]={item:x,type:t};
+  var rn=Number(x.rating);
+  h+='<div class="hcard" tabindex="0" data-item-key="'+key+'" onclick="openRenderedItem(this.getAttribute(\'data-item-key\'))">'+
+   '<div class="hcard-n">'+esc(name)+'</div>'+
+   '<div class="hcard-f"><span>'+typeLabel(x,t)+'</span>'+(rn>0?'<b>&#9733; '+(Math.round(rn*10)/10)+'</b>':'')+'</div></div>';
+ }
+ return h+'</div>';
+}
+function homeHTML(){
+ return '<div class="hm">'+
+  '<div class="hm-top">'+
+   '<div class="hm-tools">'+icon("search",36)+icon("wifi",36)+icon("gear",36)+icon("bell",36)+
+   '<span id="hmTime"></span><i class="hm-sep"></i><span class="hm-date" id="hmDate"></span></div>'+
+   '<div class="hm-logo">MORA IPTV</div>'+
+  '</div>'+
+  '<div class="hm-banner"><h1 class="hm-bt">بوابتك لعالم من الترفيه بلا حدود</h1>'+
+   '<p class="hm-bs">استمتع بأحدث الأفلام والمسلسلات والقنوات في مكان واحد</p>'+
+   '<button class="hm-watch" onclick="goPage(\'movies\')">شاهد الآن</button>'+
+   '<div class="hm-dots"><i></i><i></i><i></i><i class="on"></i></div></div>'+
+  '<div class="hm-tiles">'+
+   homeTile("set","الإعدادات","gear","c-set","settings")+
+   homeTile("radio","الراديو","radio","c-radio","radio")+
+   homeTile("live","القنوات","tv","c-live","live")+
+   homeTile("series","المسلسلات","clapper","c-series","series")+
+   homeTile("movies","الأفلام","reel","c-movies","movies")+
+   homeTile("home","الرئيسية","home","c-home","home","home")+
+  '</div>'+
+  '<div class="hm-sec">تابع المشاهدة</div>'+drawHomeCards(HISTORY,8)+
+  '<div class="hm-sec">المفضلة</div>'+drawHomeCards(FAVORITES,8)+
+ '</div>';
+}
+function updateHomeClock(){
+ var a=$("hmTime"),b=$("hmDate");
+ if(!a||!b)return;
+ var n=new Date(),h=n.getHours(),ap=h>=12?"PM":"AM";
+ h=h%12;if(h===0)h=12;
+ a.innerHTML=h+":"+p2(n.getMinutes())+" "+ap;
+ b.innerHTML=DAYS[n.getDay()]+"، "+n.getDate()+" "+MONTHS[n.getMonth()]+" "+n.getFullYear();
+}
+
 function render(){
  RENDERED_ITEMS={};RENDERED_COUNTER=0;
  if(!connected){showLogin();return}
- var html="";
  if(PAGE==="home"){
-  html='<div class="hero"><h1>YOUR ENTERTAINMENT WORLD</h1>'+
-  '<p>اكتشف عالمًا من الأفلام والمسلسلات والقنوات في مكان واحد.</p>'+
-  '<button class="primary" onclick="goPage(\'movies\')">استكشف الأفلام</button></div>'+
-  '<h2 class="section-title">الأفلام</h2>'+drawItems(MOVIES,"movie",12)+
-  '<h2 class="section-title">المسلسلات</h2>'+drawItems(SERIES,"series",12)+
-  '<h2 class="section-title">القنوات</h2>'+drawItems(LIVE,"live",12);
+  app.innerHTML=homeHTML();
+  updateHomeClock();
+  var ht=app.querySelector('[data-f="home"]');
+  if(ht)try{ht.focus()}catch(e){}
+  return;
  }
- else if(PAGE==="categories"){
+ var html="";
+ if(PAGE==="categories"){
   html=renderCategories();
  }
  else if(PAGE==="content"){
@@ -504,7 +589,7 @@ function itemId(item){
 function goPage(page){
  SEARCH="";
  requestToken++;
- if(page==="live"||page==="movies"||page==="series"){
+ if(page==="live"||page==="movies"||page==="series"||page==="radio"){
   SECTION=page;
   PAGE="categories";
   CATEGORY_ID="";
@@ -518,7 +603,7 @@ function goPage(page){
 }
 
 function loadCategories(){
- var action=SECTION==="live"?"get_live_categories":
+ var action=(SECTION==="live"||SECTION==="radio")?"get_live_categories":
  SECTION==="movies"?"get_vod_categories":"get_series_categories";
  app.innerHTML=headerHTML()+'<div class="page"><div class="empty">جاري تحميل التصنيفات...</div></div>';
  var token=++requestToken;
@@ -529,17 +614,26 @@ function loadCategories(){
    return;
   }
   CATEGORIES=data;
+  if(SECTION==="radio"){
+   var re=/radio|راديو|رادیو|إذاعة|اذاعة|إذاعات|اذاعات|\bfm\b|قرآن|قران|quran/i,f=[];
+   for(var i=0;i<data.length;i++){
+    if(re.test(String(data[i].category_name||"")))f.push(data[i]);
+   }
+   RADIO_NONE=!f.length;
+   CATEGORIES=f.length?f:data;
+  }
   render();
  });
 }
 
 function renderCategories(){
- var title=SECTION==="live"?"القنوات":SECTION==="movies"?"الأفلام":"المسلسلات";
+ var title=SECTION==="live"?"القنوات":SECTION==="radio"?"الراديو":SECTION==="movies"?"الأفلام":"المسلسلات";
  var h='<h2 class="section-title">'+title+' - اختر التصنيف</h2>';
  h+='<div class="category-list">';
+ if(SECTION==="radio"&&RADIO_NONE)h+='<div class="notice">لم أجد تصنيفًا للراديو في السيرفر، دي كل تصنيفات القنوات.</div>';
  h+='<button class="category special" onclick="openList(\'favorites\')">المفضلة ('+listFor("favorites").length+')</button>';
  h+='<button class="category special" onclick="openList(\'history\')">تابع المشاهدة ('+listFor("history").length+')</button>';
- h+='<button class="category" onclick="chooseCategory(\'\',\'جميع '+title+'\')">جميع '+title+'</button>';
+ if(SECTION!=="radio")h+='<button class="category" onclick="chooseCategory(\'\',\'جميع '+title+'\')">جميع '+title+'</button>';
  for(var i=0;i<CATEGORIES.length;i++){
   var c=CATEGORIES[i];
   h+='<button class="category" onclick="chooseCategory(\''+esc(c.category_id)+'\',\''+esc(c.category_name)+'\')">'+esc(c.category_name)+'</button>';
@@ -560,7 +654,7 @@ function chooseCategory(id,name){
 function loadCategoryContent(){
  var token=++requestToken;
  app.innerHTML=headerHTML()+'<div class="page"><div class="empty">جاري تحميل '+esc(CATEGORY_NAME)+'...</div></div>';
- var action=SECTION==="live"?"get_live_streams":
+ var action=(SECTION==="live"||SECTION==="radio")?"get_live_streams":
  SECTION==="movies"?"get_vod_streams":"get_series";
  var extra=CATEGORY_ID?"&category_id="+encodeURIComponent(CATEGORY_ID):"";
  request(apiUrl(action,extra),function(err,data){
@@ -571,7 +665,7 @@ function loadCategoryContent(){
    return;
   }
   CONTENT=data;
-  if(SECTION==="live")LIVE=data;
+  if(SECTION==="live"||SECTION==="radio")LIVE=data;
   else if(SECTION==="movies")MOVIES=data;
   else SERIES=data;
   render();
@@ -591,7 +685,7 @@ function renderContent(){
  if(CURRENT_PAGE>total)CURRENT_PAGE=total;
  var start=(CURRENT_PAGE-1)*PAGE_SIZE;
  var pageItems=filtered.slice(start,start+PAGE_SIZE);
- var type=SECTION==="live"?"live":SECTION==="series"?"series":"movie";
+ var type=sectionType();
  var h='<div class="toolbar"><div class="toolbar-group">'+
  '<button class="secondary" onclick="previousPage()">السابق</button>'+
  '<span class="page-count">صفحة '+CURRENT_PAGE+' من '+total+'</span>'+
@@ -648,8 +742,8 @@ function typeLabel(item,t){
  }
  return "";
 }
-function sectionType(){return SECTION==="live"?"live":SECTION==="series"?"series":"movie"}
-function sectionTitle(){return SECTION==="live"?"القنوات":SECTION==="movies"?"الأفلام":"المسلسلات"}
+function sectionType(){return (SECTION==="live"||SECTION==="radio")?"live":SECTION==="series"?"series":"movie"}
+function sectionTitle(){return SECTION==="live"?"القنوات":SECTION==="radio"?"الراديو":SECTION==="movies"?"الأفلام":"المسلسلات"}
 function listFor(kind){
  var src=kind==="favorites"?FAVORITES:HISTORY,out=[],want=sectionType();
  for(var i=0;i<src.length;i++){
@@ -1066,7 +1160,7 @@ function showDetails(item,type){
  if(modalBg.style.display!=="flex"){
   MODAL_OPENER=document.activeElement;
   OPENER_IDX=-1;
-  var its=document.querySelectorAll(".item");
+  var its=document.querySelectorAll(".item,.hcard");
   for(var q=0;q<its.length;q++){if(its[q]===MODAL_OPENER){OPENER_IDX=q;break}}
  }
  CURRENT={item:item,type:type};
@@ -1089,8 +1183,8 @@ function closeModal(){
  if(LISTS_DIRTY){
   LISTS_DIRTY=false;
   render();
-  var its=document.querySelectorAll(".item");
-  var t=its[OPENER_IDX]||its[0];
+  var its=document.querySelectorAll(".item,.hcard");
+  var t=its[OPENER_IDX]||its[0]||app.querySelector('[data-f="home"]');
   if(t)try{t.focus()}catch(e){}
   return;
  }
@@ -1469,6 +1563,7 @@ function nextItem(dir){
  flashInfo(dir>0?"لا توجد حلقة تالية":"لا توجد حلقة سابقة");
 }
 
+var S='fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"';
 var ICONS={
  play:'<path d="M8 5v14l11-7z"/>',
  pause:'<path d="M6 5h4v14H6zM14 5h4v14h-4z"/>',
@@ -1487,7 +1582,16 @@ var ICONS={
  star:'<path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/>',
  trailer:'<rect x="2.5" y="5" width="19" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="M10 8.8v6.4l5.2-3.2z"/>',
  restart:'<path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/>',
- remove:'<path d="M6 7h12l-1 13H7zM9 4h6l1 2h3v1.6H5V6h3z"/>'
+ remove:'<path d="M6 7h12l-1 13H7zM9 4h6l1 2h3v1.6H5V6h3z"/>',
+ /* أيقونات الصفحة الرئيسية (خطية) */
+ home:'<path '+S+' d="M3 11.2L12 3.5l9 7.7"/><path '+S+' d="M5.5 9.8V20.5h5v-6h3v6h5V9.8"/>',
+ reel:'<circle '+S+' cx="12" cy="12" r="9"/><circle '+S+' cx="12" cy="12" r="1.3"/><circle '+S+' cx="12" cy="6.6" r="1.8"/><circle '+S+' cx="17.1" cy="10.3" r="1.8"/><circle '+S+' cx="15.2" cy="16.3" r="1.8"/><circle '+S+' cx="8.8" cy="16.3" r="1.8"/><circle '+S+' cx="6.9" cy="10.3" r="1.8"/>',
+ clapper:'<rect '+S+' x="3" y="10" width="18" height="10.5" rx="1.6"/><path '+S+' d="M3 10l1.4-4.6 16.6 1.6-.6 3"/><path '+S+' d="M8.2 5.9L7 9.8M13.4 6.4l-1.2 3.6M18.6 6.9l-1.2 3.1"/><path '+S+' d="M8 23h8"/>',
+ tv:'<rect '+S+' x="3" y="8" width="18" height="12.5" rx="2.2"/><path '+S+' d="M8 3l4 5 4-5"/><circle '+S+' cx="12" cy="14.3" r="2.4"/>',
+ radio:'<rect '+S+' x="3" y="9" width="18" height="11.5" rx="2.2"/><path '+S+' d="M7 9L19 3.5"/><circle '+S+' cx="8.6" cy="14.8" r="2.3"/><path '+S+' d="M14 13h4.5M14 16.5h4.5"/>',
+ search:'<circle '+S+' cx="10.5" cy="10.5" r="6.5"/><path '+S+' d="M15.5 15.5L21 21"/>',
+ wifi:'<path '+S+' d="M2.5 9a14 14 0 0 1 19 0"/><path '+S+' d="M5.6 12.4a9.6 9.6 0 0 1 12.8 0"/><path '+S+' d="M8.8 15.7a5 5 0 0 1 6.4 0"/><circle cx="12" cy="19.2" r="1.1" fill="currentColor"/>',
+ bell:'<path '+S+' d="M6 17V11a6 6 0 0 1 12 0v6l1.6 2H4.4z"/><path '+S+' d="M10 21.5a2 2 0 0 0 4 0"/>'
 };
 function icon(name,size){
  return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 24 24" fill="currentColor">'+(ICONS[name]||"")+'</svg>';
@@ -1758,7 +1862,7 @@ document.addEventListener("keydown",function(e){
    active.click();
    return;
   }
-  if(!modalOpen&&cls.indexOf("item")!==-1){
+  if(!modalOpen&&(cls.indexOf("item")!==-1||cls.indexOf("hcard")!==-1)){
    var itemKey=active.getAttribute("data-item-key");
    if(itemKey){
     e.preventDefault();
@@ -1793,14 +1897,12 @@ initIcons();
 setInterval(function(){
  if($("playerLayer").style.display==="flex")updateClock();
  if(modalBg.style.display==="flex")updateDetailsClock();
+ if(PAGE==="home"&&connected)updateHomeClock();
 },15000);
 credentialsSaved();
 if(SERVER&&USER&&PASS)connect();
 else showLogin();
 
- 
-
- 
 })();
 </script>
 </body>
