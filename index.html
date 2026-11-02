@@ -106,8 +106,8 @@ button:focus,.item:focus,.category:focus,.episode:focus{outline:3px solid #e7b85
 .field input{width:100%;padding:13px;background:#090d15;color:white;border:1px solid #343d4c;border-radius:5px;font-size:15px}
 .login button{width:100%;margin-top:15px}
 #message{color:#ff8585;font-size:13px;margin-top:15px;text-align:center}
-.modal-bg{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.88);z-index:30;display:none;align-items:center;justify-content:center;padding:20px}
-.modal{width:100%;max-width:720px;max-height:85vh;overflow:auto;background:#171d29;border:1px solid #394354;border-radius:10px;padding:25px}
+.modal-bg{position:fixed;top:0;left:0;right:0;bottom:0;background:#070b14;z-index:30;display:none;align-items:stretch;justify-content:center;padding:0}
+.modal{width:100%;height:100%;max-width:none;max-height:none;overflow:hidden;background:transparent;border:0;border-radius:0;padding:0}
 .modal-content{display:flex;gap:22px}
 .modal-poster{width:180px;height:260px;object-fit:cover;background:#222}
 .modal p{color:#aab1c0;line-height:1.6}
@@ -169,6 +169,65 @@ button:focus,.item:focus,.category:focus,.episode:focus{outline:3px solid #e7b85
 .episode.last{border:1px solid #f2b01e}
 .episode.last:after{content:"  (آخر مشاهدة)";color:#f2b01e;font-size:12px}
 .category.special{border-color:#6b5a2e;background:#221d12}
+.dp{position:relative;width:100%;height:100%;overflow:hidden;color:#fff;direction:rtl;background:#070b14}
+.dp-bg{position:absolute;top:0;left:0;right:0;bottom:0;background-size:cover;background-position:center;opacity:.4}
+.dp-shade{position:absolute;top:0;left:0;right:0;bottom:0;background:-webkit-linear-gradient(left,rgba(7,11,20,.95),rgba(7,11,20,.72) 55%,rgba(7,11,20,.93));background:linear-gradient(90deg,rgba(7,11,20,.95),rgba(7,11,20,.72) 55%,rgba(7,11,20,.93))}
+.dp-top{position:relative;height:9vh;padding:0 3vw;display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;-webkit-justify-content:space-between;justify-content:space-between}
+.dp-brand{display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;color:#f2b01e;font-size:4vh;font-weight:bold;letter-spacing:1px;direction:ltr}
+.dp-brand span{margin-left:1vh}
+.dp-clock{display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;direction:ltr;font-size:2.6vh;color:#eee;white-space:nowrap}
+.dp-sep{display:inline-block;width:1px;height:2.6vh;background:rgba(255,255,255,.4);margin:0 1.4vw}
+.dp-main{position:relative;display:-webkit-flex;display:flex;height:91vh;padding:1vh 3vw 2vh}
+.dp-right{-webkit-flex:1;flex:1;min-width:0;display:-webkit-flex;display:flex;-webkit-flex-direction:column;flex-direction:column;overflow:hidden}
+.dp-left{width:22vw;-webkit-flex:none;flex:none;margin-right:3vw;display:-webkit-flex;display:flex;-webkit-flex-direction:column;flex-direction:column;overflow:hidden}
+.dp-poster{-webkit-flex:1;flex:1;min-height:0;display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;-webkit-justify-content:center;justify-content:center;margin-bottom:.4vh}
+.dp-poster img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;border-radius:1.6vh;border:2px solid rgba(120,150,255,.55);background:#101626}
+.dp-poster-fb{width:23.6vh;height:35vh;border-radius:1.6vh;border:2px solid rgba(120,150,255,.55);background:-webkit-linear-gradient(#232c52,#0e1326);background:linear-gradient(#232c52,#0e1326);display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;-webkit-justify-content:center;justify-content:center;text-align:center;padding:2vh;font-size:3vh;font-weight:bold;line-height:1.3;overflow:hidden}
+.dp-actions{margin-top:1vh}
+.dbtn{display:-webkit-flex;display:flex;direction:rtl;-webkit-align-items:center;align-items:center;-webkit-justify-content:center;justify-content:center;width:100%;height:5.8vh;margin-top:.9vh;padding:0 1vh;border-radius:3vh;border:2px solid rgba(110,130,255,.55);background:rgba(28,38,86,.92);color:#fff;font-size:2.3vh;cursor:pointer;overflow:hidden;white-space:nowrap}
+.dbtn svg{-webkit-flex:none;flex:none;margin-left:1vh}
+.dbtn span{overflow:hidden;text-overflow:ellipsis}
+.dbtn.gold{border-color:#f2b01e;background:rgba(54,44,18,.94)}
+.dbtn:hover,.dbtn:focus{outline:none;border-color:#f2b01e;background:rgba(98,74,18,.95);box-shadow:0 0 14px rgba(242,176,30,.75)}
+.dp-title{margin:0;font-size:5.6vh;font-weight:bold;line-height:1.25;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.dp-meta{display:-webkit-flex;display:flex;-webkit-flex-wrap:wrap;flex-wrap:wrap;-webkit-align-items:center;align-items:center;font-size:2.5vh;color:#e6e9f2;margin:.8vh 0 1.2vh;min-height:3vh}
+.dp-meta .gold{color:#f2b01e;font-weight:bold}
+.dp-meta svg{vertical-align:middle;color:#f2b01e;margin-right:.5vh}
+.dp-box{border:1px solid rgba(120,150,255,.45);border-radius:1.4vh;background:rgba(14,20,44,.72);padding:1.1vh 1.6vw;-webkit-flex:none;flex:none}
+.dp-box h3{margin:0 0 .5vh;font-size:3vh;color:#f2b01e}
+.dp-box p{margin:0;font-size:2.4vh;line-height:1.55;color:#e4e8f2;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.dp-sec{font-size:3vh;color:#f2b01e;font-weight:bold;margin:1.4vh 0 .6vh}
+.dp-cast{display:-webkit-flex;display:flex;overflow:hidden;height:16vh;-webkit-flex:none;flex:none}
+.cast-i{width:13vh;margin-left:1.8vw;text-align:center;font-size:2vh;color:#e8ebf4;-webkit-flex:none;flex:none}
+.cast-av{position:relative;overflow:hidden;width:9.4vh;height:9.4vh;border-radius:50%;border:2px solid rgba(140,160,255,.7);display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;-webkit-justify-content:center;justify-content:center;margin:0 auto .6vh;font-size:3.4vh;font-weight:bold;color:#fff;direction:ltr}
+.cast-av img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover}
+.cast-n{line-height:1.25;max-height:2.6em;overflow:hidden;word-wrap:break-word}
+.dp-seasons{display:-webkit-flex;display:flex;-webkit-flex-wrap:wrap;flex-wrap:wrap;margin-bottom:.4vh}
+.chip{margin-left:.8vw;padding:.7vh 1.4vw;border-radius:3vh;border:1px solid rgba(255,255,255,.32);background:rgba(255,255,255,.08);color:#fff;font-size:2.1vh;cursor:pointer}
+.chip.on{background:#f2b01e;border-color:#f2b01e;color:#111;font-weight:bold}
+.chip:hover,.chip:focus{outline:none;box-shadow:0 0 12px rgba(242,176,30,.85);border-color:#f2b01e}
+.dp-eps{display:-webkit-flex;display:flex;overflow-x:auto;overflow-y:hidden;padding:.8vh .4vw 1.4vh;-webkit-flex:none;flex:none}
+.ep{position:relative;width:25vh;height:19vh;margin-left:1.3vw;-webkit-flex:none;flex:none;border-radius:1.6vh;overflow:hidden;border:2px solid rgba(160,120,255,.5);background:-webkit-linear-gradient(#1b2347,#0d1226);background:linear-gradient(#1b2347,#0d1226);cursor:pointer}
+.ep img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover}
+.ep.last{border-color:#f2b01e}
+.ep:hover,.ep:focus{outline:none;border-color:#f2b01e;box-shadow:0 0 18px rgba(242,176,30,.9)}
+.ep-info{position:absolute;bottom:0;left:0;right:0;padding:3.5vh 1vh 2.3vh;background:-webkit-linear-gradient(rgba(0,0,0,0),rgba(0,0,0,.94));background:linear-gradient(rgba(0,0,0,0),rgba(0,0,0,.94));display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;-webkit-justify-content:space-between;justify-content:space-between}
+.ep-txt{min-width:0;font-size:2.1vh;line-height:1.35}
+.ep-txt b{display:block;color:#fff}
+.ep-txt span{display:block;color:#f2b01e;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ep-play{-webkit-flex:none;flex:none;width:4vh;height:4vh;border-radius:50%;border:2px solid #fff;display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;-webkit-justify-content:center;justify-content:center;margin-right:.8vh}
+.ep-bar{position:absolute;left:1vh;right:1vh;bottom:.8vh;height:.6vh;border-radius:1vh;background:rgba(255,255,255,.3);direction:ltr}
+.ep-bar i{display:block;height:100%;border-radius:1vh;background:#f2b01e}
+.ep-badge{position:absolute;top:.8vh;left:.8vh;background:#f2b01e;color:#111;font-size:1.7vh;font-weight:bold;padding:.3vh 1vh;border-radius:1vh}
+.dp-wait{color:#aab1c0;font-size:2.3vh;padding:1vh 0}
+.dp-hint{color:#8f98aa;font-size:1.8vh;margin-top:.2vh}
+.ep-check{position:absolute;top:.8vh;right:.8vh;width:3.6vh;height:3.6vh;border-radius:50%;background:#2fa56a;display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;-webkit-justify-content:center;justify-content:center;color:#fff}
+.dbtn.on{border-color:#2fa56a;background:rgba(20,70,48,.92)}
+.item{position:relative}
+.wbadge{position:absolute;top:6px;left:6px;width:30px;height:30px;border-radius:50%;background:#2fa56a;color:#fff;display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;-webkit-justify-content:center;justify-content:center;z-index:2}
+#trailerLayer{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:#000;z-index:40}
+#trailerLayer iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0}
+#trailerLayer button{position:absolute;top:2vh;left:2vw;z-index:2;width:auto;padding:0 3vh;margin:0}
 .notice{background:#1a2631;border:1px solid #34485b;color:#b8c9d9;padding:12px;border-radius:6px;margin-bottom:20px;font-size:13px}
 @media(max-width:700px){
  .header{height:auto;min-height:70px;flex-wrap:wrap;padding:12px}
@@ -185,6 +244,8 @@ button:focus,.item:focus,.category:focus,.episode:focus{outline:3px solid #e7b85
 <div class="modal-bg" id="modalBg">
  <div class="modal" id="modal"></div>
 </div>
+
+<div id="trailerLayer"><button class="dbtn" onclick="closeTrailer()">إغلاق الإعلان</button><iframe id="trailerFrame" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>
 
 <div id="playerLayer">
  <video id="video" autoplay></video>
@@ -254,6 +315,8 @@ var PAGE_SIZE=12;
 var SEARCH="";
 var LAST_FOCUS=null,MODAL_OPENER=null,EPISODES=[];
 var SPROG={},PANEL="",LIST_KIND="";
+var DINFO=null,DSEASON=0,SEASONS=[],DERR=false,LISTS_DIRTY=false,OPENER_IDX=-1;
+var TMDB_KEY="",DCAST=null,CASTCACHE={};
 var SEEK_LADDER=[5,10,20,60,120,300];
 var seekCount=0,scanDir=0,seekTarget=null,seekTimer=null;
 var SCAN_TICK=1000;
@@ -283,6 +346,7 @@ function loadSaved(){
 }
 
 function saveLists(){
+ LISTS_DIRTY=true;
  try{
   localStorage.setItem("mora_favorites",JSON.stringify(FAVORITES));
   localStorage.setItem("mora_history",JSON.stringify(HISTORY));
@@ -388,7 +452,11 @@ function render(){
   html=renderList();
  }
  else if(PAGE==="settings"){
-  html='<h2 class="section-title">الإعدادات</h2><div class="notice">بيانات الاشتراك محفوظة على هذا الجهاز.</div><button class="secondary" onclick="logout()">تغيير الاشتراك / تسجيل الخروج</button>';
+  html='<h2 class="section-title">الإعدادات</h2><div class="notice">بيانات الاشتراك محفوظة على هذا الجهاز.</div>'+
+  '<div class="notice">سيرفر IPTV بيرجّع أسماء الممثلين بس. لعرض صورهم: اعمل حساب مجاني على themoviedb.org، وخد API Key (v3) من Settings ثم API، والصقه هنا.</div>'+
+  '<div class="field"><label>مفتاح TMDB لصور الممثلين (اختياري)</label><input id="tmdbInput" value="'+esc(TMDB_KEY)+'" placeholder="32 حرف" style="max-width:420px"></div>'+
+  '<button class="primary" onclick="saveTmdbKey()">حفظ المفتاح</button> '+
+  '<button class="secondary" onclick="logout()">تغيير الاشتراك / تسجيل الخروج</button>';
  }
  app.innerHTML=headerHTML()+'<div class="page">'+html+'</div>';
 }
@@ -417,6 +485,7 @@ function drawItems(list,type,limit){
   'onclick="openRenderedItem(this.getAttribute(\'data-item-key\'))">'+
   '<img class="poster" src="'+esc(img)+'" '+
   'onerror="this.style.display=\'none\'">'+
+  (isWatchedItem(x,t)?'<div class="wbadge">'+icon("check",18)+'</div>':'')+
   '<div class="item-info">'+
   '<div class="item-name">'+esc(name)+'</div>'+
   '<div class="item-type">'+
@@ -645,8 +714,7 @@ function toggleFavorite(item){
  if(found>=0)FAVORITES.splice(found,1);
  else FAVORITES.push({id:id,name:item.name||item.title,image:item.stream_icon||item.cover||"",data:item,type:CURRENT?CURRENT.type:"movie"});
  saveLists();
- closeModal();
- render();
+ if(CURRENT)renderDetails("fav");
 }
 
 function resumeLabel(sp){
@@ -656,85 +724,456 @@ function resumeLabel(sp){
  else s+=sp.title;
  return s;
 }
+
+function firstImg(v){
+ if(v&&typeof v==="object"&&v.length)return String(v[0]||"");
+ return typeof v==="string"?v:"";
+}
+function ordinal(n){
+ var o=["","الأول","الثاني","الثالث","الرابع","الخامس","السادس","السابع","الثامن","التاسع","العاشر"];
+ n=Number(n);
+ return (n>=1&&n<=10)?o[n]:String(n);
+}
+function ytId(v){
+ v=String(v||"").replace(/^\s+|\s+$/g,"");
+ if(!v)return "";
+ var m=/(?:v=|youtu\.be\/|embed\/)([A-Za-z0-9_-]{11})/.exec(v);
+ if(m)return m[1];
+ if(/^[A-Za-z0-9_-]{11}$/.test(v))return v;
+ return "";
+}
+function yearOf(v){var m=/(\d{4})/.exec(String(v||""));return m?m[1]:""}
+function castNames(info){
+ var c=info&&info.cast?String(info.cast):"";
+ var parts=c.split(/[,،\/|]/),out=[];
+ for(var i=0;i<parts.length;i++){
+  var n=parts[i].replace(/^\s+|\s+$/g,"");
+  if(n)out.push(n);
+  if(out.length>=7)break;
+ }
+ return out;
+}
+function initials(n){
+ var w=n.split(/\s+/);
+ var a=w[0]?w[0].charAt(0):"",b=w.length>1?w[w.length-1].charAt(0):"";
+ return (a+b).toUpperCase();
+}
+var AVC=["#3b4f9a","#7a3b9a","#9a3b5a","#2f7f7a","#9a7a2f","#4a7a2f"];
+function avColor(n){var h=0;for(var i=0;i<n.length;i++)h=(h*31+n.charCodeAt(i))%997;return AVC[h%AVC.length]}
+function movieDuration(info){
+ var sec=Number(info.duration_secs);
+ if(!(sec>0)&&info.duration){
+  var p=String(info.duration).split(":");
+  if(p.length===3)sec=(+p[0])*3600+(+p[1])*60+(+p[2]);
+ }
+ if(!(sec>0)||!isFinite(sec))return "";
+ var h=Math.floor(sec/3600),m=Math.round(sec%3600/60);
+ return (h?h+" ساعة ":"")+(m?m+" دقيقة":"");
+}
+function inHistory(item){
+ var id=itemId(item);
+ for(var i=0;i<HISTORY.length;i++){
+  if(itemId(HISTORY[i].data||HISTORY[i])===id)return true;
+ }
+ return false;
+}
+function epProgress(ep){
+ var r=POS["ep_"+ep.id];
+ if(!r)return 0;
+ if(r.done)return 100;
+ if(r.d>0)return Math.max(0,Math.min(100,Math.round(r.p/r.d*100)));
+ return 0;
+}
+function dBtn(id,label,ic,onclick,cls){
+ return '<button class="dbtn'+(cls?" "+cls:"")+'" data-f="'+id+'" onclick="'+onclick+'">'+icon(ic,26)+'<span>'+esc(label)+'</span></button>';
+}
+function primaryInfo(){
+ var item=CURRENT.item,type=CURRENT.type;
+ if(type==="series"){
+  var sp=SPROG[String(item.series_id)];
+  return {label:sp?resumeLabel(sp):"تشغيل أول حلقة",restart:!!sp};
+ }
+ if(type==="movie"){
+  var r=POS["movie_"+item.stream_id];
+  if(r&&!r.done&&r.p>30)return {label:"استكمال المشاهدة - من "+formatTime(r.p),restart:true};
+ }
+ return {label:"تشغيل",restart:false};
+}
+function epSectionHTML(){
+ if(CURRENT.type!=="series")return "";
+ if(DERR)return '<div class="dp-sec">قائمة الحلقات</div><div class="dp-wait">تعذر تحميل الحلقات</div>';
+ if(!SEASONS.length)return '<div class="dp-sec">قائمة الحلقات</div><div class="dp-wait">جاري تحميل الحلقات...</div>';
+ var sp=SPROG[String(CURRENT.item.series_id)];
+ var se=SEASONS[DSEASON]||SEASONS[0];
+ var h='<div class="dp-sec">قائمة الحلقات - الموسم '+esc(ordinal(se.key))+'</div>';
+ if(SEASONS.length>1){
+  h+='<div class="dp-seasons">';
+  for(var k=0;k<SEASONS.length;k++){
+   h+='<button class="chip'+(SEASONS[k]===se?" on":"")+'" data-f="season-'+k+'" onclick="setSeason('+k+')">الموسم '+esc(SEASONS[k].key)+'</button>';
+  }
+  h+='</div>';
+ }
+ h+='<div class="dp-eps" id="dpEps">';
+ for(var i=se.first;i<=se.last;i++){
+  var ep=EPISODES[i];
+  var last=!!(sp&&String(sp.id)===String(ep.id));
+  var pct=epProgress(ep);
+  h+='<div class="ep'+(last?" last":"")+'" tabindex="0" data-f="ep-'+i+'" onclick="playEpisodeIndex('+i+')">'+
+   (ep.img?'<img src="'+esc(ep.img)+'" onerror="this.style.display=\'none\'">':'')+
+   (last?'<div class="ep-badge">آخر مشاهدة</div>':'')+
+   (isDone("ep_"+ep.id)?'<div class="ep-check">'+icon("check",20)+'</div>':'')+
+   '<div class="ep-info"><div class="ep-txt"><b>الحلقة '+esc(ep.num)+':</b><span>'+esc(ep.title)+'</span></div>'+
+   '<span class="ep-play">'+icon("play",22)+'</span></div>'+
+   (pct>0?'<div class="ep-bar"><i style="width:'+pct+'%"></i></div>':'')+
+   '</div>';
+ }
+ return h+'</div><div class="dp-hint">الزر الأصفر على الحلقة: تمييزها كمشاهَدة / إلغاء التمييز</div>';
+}
+function renderDetails(focusId){
+ if(!CURRENT)return;
+ if(CURRENT.type==="series"&&EPISODES.length)syncSeriesFlag();
+ var item=CURRENT.item,type=CURRENT.type,info=DINFO||{};
+ var name=item.name||item.title||info.name||"بدون اسم";
+ var cover=info.movie_image||info.cover||item.stream_icon||item.cover||item.movie_image||"";
+ var bg=firstImg(info.backdrop_path)||firstImg(item.backdrop_path)||cover;
+
+ var meta=[],rn=Number(info.rating||item.rating);
+ if(!(rn>0)&&info.rating_5based)rn=Number(info.rating_5based)*2;
+ if(rn>0)meta.push('<span>التقييم: <span class="gold">'+(Math.round(rn*10)/10)+'</span>'+icon("star",22)+'</span>');
+ if(type==="series"){
+  if(EPISODES.length)meta.push('<span>عدد الحلقات: '+EPISODES.length+' حلقة</span>');
+  var rt=Number(info.episode_run_time);
+  if(rt>0)meta.push('<span>وقت الحلقة: '+rt+' دقيقة</span>');
+ }else if(type==="movie"){
+  var md=movieDuration(info);
+  if(md)meta.push('<span>المدة: '+esc(md)+'</span>');
+ }
+ var yr=yearOf(info.releaseDate||info.releasedate||item.releaseDate||item.year||info.year);
+ if(yr)meta.push('<span>السنة: '+esc(yr)+'</span>');
+ var genre=String(info.genre||item.genre||"").replace(/\s*[,\/،]\s*/g," • ");
+ if(genre)meta.push('<span>'+esc(genre)+'</span>');
+ if(type!=="live"&&isWatchedItem(item,type))meta.unshift('<span class="gold">'+icon("check",22)+' تمت المشاهدة</span>');
+
+ var plot=info.plot||item.plot||item.overview||item.description||"";
+ var box="";
+ if(type!=="live"){
+  box='<div class="dp-box"><h3>'+(type==="series"?"فكرة المسلسل":"قصة الفيلم")+'</h3><p>'+esc(plot||"لا توجد تفاصيل متاحة.")+'</p></div>';
+ }
+ var cast="",people=castPeople(info);
+ if(people.length){
+  cast='<div class="dp-sec">طاقم العمل</div><div class="dp-cast">';
+  for(var i=0;i<people.length;i++){
+   var pn=people[i].name;
+   cast+='<div class="cast-i"><div class="cast-av" style="background:'+avColor(pn)+'"><span>'+esc(initials(pn))+'</span>'+
+    (people[i].img?'<img src="'+esc(people[i].img)+'" onerror="this.style.display=\'none\'">':'')+
+    '</div><div class="cast-n">'+esc(pn)+'</div></div>';
+  }
+  cast+='</div>';
+ }
+
+ var pi=primaryInfo();
+ var btns=dBtn("primary",pi.label,"play","playCurrent()","gold");
+ if(pi.restart)btns+=dBtn("restart","تشغيل من البداية","restart","playFromStart()");
+ btns+=dBtn("fav",isFavorite(item)?"إزالة من المفضلة":"إضافة إلى المفضلة","star","toggleFavoriteCurrent()");
+ if(type!=="live"){
+  var wd=isWatchedItem(item,type);
+  btns+=dBtn("watched",wd?"إلغاء التمييز كمشاهَد":(type==="series"?"تمييز المسلسل كمشاهَد":"تمييز كمشاهَد"),"check","toggleWatched()",wd?"on":"");
+ }
+ if(ytId(info.youtube_trailer))btns+=dBtn("trailer","عرض الإعلان","trailer","openTrailer()");
+ if(inHistory(item))btns+=dBtn("unwatch","إزالة من تابع المشاهدة","remove","removeFromHistory()");
+ btns+=dBtn("back","الرجوع","return","closeModal()");
+
+ modal.innerHTML='<div class="dp">'+
+  '<div class="dp-bg"'+(bg?' style="background-image:url(\''+esc(bg)+'\')"':'')+'></div><div class="dp-shade"></div>'+
+  '<div class="dp-top"><div class="dp-brand">'+icon("logo",34)+'<span>MORA IPTV</span></div>'+
+  '<div class="dp-clock"><span id="dClockTime"></span><i class="dp-sep"></i><span id="dClockDate"></span></div></div>'+
+  '<div class="dp-main"><div class="dp-right">'+
+  '<h1 class="dp-title">'+esc(name)+'</h1>'+
+  '<div class="dp-meta">'+meta.join('<i class="dp-sep"></i>')+'</div>'+
+  box+cast+epSectionHTML()+
+  '</div><div class="dp-left"><div class="dp-poster">'+
+  (cover?'<img src="'+esc(cover)+'" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'flex\'">':'')+
+  '<div class="dp-poster-fb"'+(cover?' style="display:none"':'')+'>'+esc(name)+'</div></div>'+
+  '<div class="dp-actions">'+btns+'</div></div></div></div>';
+ updateDetailsClock();
+ if(focusId){
+  var el=modal.querySelector('[data-f="'+focusId+'"]');
+  if(el)try{el.focus()}catch(e){}
+ }
+}
+function updateDetailsClock(){
+ var a=$("dClockTime"),b=$("dClockDate");
+ if(!a||!b)return;
+ var n=new Date(),h=n.getHours(),ap=h>=12?"PM":"AM";
+ h=h%12;if(h===0)h=12;
+ a.innerHTML=h+":"+p2(n.getMinutes())+" "+ap;
+ b.innerHTML=DAYS[n.getDay()]+"، "+n.getDate()+" "+MONTHS[n.getMonth()]+" "+n.getFullYear();
+}
+function isDone(key){var r=POS[key];return !!(r&&r.done)}
+function markDone(key,on){
+ if(on)POS[key]={p:0,d:0,t:Date.now(),done:1};
+ else delete POS[key];
+}
+function isWatchedItem(item,type){
+ if(!item)return false;
+ if(type==="movie")return isDone("movie_"+item.stream_id);
+ if(type==="series")return isDone("series_"+item.series_id);
+ return false;
+}
+function dropHistory(item,type){
+ var id=itemId(item);
+ for(var i=HISTORY.length-1;i>=0;i--){
+  var d=HISTORY[i].data||HISTORY[i];
+  if(itemId(d)===id&&realType(d,HISTORY[i].type)===type)HISTORY.splice(i,1);
+ }
+ saveLists();
+}
+function syncSeriesFlag(){
+ var key="series_"+CURRENT.item.series_id,all=EPISODES.length>0,i;
+ for(i=0;i<EPISODES.length;i++){
+  if(!isDone("ep_"+EPISODES[i].id)){all=false;break}
+ }
+ if(all!==isDone(key)){markDone(key,all);savePos();LISTS_DIRTY=true}
+}
+function toggleWatched(){
+ if(!CURRENT||CURRENT.type==="live")return;
+ var item=CURRENT.item,type=CURRENT.type,on,i;
+ if(type==="movie"){
+  var mk="movie_"+item.stream_id;
+  on=!isDone(mk);
+  markDone(mk,on);
+  if(on)dropHistory(item,type);
+ }else{
+  if(!EPISODES.length){alert(DERR?"تعذر تحميل الحلقات":"جاري تحميل الحلقات... حاول بعد لحظات");return}
+  on=!isWatchedItem(item,type);
+  for(i=0;i<EPISODES.length;i++)markDone("ep_"+EPISODES[i].id,on);
+  markDone("series_"+item.series_id,on);
+  if(on){
+   delete SPROG[String(item.series_id)];
+   saveSprog();
+   dropHistory(item,type);
+  }
+ }
+ savePos();
+ LISTS_DIRTY=true;
+ renderDetails("watched");
+}
+function toggleEpWatched(i){
+ var ep=EPISODES[i];
+ if(!ep)return;
+ markDone("ep_"+ep.id,!isDone("ep_"+ep.id));
+ savePos();
+ LISTS_DIRTY=true;
+ renderDetails("ep-"+i);
+}
+
+function castPeople(info){
+ if(DCAST&&DCAST.length)return DCAST;
+ var n=castNames(info),out=[];
+ for(var i=0;i<n.length;i++)out.push({name:n[i],img:""});
+ return out;
+}
+function tmdbGet(path,cb){
+ request("https://api.themoviedb.org/3"+path+(path.indexOf("?")>=0?"&":"?")+"api_key="+encodeURIComponent(TMDB_KEY)+"&language=en-US",cb);
+}
+function searchTitle(n){
+ n=String(n||"");
+ var m=/\(([^)]*[A-Za-z][^)]*)\)/.exec(n);
+ if(m)return m[1].replace(/^\s+|\s+$/g,"");
+ return n.replace(/[\(\[][^\)\]]*[\)\]]/g," ").replace(/\b(19|20)\d{2}\b/g," ").replace(/\s+/g," ").replace(/^\s+|\s+$/g,"");
+}
+function loadCast(){
+ if(!TMDB_KEY||!CURRENT||CURRENT.type==="live")return;
+ var token=CURRENT.item,info=DINFO||{},kind=CURRENT.type==="series"?"tv":"movie";
+ var tid=info.tmdb_id||info.tmdb||token.tmdb||token.tmdb_id;
+ function apply(list){
+  if(!CURRENT||CURRENT.item!==token)return;
+  DCAST=list;
+  renderDetails(curFocusId());
+ }
+ function credits(id){
+  var ck=kind+id;
+  if(CASTCACHE[ck]){apply(CASTCACHE[ck]);return}
+  tmdbGet("/"+kind+"/"+id+"/credits",function(err,d){
+   if(err||!d||!d.cast||!d.cast.length)return;
+   var out=[];
+   for(var i=0;i<d.cast.length&&out.length<7;i++){
+    var c=d.cast[i];
+    if(c&&c.name)out.push({name:c.name,img:c.profile_path?"https://image.tmdb.org/t/p/w185"+c.profile_path:""});
+   }
+   CASTCACHE[ck]=out;
+   apply(out);
+  });
+ }
+ if(tid&&/^\d+$/.test(String(tid))){credits(String(tid));return}
+ var q=searchTitle(token.name||token.title||info.name);
+ if(!q)return;
+ var yr=yearOf(info.releaseDate||info.releasedate||token.releaseDate||token.year||info.year);
+ tmdbGet("/search/"+kind+"?query="+encodeURIComponent(q)+(yr?(kind==="tv"?"&first_air_date_year=":"&year=")+yr:""),function(err,d){
+  if(err||!d||!d.results||!d.results.length)return;
+  credits(String(d.results[0].id));
+ });
+}
+function saveTmdbKey(){
+ var el=$("tmdbInput"),v=el?el.value.replace(/^\s+|\s+$/g,""):"";
+ if(v&&!/^[A-Fa-f0-9]{32}$/.test(v)){alert("المفتاح غير صحيح. لازم يكون 32 حرف وأرقام (API Key v3)");return}
+ TMDB_KEY=v;
+ try{localStorage.setItem("mora_tmdb",v)}catch(e){}
+ CASTCACHE={};
+ alert(v?"تم حفظ المفتاح":"تم مسح المفتاح");
+}
+
+var LASTB="primary";
+function toArr(nl){return Array.prototype.slice.call(nl)}
+/* تنقل بالأسهم في صفحة التفاصيل (الصفحة RTL: أول حلقة على اليمين) */
+function detailsNav(dir){
+ var a=document.activeElement,id=(a&&a.getAttribute)?(a.getAttribute("data-f")||""):"";
+ var btns=toArr(modal.querySelectorAll(".dp-actions .dbtn")),chips=toArr(modal.querySelectorAll(".chip")),eps=toArr(modal.querySelectorAll(".ep"));
+ var grp=btns.indexOf(a)>=0?"b":(chips.indexOf(a)>=0?"c":(eps.indexOf(a)>=0?"e":""));
+ function f(el){if(el)try{el.focus()}catch(e){}}
+ function lastBtn(){return modal.querySelector('[data-f="'+LASTB+'"]')||btns[0]}
+ function epTarget(){return modal.querySelector(".ep.last")||eps[0]}
+ if(!grp){f(modal.querySelector('[data-f="primary"]')||btns[0]);return}
+ var i=(grp==="b"?btns:(grp==="c"?chips:eps)).indexOf(a);
+ if(grp==="b"){
+  LASTB=id;
+  if(dir===38)f(btns[i-1]);
+  else if(dir===40)f(btns[i+1]);
+  else if(dir===39)f(epTarget()||chips[0]);
+ }else if(grp==="e"){
+  if(dir===37){if(eps[i+1])f(eps[i+1]);else f(lastBtn())}
+  else if(dir===39)f(eps[i-1]);
+  else if(dir===38)f(modal.querySelector(".chip.on")||chips[0]||lastBtn());
+ }else{
+  if(dir===37){if(chips[i+1])f(chips[i+1]);else f(lastBtn())}
+  else if(dir===39)f(chips[i-1]);
+  else if(dir===40)f(epTarget());
+ }
+}
+
+function curFocusId(){
+ var a=document.activeElement;
+ if(a&&a!==document.body&&modal.contains(a)&&a.getAttribute)return a.getAttribute("data-f");
+ return null;
+}
+function setSeason(i){
+ DSEASON=i;
+ renderDetails("season-"+i);
+}
+
 function showDetails(item,type){
  type=realType(item,type);
- if(modalBg.style.display!=="flex")MODAL_OPENER=document.activeElement;
- CURRENT={item:item,type:type};
- if(type==="series")EPISODES=[];
- var name=item.name||item.title||"بدون اسم";
- var image=item.stream_icon||item.cover||item.movie_image||"";
- var sp=type==="series"?SPROG[String(item.series_id)]:null;
- var playLabel=type==="series"?(sp?resumeLabel(sp):"تشغيل أول حلقة"):"تشغيل";
- modal.innerHTML='<div class="modal-content"><img class="modal-poster" src="'+esc(image)+'">'+
- '<div><h2>'+esc(name)+'</h2><p>'+esc(item.plot||item.overview||item.description||"لا توجد تفاصيل متاحة.")+'</p>'+
- '<p>التقييم: '+esc(item.rating||"غير متاح")+'</p>'+
- '<div class="modal-actions"><button class="primary" onclick="playCurrent()">'+esc(playLabel)+'</button>'+
- '<button class="secondary" onclick="toggleFavoriteCurrent()">'+(isFavorite(item)?"إزالة من المفضلة":"إضافة للمفضلة")+'</button>'+
- '<button class="secondary" onclick="closeModal()">إغلاق</button></div></div></div>'+
- '<div id="episodes"></div>';
- modalBg.style.display="flex";
- if(type!=="series"){
-  setTimeout(function(){
-   var b=modal.querySelector(".primary");
-   if(b&&modalBg.style.display==="flex")try{b.focus()}catch(e){}
-  },400);
+ if(modalBg.style.display!=="flex"){
+  MODAL_OPENER=document.activeElement;
+  OPENER_IDX=-1;
+  var its=document.querySelectorAll(".item");
+  for(var q=0;q<its.length;q++){if(its[q]===MODAL_OPENER){OPENER_IDX=q;break}}
  }
+ CURRENT={item:item,type:type};
+ DINFO=null;DSEASON=0;SEASONS=[];DERR=false;DCAST=null;
+ if(type==="series")EPISODES=[];
+ renderDetails();
+ modalBg.style.display="flex";
+ setTimeout(function(){
+  if(modalBg.style.display!=="flex")return;
+  if(modal.contains(document.activeElement)&&document.activeElement!==modal)return;
+  var b=modal.querySelector('[data-f="primary"]');
+  if(b)try{b.focus()}catch(e){}
+ },400);
  if(type==="series")loadEpisodes(item.series_id);
+ else if(type==="movie")loadMovieInfo(item);
 }
 function closeModal(){
+ closeTrailer();
  modalBg.style.display="none";
+ if(LISTS_DIRTY){
+  LISTS_DIRTY=false;
+  render();
+  var its=document.querySelectorAll(".item");
+  var t=its[OPENER_IDX]||its[0];
+  if(t)try{t.focus()}catch(e){}
+  return;
+ }
  if(MODAL_OPENER&&document.body.contains(MODAL_OPENER))try{MODAL_OPENER.focus()}catch(e){}
 }
 function toggleFavoriteCurrent(){if(CURRENT)toggleFavorite(CURRENT.item)}
 
+function openTrailer(){
+ var id=ytId(DINFO&&DINFO.youtube_trailer);
+ if(!id)return;
+ $("trailerFrame").src="https://www.youtube.com/embed/"+id+"?autoplay=1&rel=0";
+ $("trailerLayer").style.display="block";
+}
+function closeTrailer(){
+ if($("trailerLayer").style.display!=="block")return;
+ $("trailerFrame").src="about:blank";
+ $("trailerLayer").style.display="none";
+ var b=modal.querySelector('[data-f="trailer"]');
+ if(b)try{b.focus()}catch(e){}
+}
+function removeFromHistory(){
+ if(!CURRENT)return;
+ var item=CURRENT.item,id=itemId(item),i;
+ for(i=HISTORY.length-1;i>=0;i--){
+  if(itemId(HISTORY[i].data||HISTORY[i])===id)HISTORY.splice(i,1);
+ }
+ if(CURRENT.type==="series"){
+  delete SPROG[String(item.series_id)];
+  saveSprog();
+  for(i=0;i<EPISODES.length;i++)delete POS["ep_"+EPISODES[i].id];
+ }else if(CURRENT.type==="movie"){
+  delete POS["movie_"+item.stream_id];
+ }
+ savePos();
+ saveLists();
+ renderDetails("primary");
+}
+
 function buildEpisodes(data){
- var html="<h3>المواسم والحلقات</h3>";
- EPISODES=[];
+ EPISODES=[];SEASONS=[];
  for(var season in data.episodes){
-  html+="<h4>الموسم "+esc(season)+"</h4>";
-  var eps=data.episodes[season];
+  var eps=data.episodes[season]||[];
+  var first=EPISODES.length;
   for(var i=0;i<eps.length;i++){
-   var ep=eps[i];
+   var ep=eps[i],inf=ep.info||{};
    var etitle=ep.title||ep.name||("الحلقة "+(i+1));
    var num=(ep.episode_num!=null&&ep.episode_num!=="")?ep.episode_num:(i+1);
-   EPISODES.push({id:ep.id,ext:ep.container_extension||"mp4",title:etitle,season:season,num:num});
-   html+='<div class="episode" tabindex="0" data-i="'+(EPISODES.length-1)+'" onclick="playEpisodeIndex('+(EPISODES.length-1)+')">'+esc(etitle)+'</div>';
+   EPISODES.push({id:ep.id,ext:ep.container_extension||"mp4",title:etitle,season:season,num:num,img:inf.movie_image||""});
   }
+  if(EPISODES.length>first)SEASONS.push({key:season,first:first,last:EPISODES.length-1});
  }
- return html;
 }
 function isCurrentSeries(seriesId){
  return !!(CURRENT&&CURRENT.type==="series"&&String(CURRENT.item.series_id)===String(seriesId));
 }
-function refreshSeriesUI(){
- if(!CURRENT||CURRENT.type!=="series")return;
- var sp=SPROG[String(CURRENT.item.series_id)];
- var b=modal.querySelector(".primary");
- if(b)b.innerHTML=esc(sp?resumeLabel(sp):"تشغيل أول حلقة");
- var els=modal.querySelectorAll(".episode");
- for(var i=0;i<els.length;i++){
-  var idx=Number(els[i].getAttribute("data-i"));
-  els[i].className="episode"+(sp&&EPISODES[idx]&&String(EPISODES[idx].id)===String(sp.id)?" last":"");
- }
-}
 function loadEpisodes(seriesId){
  request(apiUrl("get_series_info","&series_id="+encodeURIComponent(seriesId)),function(err,data){
-  if(err||!data||!data.episodes)return;
   if(!isCurrentSeries(seriesId))return;
-  var html=buildEpisodes(data);
-  var target=$("episodes");
-  if(target)target.innerHTML=html;
-  refreshSeriesUI();
-  setTimeout(function(){
-   if(modalBg.style.display!=="flex")return;
-   var sp=SPROG[String(seriesId)];
-   var el=sp?modal.querySelector(".primary"):modal.querySelector(".episode");
-   if(el)try{el.focus()}catch(e){}
-  },400);
+  if(err||!data||!data.episodes){DERR=true;renderDetails(curFocusId());return}
+  buildEpisodes(data);
+  DINFO=(data.info&&typeof data.info==="object")?data.info:{};
+  loadCast();
+  var sp=SPROG[String(seriesId)];
+  DSEASON=0;
+  if(sp){
+   for(var i=0;i<SEASONS.length;i++){
+    if(String(SEASONS[i].key)===String(sp.season)){DSEASON=i;break}
+   }
+  }
+  renderDetails(curFocusId());
+ });
+}
+function loadMovieInfo(item){
+ request(apiUrl("get_vod_info","&vod_id="+encodeURIComponent(item.stream_id)),function(err,data){
+  if(err||!data||!data.info||typeof data.info!=="object")return;
+  if(!CURRENT||CURRENT.item!==item)return;
+  DINFO=data.info;
+  loadCast();
+  renderDetails(curFocusId());
  });
 }
 
-function playEpisodeById(id,ext,title){
+function playEpisodeById(id,ext,title,fresh){
  var url=SERVER+"/series/"+encodeURIComponent(USER)+"/"+encodeURIComponent(PASS)+"/"+encodeURIComponent(id)+"."+ext;
  var epIdx=-1,ep=null;
  for(var k=0;k<EPISODES.length;k++){
@@ -753,22 +1192,23 @@ function playEpisodeById(id,ext,title){
   SPROG[skey]={id:id,ext:ext,title:title,season:season,num:num};
   saveSprog();
   addHistory(sItem,"series");
-  refreshSeriesUI();
  }
- startPlayer(url,title,{key:"ep_"+id,epIndex:epIdx,heading:heading,sub:sub});
+ startPlayer(url,title,{key:"ep_"+id,epIndex:epIdx,heading:heading,sub:sub,fresh:!!fresh});
 }
-function playEpisodeIndex(i){
+function playEpisodeIndex(i,fresh){
  var ep=EPISODES[i];
- if(ep)playEpisodeById(ep.id,ep.ext,ep.title);
+ if(ep)playEpisodeById(ep.id,ep.ext,ep.title,fresh);
 }
-function playCurrent(){
+function playFromStart(){playCurrent(true)}
+function playCurrent(fresh){
  if(!CURRENT)return;
+ fresh=(fresh===true);
  var item=CURRENT.item,type=CURRENT.type;
  if(type==="series"){
   var go=function(){
-   var sp=SPROG[String(item.series_id)];
+   var sp=fresh?null:SPROG[String(item.series_id)];
    if(sp){playEpisodeById(sp.id,sp.ext,sp.title);return}
-   if(EPISODES.length){playEpisodeIndex(0);return}
+   if(EPISODES.length){playEpisodeIndex(0,fresh);return}
    alert("لا توجد حلقات");
   };
   if(EPISODES.length){go();return}
@@ -784,14 +1224,14 @@ function playCurrent(){
  var folder=type==="live"?"live":"movie";
  var url=SERVER+"/"+folder+"/"+encodeURIComponent(USER)+"/"+encodeURIComponent(PASS)+"/"+encodeURIComponent(item.stream_id)+"."+ext;
  addHistory(item,type);
- closeModal();
  var nm=item.name||item.title||"MORA IPTV";
  startPlayer(url,nm,{
   live:type==="live",
   liveId:type==="live"?item.stream_id:"",
   key:type==="movie"?"movie_"+item.stream_id:"",
   heading:nm,
-  sub:(type==="live"?"بث مباشر - ":"فيلم - ")+nm
+  sub:(type==="live"?"بث مباشر - ":"فيلم - ")+nm,
+  fresh:fresh
  });
 }
 function addHistory(item,type){
@@ -827,9 +1267,9 @@ function rememberPos(force){
  lastPosSave=now;
  var t=video.currentTime;
  if(t<30||t>d-30)return;
- POS[PLAYER.key]={p:Math.floor(t),t:now};
+ POS[PLAYER.key]={p:Math.floor(t),d:Math.round(d),t:now};
  var keys=[],k;
- for(k in POS)keys.push(k);
+ for(k in POS)if(!POS[k].done)keys.push(k);
  if(keys.length>150){
   keys.sort(function(a,b){return POS[a].t-POS[b].t});
   for(var i=0;i<keys.length-150;i++)delete POS[keys[i]];
@@ -844,6 +1284,7 @@ function startPlayer(url,title,opts){
  else LAST_FOCUS=document.activeElement;
  opts=opts||{};
  PLAYER={live:!!opts.live,key:opts.key||"",epIndex:(opts.epIndex==null?-1:opts.epIndex),liveId:opts.liveId||""};
+ if(opts.fresh&&PLAYER.key){delete POS[PLAYER.key];savePos()}
  cancelScan();
  $("playingTitle").innerHTML=esc(opts.heading||title);
  $("subTitle").innerHTML=esc(opts.sub||title);
@@ -865,7 +1306,10 @@ function closePlayer(){
  $("playerLayer").style.display="none";
  $("seekPop").style.display="none";
  setBuffering(false);
- if(LAST_FOCUS&&LAST_FOCUS.focus&&document.body.contains(LAST_FOCUS))try{LAST_FOCUS.focus()}catch(e){}
+ if(modalBg.style.display==="flex"&&CURRENT){
+  var fid=(LAST_FOCUS&&LAST_FOCUS.getAttribute)?LAST_FOCUS.getAttribute("data-f"):null;
+  renderDetails(fid||"primary");
+ }else if(LAST_FOCUS&&LAST_FOCUS.focus&&document.body.contains(LAST_FOCUS))try{LAST_FOCUS.focus()}catch(e){}
 }
 
 function setBuffering(on){$("buffering").style.display=on?"block":"none"}
@@ -1038,7 +1482,12 @@ var ICONS={
  cc:'<rect x="2.5" y="5" width="19" height="14" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><text x="12" y="15.2" font-size="8" font-weight="bold" text-anchor="middle" font-family="Arial,sans-serif">CC</text>',
  gear:'<circle cx="12" cy="12" r="3.3" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="6.4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="8.6" fill="none" stroke="currentColor" stroke-width="3.4" stroke-dasharray="3.2 3.2"/>',
  "return":'<path d="M10 9V5l-7 7 7 7v-4.1c5 0 8.5 1.6 11 5.1-1-5-4-10-11-11z"/>',
- logo:'<path d="M6 4.2c0-1 1.1-1.6 2-1.1l12 7.1c.9.5.9 1.7 0 2.2L8 19.5c-.9.5-2 0-2-1.1z"/>'
+ check:'<path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/>',
+ logo:'<path d="M6 4.2c0-1 1.1-1.6 2-1.1l12 7.1c.9.5.9 1.7 0 2.2L8 19.5c-.9.5-2 0-2-1.1z"/>',
+ star:'<path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/>',
+ trailer:'<rect x="2.5" y="5" width="19" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="M10 8.8v6.4l5.2-3.2z"/>',
+ restart:'<path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/>',
+ remove:'<path d="M6 7h12l-1 13H7zM9 4h6l1 2h3v1.6H5V6h3z"/>'
 };
 function icon(name,size){
  return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 24 24" fill="currentColor">'+(ICONS[name]||"")+'</svg>';
@@ -1168,7 +1617,7 @@ function onMeta(){
  }
 }
 function onEnded(){
- if(PLAYER.key&&POS[PLAYER.key]){delete POS[PLAYER.key];savePos()}
+ if(PLAYER.key){POS[PLAYER.key]={p:0,d:Math.round(video.duration)||0,t:Date.now(),done:1};savePos()}
  PLAYER.key="";
  if(PLAYER.epIndex>=0&&EPISODES[PLAYER.epIndex+1]){
   playEpisodeIndex(PLAYER.epIndex+1);
@@ -1237,6 +1686,13 @@ window.closePanel=closePanel;
 window.refreshPanel=refreshPanel;
 window.zapTo=zapTo;
 window.openList=openList;
+window.playFromStart=playFromStart;
+window.openTrailer=openTrailer;
+window.closeTrailer=closeTrailer;
+window.removeFromHistory=removeFromHistory;
+window.setSeason=setSeason;
+window.toggleWatched=toggleWatched;
+window.saveTmdbKey=saveTmdbKey;
 
 function keyIs(e,codes,names){
  var k=e.keyCode||e.which,i;
@@ -1256,6 +1712,11 @@ document.addEventListener("keydown",function(e){
  var key=e.keyCode||e.which;
  var playerOpen=$("playerLayer").style.display==="flex";
  var modalOpen=modalBg.style.display==="flex";
+
+ if($("trailerLayer").style.display==="block"){
+  if(isBack(e)){closeTrailer();e.preventDefault()}
+  return;
+ }
 
  if(playerOpen){
   showOsd();
@@ -1292,7 +1753,7 @@ document.addEventListener("keydown",function(e){
  var cls=active&&active.className?String(active.className):"";
 
  if(key===13||key===23){
-  if(modalOpen&&cls.indexOf("episode")!==-1){
+  if(modalOpen&&active&&active!==modal&&modal.contains(active)&&active.click){
    e.preventDefault();
    active.click();
    return;
@@ -1308,7 +1769,12 @@ document.addEventListener("keydown",function(e){
  }
 
  if(modalOpen){
-  if(isBack(e)){closeModal();e.preventDefault()}
+  if(isBack(e)){closeModal();e.preventDefault();return}
+  if(key>=37&&key<=40){detailsNav(key);e.preventDefault();return}
+  if(key===405&&active&&active.getAttribute){
+   var af=active.getAttribute("data-f")||"";
+   if(af.indexOf("ep-")===0){toggleEpWatched(Number(af.substring(3)));e.preventDefault();return}
+  }
   return;
  }
 
@@ -1322,8 +1788,12 @@ document.addEventListener("keydown",function(e){
 loadSaved();
 loadPos();
 loadSprog();
+try{TMDB_KEY=localStorage.getItem("mora_tmdb")||""}catch(e){}
 initIcons();
-setInterval(function(){if($("playerLayer").style.display==="flex")updateClock()},15000);
+setInterval(function(){
+ if($("playerLayer").style.display==="flex")updateClock();
+ if(modalBg.style.display==="flex")updateDetailsClock();
+},15000);
 credentialsSaved();
 if(SERVER&&USER&&PASS)connect();
 else showLogin();
