@@ -128,7 +128,7 @@ button:focus,.item:focus,.category:focus,.episode:focus{outline:3px solid #e7b85
 .c-home{color:#f2b01e}.c-movies{color:#3d8bff}.c-series{color:#a35cff}.c-live{color:#2fd0e8}.c-radio{color:#ff4d79}.c-set{color:#aab2c4}
 .hm-sec{font-size:3.4vh;font-weight:bold;margin:3.8vh 0 1.4vh}
 .hm-cards{display:flex;overflow-x:auto;overflow-y:hidden;padding:1vh .6vw 1.4vh}
-.hcard{flex:none;width:21vw;height:15vh;margin-left:1.4vw;border-radius:1.8vh;background:linear-gradient(160deg,#1c2640,#0e1424);border:1px solid rgba(150,170,220,.3);padding:1.6vh 1.4vw;display:flex;flex-direction:column;justify-content:space-between;cursor:pointer;color:#fff;text-align:right}
+.hcard{position:relative;overflow:hidden;flex:none;width:21vw;height:15vh;margin-left:1.4vw;border-radius:1.8vh;background:linear-gradient(160deg,#1c2640,#0e1424);border:1px solid rgba(150,170,220,.3);padding:1.6vh 1.4vw;display:flex;flex-direction:column;justify-content:space-between;cursor:pointer;color:#fff;text-align:right}
 .hcard:focus,.hcard:hover{outline:none;border:.35vh solid #f2b01e;box-shadow:0 0 2.6vh rgba(242,176,30,.7)}
 .hcard-n{font-size:2.8vh;line-height:1.3;max-height:7.4vh;overflow:hidden;font-weight:bold}
 .hcard-f{display:flex;justify-content:space-between;font-size:2.2vh;color:#aab4cc}
@@ -189,7 +189,19 @@ button:focus,.item:focus,.category:focus,.episode:focus{outline:3px solid #e7b85
 .pl-item{padding:14px 16px;margin:6px 0;border-radius:8px;background:#1c2230;color:#fff;font-size:17px;line-height:1.5;cursor:pointer;text-align:right}
 .pl-item.cur{border:1px solid #f2b01e}
 .pl-item:focus,.pl-item:hover{outline:3px solid #f2b01e;outline-offset:0;background:#2a3042}
-#buffering{display:none;position:absolute;top:50%;left:50%;margin:-30px 0 0 -30px;z-index:4}
+#buffering{display:none;position:absolute;top:50%;left:50%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%);z-index:4;text-align:center}
+#buffering .spinner{width:90px;height:90px;border-width:8px;margin:0 auto}
+#buffering .bt{margin-top:16px;font-size:22px;color:#fff;text-shadow:0 2px 8px #000}
+#loadOv{display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:45;background:rgba(5,8,16,.92);-webkit-align-items:center;align-items:center;-webkit-justify-content:center;justify-content:center;-webkit-flex-direction:column;flex-direction:column;text-align:center}
+#loadOv .spinner{width:90px;height:90px;border-width:8px;margin:0 auto}
+#loadOv .bt{margin-top:18px;font-size:3vh;color:#fff;direction:rtl}
+#radioArt{display:none;position:absolute;top:0;left:0;right:0;bottom:0;z-index:1;-webkit-align-items:center;align-items:center;-webkit-justify-content:center;justify-content:center;-webkit-flex-direction:column;flex-direction:column;color:#f2b01e;background:radial-gradient(circle at 50% 40%,#16284a,#05070c 72%);direction:rtl}
+#radioArt svg{width:22vh;height:22vh}
+#radioArt .rn{margin-top:3vh;font-size:5vh;font-weight:bold;color:#fff;text-align:center;padding:0 6vw}
+#radioArt .rs{margin-top:1.2vh;font-size:2.6vh;color:#aab4cc}
+.pw{position:relative;display:block}
+.pbar{position:absolute;left:0;right:0;bottom:0;height:6px;background:rgba(0,0,0,.6);direction:ltr}
+.pbar i{display:block;height:100%;background:#f2b01e}
 .spinner{width:60px;height:60px;border:6px solid #ffffff33;border-top-color:#f2b01e;border-radius:50%;-webkit-animation:spin 1s linear infinite;animation:spin 1s linear infinite}
 @-webkit-keyframes spin{to{-webkit-transform:rotate(360deg)}}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -274,11 +286,14 @@ button:focus,.item:focus,.category:focus,.episode:focus{outline:3px solid #e7b85
  <div class="modal" id="modal"></div>
 </div>
 
+<div id="loadOv"><div class="spinner"></div><div class="bt" id="loadTxt"></div></div>
+
 <div id="trailerLayer"><button class="dbtn" onclick="closeTrailer()">إغلاق الإعلان</button><iframe id="trailerFrame" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>
 
 <div id="playerLayer">
  <video id="video" autoplay></video>
- <div id="buffering"><div class="spinner"></div></div>
+ <div id="radioArt"><span id="radioIc"></span><div class="rn" id="radioName"></div><div class="rs">إذاعة مباشرة</div></div>
+ <div id="buffering"><div class="spinner"></div><div class="bt">جاري تحميل الفيديو...</div></div>
  <div id="seekPop"></div>
 
  <div class="osd osd-top">
@@ -346,7 +361,9 @@ var LAST_FOCUS=null,MODAL_OPENER=null,EPISODES=[];
 var SPROG={},PANEL="",LIST_KIND="";
 var DINFO=null,DSEASON=0,SEASONS=[],DERR=false,LISTS_DIRTY=false,OPENER_IDX=-1;
 var TMDB_KEY="",DCAST=null,CASTCACHE={};
-var RADIO_NONE=false;
+var RADIO_NONE=false,NEXT_RADIO=false,QURAN_URL="";
+var DEFAULT_QURAN="https://stream.radiojar.com/8s5u5tpdtwzuv";
+var QURAN_RE=/قرآن|القرآن|قران|القران|quran|koran|qur'an/i;
 var SEEK_LADDER=[5,10,20,60,120,300];
 var seekCount=0,scanDir=0,seekTarget=null,seekTimer=null;
 var SCAN_TICK=1000;
@@ -480,7 +497,7 @@ function drawHomeCards(list,limit){
   var rn=Number(x.rating);
   h+='<div class="hcard" tabindex="0" data-item-key="'+key+'" onclick="openRenderedItem(this.getAttribute(\'data-item-key\'))">'+
    '<div class="hcard-n">'+esc(name)+'</div>'+
-   '<div class="hcard-f"><span>'+typeLabel(x,t)+'</span>'+(rn>0?'<b>&#9733; '+(Math.round(rn*10)/10)+'</b>':'')+'</div></div>';
+   '<div class="hcard-f"><span>'+typeLabel(x,t)+'</span>'+(rn>0?'<b>&#9733; '+(Math.round(rn*10)/10)+'</b>':'')+'</div>'+progBar(x,t)+'</div>';
  }
  return h+'</div>';
 }
@@ -541,6 +558,9 @@ function render(){
   '<div class="notice">سيرفر IPTV بيرجّع أسماء الممثلين بس. لعرض صورهم: اعمل حساب مجاني على themoviedb.org، وخد API Key (v3) من Settings ثم API، والصقه هنا.</div>'+
   '<div class="field"><label>مفتاح TMDB لصور الممثلين (اختياري)</label><input id="tmdbInput" value="'+esc(TMDB_KEY)+'" placeholder="32 حرف" style="max-width:420px"></div>'+
   '<button class="primary" onclick="saveTmdbKey()">حفظ المفتاح</button> '+
+  '<div class="notice" style="margin-top:20px">زر الراديو بيشغّل إذاعة القرآن الكريم. لو عايز تحدد رابط بث معين بدل الافتراضي، اكتبه هنا (سيبه فاضي للوضع التلقائي).</div>'+
+  '<div class="field"><label>رابط إذاعة القرآن الكريم (اختياري)</label><input id="quranInput" value="'+esc(QURAN_URL)+'" placeholder="'+esc(DEFAULT_QURAN)+'" style="max-width:520px"></div>'+
+  '<button class="primary" onclick="saveQuranUrl()">حفظ الرابط</button> '+
   '<button class="secondary" onclick="logout()">تغيير الاشتراك / تسجيل الخروج</button>';
  }
  app.innerHTML=headerHTML()+'<div class="page">'+html+'</div>';
@@ -568,8 +588,8 @@ function drawItems(list,type,limit){
   h+='<div class="item" tabindex="0" '+
   'data-item-key="'+key+'" '+
   'onclick="openRenderedItem(this.getAttribute(\'data-item-key\'))">'+
-  '<img class="poster" src="'+esc(img)+'" '+
-  'onerror="this.style.display=\'none\'">'+
+  '<div class="pw"><img class="poster" src="'+esc(img)+'" '+
+  'onerror="this.style.display=\'none\'">'+progBar(x,t)+'</div>'+
   (isWatchedItem(x,t)?'<div class="wbadge">'+icon("check",18)+'</div>':'')+
   '<div class="item-info">'+
   '<div class="item-name">'+esc(name)+'</div>'+
@@ -582,13 +602,68 @@ function drawItems(list,type,limit){
  return h;
 }
  
+function itemProgress(x,t){
+ var r=null;
+ if(t==="movie")r=POS["movie_"+x.stream_id];
+ else if(t==="series"){var sp=SPROG[String(x.series_id)];if(sp)r=POS["ep_"+sp.id]}
+ if(!r||r.done||!(r.d>0)||!(r.p>0))return 0;
+ return Math.max(2,Math.min(100,Math.round(r.p/r.d*100)));
+}
+function progBar(x,t){
+ var pc=itemProgress(x,t);
+ return pc>0?'<div class="pbar"><i style="width:'+pc+'%"></i></div>':'';
+}
 function itemId(item){
  return String(item.stream_id||item.series_id||item.id||"");
+}
+
+function showLoading(t){$("loadTxt").innerHTML=esc(t||"جاري التحميل...");$("loadOv").style.display="flex"}
+function hideLoading(){$("loadOv").style.display="none"}
+function playQuranUrl(url){
+ NEXT_RADIO=false;
+ startPlayer(url,"إذاعة القرآن الكريم",{live:true,radio:true,heading:"إذاعة القرآن الكريم",sub:"إذاعة - القرآن الكريم"});
+}
+function openRadio(){
+ if(QURAN_URL){playQuranUrl(QURAN_URL);return}
+ showLoading("جاري تشغيل إذاعة القرآن الكريم...");
+ var token=++requestToken;
+ request(apiUrl("get_live_categories"),function(err,cats){
+  if(token!==requestToken)return;
+  var cat=null,isQ=false,i;
+  if(!err&&Array.isArray(cats)){
+   for(i=0;i<cats.length;i++){
+    if(QURAN_RE.test(String(cats[i].category_name||""))){cat=cats[i];isQ=true;break}
+   }
+   if(!cat){
+    var re=/radio|راديو|إذاعة|اذاعة|إذاعات|اذاعات|\bfm\b/i;
+    for(i=0;i<cats.length;i++){
+     if(re.test(String(cats[i].category_name||""))){cat=cats[i];break}
+    }
+   }
+  }
+  if(!cat){playQuranUrl(DEFAULT_QURAN);return}
+  request(apiUrl("get_live_streams","&category_id="+encodeURIComponent(cat.category_id)),function(err2,list){
+   if(token!==requestToken)return;
+   if(err2||!Array.isArray(list)||!list.length){playQuranUrl(DEFAULT_QURAN);return}
+   var idx=-1,k;
+   for(k=0;k<list.length;k++){
+    if(QURAN_RE.test(String(list[k].name||""))){idx=k;break}
+   }
+   if(idx<0){
+    if(isQ)idx=0;
+    else{playQuranUrl(DEFAULT_QURAN);return}
+   }
+   LIVE=list;
+   NEXT_RADIO=true;
+   zapTo(idx);
+  });
+ });
 }
 
 function goPage(page){
  SEARCH="";
  requestToken++;
+ if(page==="radio"){openRadio();return}
  if(page==="live"||page==="movies"||page==="series"||page==="radio"){
   SECTION=page;
   PAGE="categories";
@@ -1117,6 +1192,13 @@ function saveTmdbKey(){
  alert(v?"تم حفظ المفتاح":"تم مسح المفتاح");
 }
 
+function saveQuranUrl(){
+ var el=$("quranInput"),v=el?el.value.replace(/^\s+|\s+$/g,""):"";
+ if(v&&!/^https?:\/\//i.test(v)){alert("الرابط لازم يبدأ بـ http:// أو https://");return}
+ QURAN_URL=v;
+ try{localStorage.setItem("mora_quran",v)}catch(e){}
+ alert(v?"تم حفظ الرابط":"تم مسح الرابط (هيشتغل التلقائي)");
+}
 var LASTB="primary";
 function toArr(nl){return Array.prototype.slice.call(nl)}
 /* تنقل بالأسهم في صفحة التفاصيل (الصفحة RTL: أول حلقة على اليمين) */
@@ -1377,7 +1459,10 @@ function startPlayer(url,title,opts){
  if(layer.style.display==="flex")rememberPos(true);
  else LAST_FOCUS=document.activeElement;
  opts=opts||{};
- PLAYER={live:!!opts.live,key:opts.key||"",epIndex:(opts.epIndex==null?-1:opts.epIndex),liveId:opts.liveId||""};
+ PLAYER={live:!!opts.live,radio:!!opts.radio,key:opts.key||"",epIndex:(opts.epIndex==null?-1:opts.epIndex),liveId:opts.liveId||""};
+ hideLoading();
+ $("radioArt").style.display=PLAYER.radio?"flex":"none";
+ $("radioName").innerHTML=esc(opts.heading||title);
  if(opts.fresh&&PLAYER.key){delete POS[PLAYER.key];savePos()}
  cancelScan();
  $("playingTitle").innerHTML=esc(opts.heading||title);
@@ -1395,6 +1480,8 @@ function startPlayer(url,title,opts){
 }
 function closePlayer(){
  rememberPos(true);
+ PLAYER.radio=false;
+ $("radioArt").style.display="none";
  closePanel();cancelScan();clearTimeout(osdTimer);
  try{video.pause();video.removeAttribute("src");video.load()}catch(e){}
  $("playerLayer").style.display="none";
@@ -1537,6 +1624,17 @@ function cycleSubs(){
  flashInfo("الترجمة: "+(list[n].label||list[n].language||(n+1)));
 }
 
+function qBase(n){return String(n||"").toLowerCase().replace(/\b(uhd|fhd|hd|sd|4k|8k|hevc|h265|raw|low|backup|50fps|60fps|\d{3,4}p)\b/g," ").replace(/[^a-z0-9\u0600-\u06ff]+/g,"")}
+function qTag(n){var m=/\b(4k|8k|uhd|fhd|hd|sd|low|\d{3,4}p)\b/i.exec(String(n||""));return m?m[1].toUpperCase():"عادية"}
+function qVariants(){
+ var i=liveIndex();
+ if(i<0)return [];
+ var b=qBase(LIVE[i].name);
+ if(b.length<3)return [];
+ var out=[];
+ for(var k=0;k<LIVE.length;k++)if(qBase(LIVE[k].name)===b)out.push(k);
+ return out.length>1?out:[];
+}
 function liveIndex(){
  for(var i=0;i<LIVE.length;i++){
   if(String(LIVE[i].stream_id)===String(PLAYER.liveId))return i;
@@ -1545,11 +1643,13 @@ function liveIndex(){
 }
 function zapTo(idx){
  var n=LIVE[idx];
- if(!n){flashInfo("لا توجد قناة أخرى");return}
+ if(!n){NEXT_RADIO=false;flashInfo("لا توجد قناة أخرى");return}
+ var rd=NEXT_RADIO||!!PLAYER.radio;
+ NEXT_RADIO=false;
  var url=SERVER+"/live/"+encodeURIComponent(USER)+"/"+encodeURIComponent(PASS)+"/"+encodeURIComponent(n.stream_id)+"."+(n.container_extension||"ts");
  addHistory(n,"live");
  var nm=n.name||"MORA IPTV";
- startPlayer(url,nm,{live:true,liveId:n.stream_id,heading:nm,sub:"بث مباشر - "+nm});
+ startPlayer(url,nm,{live:true,radio:rd,liveId:n.stream_id,heading:nm,sub:(rd?"إذاعة - ":"بث مباشر - ")+nm});
 }
 function zap(dir){
  var idx=liveIndex();
@@ -1601,6 +1701,8 @@ function initIcons(){
  for(var i=0;i<els.length;i++){
   els[i].innerHTML=icon(els[i].getAttribute("data-icon"),Number(els[i].getAttribute("data-size"))||30);
  }
+ var ri=document.getElementById("radioIc");
+ if(ri)ri.innerHTML=icon("radio",100);
  syncState();
 }
 
@@ -1690,9 +1792,19 @@ function openPanel(kind,focusIdx){
   }else{flashInfo("لا توجد قائمة لهذا المحتوى");return}
  }else if(kind==="settings"){
   title="الإعدادات";
-  h=panelItem("نسبة العرض: "+ASPECTS[aspectIndex][1],"cycleAspect();refreshPanel()")+
+  var qv=(PLAYER.live&&!PLAYER.radio)?qVariants():[];
+  h=(qv.length?panelItem("الجودة: "+qTag(LIVE[liveIndex()].name),"openPanel('quality')"):"")+
+    panelItem("نسبة العرض: "+ASPECTS[aspectIndex][1],"cycleAspect();refreshPanel()")+
     panelItem("مسار الصوت: "+audioLabel(),"cycleAudio();refreshPanel()")+
     panelItem("الترجمة: "+subsLabel(),"cycleSubs();refreshPanel()");
+ }else if(kind==="quality"){
+  title="الجودة";
+  var qvs=qVariants(),cq=liveIndex();
+  if(!qvs.length){flashInfo("لا توجد جودات أخرى");return}
+  for(i=0;i<qvs.length;i++){
+   h+=panelItem((LIVE[qvs[i]].name||"قناة")+" ("+qTag(LIVE[qvs[i]].name)+")","zapTo("+qvs[i]+");closePanel()",qvs[i]===cq);
+   if(qvs[i]===cq)idx=i;
+  }
  }else return;
  if(focusIdx!=null)idx=focusIdx;
  PANEL=kind;
@@ -1732,6 +1844,7 @@ function onEnded(){
 }
 function onError(){
  if($("playerLayer").style.display!=="flex"||!video.getAttribute("src"))return;
+ hideLoading();
  setBuffering(false);
  var c=video.error?video.error.code:0;
  flashInfo("تعذر تشغيل هذا الفيديو"+(c?" (خطأ "+c+")":""),3500);
@@ -1743,7 +1856,7 @@ video.addEventListener("loadedmetadata",onMeta);
 video.addEventListener("waiting",function(){setBuffering(true)});
 video.addEventListener("seeking",function(){if(scanDir===0)setBuffering(true)});
 video.addEventListener("playing",function(){setBuffering(false);syncState()});
-video.addEventListener("canplay",function(){setBuffering(false)});
+video.addEventListener("loadeddata",function(){if(video.paused)setBuffering(false)});
 video.addEventListener("seeked",function(){setBuffering(false)});
 video.addEventListener("play",function(){syncState();showOsd()});
 video.addEventListener("pause",function(){syncState();showOsd()});
@@ -1797,6 +1910,7 @@ window.removeFromHistory=removeFromHistory;
 window.setSeason=setSeason;
 window.toggleWatched=toggleWatched;
 window.saveTmdbKey=saveTmdbKey;
+window.saveQuranUrl=saveQuranUrl;
 
 function keyIs(e,codes,names){
  var k=e.keyCode||e.which,i;
@@ -1816,6 +1930,12 @@ document.addEventListener("keydown",function(e){
  var key=e.keyCode||e.which;
  var playerOpen=$("playerLayer").style.display==="flex";
  var modalOpen=modalBg.style.display==="flex";
+
+ if($("loadOv").style.display==="flex"){
+  if(isBack(e)){requestToken++;hideLoading()}
+  e.preventDefault();
+  return;
+ }
 
  if($("trailerLayer").style.display==="block"){
   if(isBack(e)){closeTrailer();e.preventDefault()}
@@ -1892,7 +2012,7 @@ document.addEventListener("keydown",function(e){
 loadSaved();
 loadPos();
 loadSprog();
-try{TMDB_KEY=localStorage.getItem("mora_tmdb")||""}catch(e){}
+try{TMDB_KEY=localStorage.getItem("mora_tmdb")||"";QURAN_URL=localStorage.getItem("mora_quran")||""}catch(e){}
 initIcons();
 setInterval(function(){
  if($("playerLayer").style.display==="flex")updateClock();
