@@ -868,20 +868,27 @@ function openItem(type,id){
  showDetails(entry.item,entry.type);
  }
  
-function isFavorite(item){
+var lastFavT=0;
+function favIndex(item,type){
  var id=itemId(item);
  for(var i=0;i<FAVORITES.length;i++){
-  if(itemId(FAVORITES[i].data||FAVORITES[i])===id)return true;
+  var d=FAVORITES[i].data||FAVORITES[i];
+  if(itemId(d)===id&&realType(d,FAVORITES[i].type)===type)return i;
  }
- return false;
+ return -1;
+}
+function isFavorite(item,type){
+ return favIndex(item,type||(CURRENT?CURRENT.type:"movie"))>=0;
 }
 function toggleFavorite(item){
- var id=itemId(item),found=-1;
- for(var i=0;i<FAVORITES.length;i++){
-  if(itemId(FAVORITES[i].data||FAVORITES[i])===id){found=i;break}
- }
+ /* حماية من الضغط المزدوج (بعض أجهزة التلفزيون بتبعت الضغطة مرتين فتضيف وتشيل) */
+ var now=Date.now();
+ if(now-lastFavT<700)return;
+ lastFavT=now;
+ var type=CURRENT?CURRENT.type:realType(item,"movie");
+ var found=favIndex(item,type);
  if(found>=0)FAVORITES.splice(found,1);
- else FAVORITES.push({id:id,name:item.name||item.title,image:item.stream_icon||item.cover||"",data:item,type:CURRENT?CURRENT.type:"movie"});
+ else FAVORITES.push({id:itemId(item),name:item.name||item.title,image:item.stream_icon||item.cover||"",data:item,type:type});
  saveLists();
  if(CURRENT)renderDetails("fav");
 }
@@ -1043,7 +1050,8 @@ function renderDetails(focusId){
  var pi=primaryInfo();
  var btns=dBtn("primary",pi.label,"play","playCurrent()","gold");
  if(pi.restart)btns+=dBtn("restart","تشغيل من البداية","restart","playFromStart()");
- btns+=dBtn("fav",isFavorite(item)?"إزالة من المفضلة":"إضافة إلى المفضلة","star","toggleFavoriteCurrent()");
+ var fv=isFavorite(item,type);
+ btns+=dBtn("fav",fv?"في المفضلة - إزالة":"إضافة إلى المفضلة","star","toggleFavoriteCurrent()",fv?"on":"");
  if(type!=="live"){
   var wd=isWatchedItem(item,type);
   btns+=dBtn("watched",wd?"إلغاء التمييز كمشاهَد":(type==="series"?"تمييز المسلسل كمشاهَد":"تمييز كمشاهَد"),"check","toggleWatched()",wd?"on":"");
