@@ -182,8 +182,7 @@ button:focus,.item:focus,.category:focus,.episode:focus{outline:3px solid #e7b85
 .cbtn-play{width:100px;height:100px;padding:0;margin:0 10px;border-radius:50%;border:5px solid #f2b01e;background:rgba(18,18,20,.88);color:#fff;box-shadow:0 0 24px rgba(242,176,30,.55)}
 .cbtn-play:hover,.cbtn-play:focus{outline:none;box-shadow:0 0 34px rgba(242,176,30,.95)}
 .cbtn-play svg{display:block;margin:0 auto}
-.osd-hint{text-align:center;color:#8f98aa;font-size:12px;margin-top:14px;line-height:1.7;direction:rtl}
-#plPanel{display:none;position:absolute;top:0;right:0;bottom:0;width:34%;max-width:480px;min-width:300px;background:rgba(8,10,16,.95);border-left:1px solid #333;z-index:8;direction:rtl}
+.osd-hint{text-align:center;color:#b4bdd0;font-size:18px;margin-top:14px;line-height:1.8;direction:rtl}#plPanel{display:none;position:absolute;top:0;right:0;bottom:0;width:34%;max-width:480px;min-width:300px;background:rgba(8,10,16,.95);border-left:1px solid #333;z-index:8;direction:rtl}
 #plTitle{font-size:22px;font-weight:bold;color:#f2b01e;padding:22px 20px 14px}
 #plBody{position:absolute;top:66px;left:0;right:0;bottom:10px;overflow-y:auto;padding:0 16px}
 .pl-item{padding:14px 16px;margin:6px 0;border-radius:8px;background:#1c2230;color:#fff;font-size:17px;line-height:1.5;cursor:pointer;text-align:right}
@@ -311,27 +310,10 @@ button:focus,.item:focus,.category:focus,.episode:focus{outline:3px solid #e7b85
    <div class="bar" id="barWrap" onclick="barClick(event)"><div id="barBuf"></div><div id="barPos"></div><div id="barKnob"></div></div>
    <span id="timeTot">00:00</span>
   </div>
-  <div class="ctl-row">
-   <div class="ctl-side ctl-left">
-    <button class="cbtn" data-icon="list" data-size="30" onclick="openPanel('list')"></button>
-    <button class="cbtn" data-icon="cc" data-size="30" onclick="cycleSubs()"></button>
-   </div>
-   <div class="ctl-main">
-    <button class="cbtn cbtn-wide" data-icon="rew" data-size="34" onclick="stepSeek(-1)"></button>
-    <button class="cbtn cbtn-wide" data-icon="back10" data-size="36" onclick="jumpBy(-10)"></button>
-    <button class="cbtn-play" id="btnPlay" onclick="togglePlay()"></button>
-    <button class="cbtn cbtn-wide" data-icon="fwd10" data-size="36" onclick="jumpBy(10)"></button>
-    <button class="cbtn cbtn-wide" data-icon="ff" data-size="34" onclick="stepSeek(1)"></button>
-   </div>
-   <div class="ctl-side ctl-right">
-    <button class="cbtn" data-icon="prev" data-size="28" onclick="nextItem(-1)"></button>
-    <button class="cbtn" data-icon="next" data-size="28" onclick="nextItem(1)"></button>
-    <button class="cbtn" data-icon="gear" data-size="30" onclick="openPanel('settings')"></button>
-    <button class="cbtn" data-icon="return" data-size="30" onclick="closePlayer()"></button>
-   </div>
+    <div class="osd-hint">
+   <div>يمين / يسار: تقديم وتأخير مستمر (5 &middot; 10 &middot; 20 &middot; 60 &middot; 120 &middot; 300 ثانية كل ثانية) &nbsp;|&nbsp; OK: تشغيل / إيقاف &nbsp;|&nbsp; أعلى / أسفل: القناة أو الحلقة التالية والسابقة</div>
+   <div>أحمر: نسبة العرض &nbsp;|&nbsp; أخضر: الصوت &nbsp;|&nbsp; أصفر: الترجمة &nbsp;|&nbsp; أزرق: القائمة &nbsp;|&nbsp; Info: الإعدادات والجودة</div>
   </div>
-  <div class="osd-hint">يمين / يسار: تقديم وتأخير مستمر (5 &middot; 10 &middot; 20 &middot; 60 &middot; 120 &middot; 300 ثانية كل ثانية) &nbsp;|&nbsp; OK: تشغيل / إيقاف &nbsp;|&nbsp; أعلى / أسفل: القناة أو الحلقة التالية والسابقة &nbsp;|&nbsp; أحمر: نسبة العرض &nbsp;|&nbsp; أخضر: الصوت &nbsp;|&nbsp; أصفر: الترجمة &nbsp;|&nbsp; أزرق: القائمة</div>
- </div>
  <div id="plPanel"><div id="plTitle"></div><div id="plBody"></div></div>
 </div>
 
@@ -1504,7 +1486,8 @@ function closePlayer(){
 function setBuffering(on){$("buffering").style.display=on?"block":"none"}
 function syncState(){
  var playing=scanDir===0&&!video.paused;
- $("btnPlay").innerHTML=icon(playing?"pause":"play",48);
+ var bp=$("btnPlay");
+ if(bp)bp.innerHTML=icon(playing?"pause":"play",48);
 }
 
 function showOsd(){
@@ -1976,7 +1959,7 @@ document.addEventListener("keydown",function(e){
   if(keyIs(e,[404],[])){cycleAudio();e.preventDefault();return}
   if(keyIs(e,[405],[])){cycleSubs();e.preventDefault();return}
   if(keyIs(e,[406],[])){openPanel("list");e.preventDefault();return}
-  if(keyIs(e,[457,73],["Info"])){openPanel("settings");e.preventDefault();return}
+  keyIs(e,[457,73,93],["Info","ContextMenu"])){openPanel("settings");e.preventDefault();return}
   flashInfo("KEY "+key+(e.key?" ("+e.key+")":""),1200);
   return;
  }
