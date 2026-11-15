@@ -285,6 +285,17 @@ button:focus,.item:focus,.category:focus,.episode:focus{outline:3px solid #e7b85
  .modal-content{flex-direction:column}
  .modal-poster{width:130px;height:190px}
 }
+ /* ===== صفحات الأفلام والمسلسلات: 12 بوستر بدون نزول ===== */
+.header{height:56px}
+.page{padding:10px 3% 15px}
+.toolbar{padding:6px 10px;margin-bottom:8px}
+.toolbar button{padding:7px 14px}
+.toolbar input{padding:7px 10px}
+.toolbar+.section-title{font-size:16px;margin:4px 0 8px;color:#aab1c0}
+.item{width:15.5%;margin:.4%}
+.poster{height:calc((100vh - 160px)/2 - 62px)}
+.item-info{padding:6px 8px}
+ 
 </style>
 </head>
 <body>
@@ -583,11 +594,9 @@ function drawItems(list,type,limit){
   '<div class="pw"><img class="poster" src="'+esc(img)+'" '+
   'onerror="this.style.display=\'none\'">'+progBar(x,t)+'</div>'+
   (isWatchedItem(x,t)?'<div class="wbadge">'+icon("check",18)+'</div>':'')+
-  '<div class="item-info">'+
+   '<div class="item-info">'+
   '<div class="item-name">'+esc(name)+'</div>'+
-  '<div class="item-type">'+
-  typeLabel(x,t)+
-'</div></div></div>';
+  '</div></div>';
  }
 
  h+='</div>';
